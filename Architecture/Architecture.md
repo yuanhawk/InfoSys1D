@@ -7,3 +7,39 @@ App Features Discussion </a>
 App Designs (Figma)</a>
 
 App Features to be added
+
+## Commit<br>
+### dagger skeleton<br>
+dependency injection framework
+
+2 classes: auth + main
+
+Packages<br>
+### di<br>
+
+*auth*
+> AuthScope - scopes AuthViewModules + AuthModule
+
+*main*
+
+> ActivityBuildersModule - building activities<br>
+> AppComponent - contains all the modules to be injected + binding instance of application at runtime for use in BaseApplication<br>
+> AppModule - contains FirebaseDatabase instance
+
+### models
+
+### ui
+
+*auth*
+
+> AuthActivity - Auth codes
+
+*main*
+
+### util
+
+### viewmodels
+
+
+### Package
+> BaseApplication - inject application component into BaseApplication, used to keep track of auth status of user
