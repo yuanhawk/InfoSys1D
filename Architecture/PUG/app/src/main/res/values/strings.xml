@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PUG</string>
+    <string name="pick_up_games">Pick Up Games</string>
+    <string name="desc">Working life is a mess</string>
+    <string name="cool_stuff">But with PUG it has never been easier to get active</string>
+    <string name="get_started">Get Started</string>
 </resources>
