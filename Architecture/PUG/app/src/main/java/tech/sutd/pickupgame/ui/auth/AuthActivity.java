@@ -1,6 +1,9 @@
 package tech.sutd.pickupgame.ui.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,23 +21,10 @@ public class AuthActivity extends DaggerAppCompatActivity {
 
     private ActivityAuthBinding binding;
 
-    @Inject
-    Drawable logo;
-
-    @Inject
-    RequestManager requestManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        setLogo();
-    }
-
-    private void setLogo() {
-        requestManager.load(logo)
-                .into((ImageView) binding.loginImg);
     }
 }
