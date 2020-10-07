@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Singleton;
@@ -44,5 +45,11 @@ public class AppModule {
     @Provides
     static Drawable provideLoginDrawable(Application application) {
         return ContextCompat.getDrawable(application, R.drawable.pug);
+    }
+
+    @Singleton
+    @Provides
+    static FirebaseAuth provideFirebaseAuth() {
+        return FirebaseAuth.getInstance();
     }
 }
