@@ -13,6 +13,7 @@
         android:layout_marginStart="108dp"
         android:layout_marginTop="48dp"
         android:text="@string/sign_in"
+        android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,30 +24,52 @@
         android:layout_marginTop="48dp"
         android:layout_marginEnd="120dp"
         android:text="@string/sign_up"
-        android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userId"
+        android:id="@+id/name"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:hint="@string/email"
+        android:hint="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signIn" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/passwd"
+        android:id="@+id/userId"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:hint="@string/email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/passwd"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userId" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/confirmPasswd"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userId" />
 
@@ -54,36 +77,35 @@
         android:id="@+id/loginCV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="36dp"
         app:cardBackgroundColor="@android:color/holo_red_dark"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwd">
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswd">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/login"
+            android:id="@+id/register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
-            android:text="@string/login"
+            android:text="@string/register"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/signInWithGoogle"
+    <ProgressBar
+        android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginCV"
-        app:layout_constraintVertical_bias="0.076" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
