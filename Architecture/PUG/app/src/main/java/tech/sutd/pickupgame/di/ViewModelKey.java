@@ -1,4 +1,4 @@
-package tech.sutd.pickupgame;
+package tech.sutd.pickupgame.di;
 
 import androidx.lifecycle.ViewModel;
 
