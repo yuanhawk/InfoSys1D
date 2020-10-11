@@ -16,6 +16,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.models.User;
 
 @Module
 public class AppModule {
@@ -51,5 +52,11 @@ public class AppModule {
     @Provides
     static FirebaseAuth provideFirebaseAuth() {
         return FirebaseAuth.getInstance();
+    }
+
+    @Singleton
+    @Provides
+    static User user() {
+        return new User();
     }
 }

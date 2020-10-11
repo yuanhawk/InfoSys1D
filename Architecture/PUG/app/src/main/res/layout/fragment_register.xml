@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.LoginFragment">
+    tools:context=".ui.auth.login.LoginFragment">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/signIn"
@@ -74,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/userId" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/loginCV"
+        android:id="@+id/registerCV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"

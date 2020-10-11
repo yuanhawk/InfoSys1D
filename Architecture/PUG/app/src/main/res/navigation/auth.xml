@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="tech.sutd.pickupgame.ui.auth.LoginFragment"
+        android:name="tech.sutd.pickupgame.ui.auth.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="tech.sutd.pickupgame.ui.auth.RegisterFragment"
+        android:name="tech.sutd.pickupgame.ui.auth.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
