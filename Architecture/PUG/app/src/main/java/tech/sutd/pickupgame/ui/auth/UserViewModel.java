@@ -40,7 +40,7 @@ public class UserViewModel extends ViewModel {
         binding.passwd.setText(null);
     }
 
-    
+
     public void register(Context context, FragmentRegisterBinding binding) {
         sessionManager.register(context, user);
 
