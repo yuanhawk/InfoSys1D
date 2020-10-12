@@ -56,7 +56,7 @@ public class AppModule {
 
     @Singleton
     @Provides
-    static User user() {
+    static User provideUser() {
         return new User();
     }
 }
