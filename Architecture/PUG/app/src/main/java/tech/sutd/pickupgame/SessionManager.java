@@ -1,10 +1,16 @@
 package tech.sutd.pickupgame;
 
+import android.content.Context;
+import android.view.View;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import tech.sutd.pickupgame.models.User;
 
 @Singleton
 public class SessionManager {
@@ -14,6 +20,30 @@ public class SessionManager {
     @Inject
     public SessionManager(FirebaseAuth fAuth) {
         this.fAuth = fAuth;
+    }
+
+    public void login(Context context, User user) {
+        fAuth.signInWithEmailAndPassword(user.getEmail(), user.getPasswd()).addOnCompleteListener(
+                task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Error! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+    }
+
+    public void register(Context context, User user) {
+        fAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPasswd()).addOnCompleteListener(
+                task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "User Created", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Error! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
 
     public FirebaseUser getFirebaseUser() {
