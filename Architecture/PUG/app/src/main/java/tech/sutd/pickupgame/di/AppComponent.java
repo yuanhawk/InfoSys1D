@@ -9,6 +9,7 @@ import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import tech.sutd.pickupgame.BaseApplication;
+import tech.sutd.pickupgame.SessionManager;
 
 @Singleton
 @Component(
@@ -20,6 +21,8 @@ import tech.sutd.pickupgame.BaseApplication;
         }
 )
 public interface AppComponent extends AndroidInjector<BaseApplication> {
+
+    SessionManager sessionManager();
 
     @Component.Builder
     interface Builder {

@@ -71,6 +71,9 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
     }
 
     private void registerUser() {
+        // TODO: get more user details
+
+        String name = String.valueOf(binding.name.getText()).trim();
         String email = String.valueOf(binding.userId.getText()).trim();
         String passwd = String.valueOf(binding.passwd.getText()).trim();
 
@@ -89,6 +92,7 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
             return;
         }
 
+        user.setUsername(name);
         user.setEmail(email);
         user.setPasswd(passwd);
 
