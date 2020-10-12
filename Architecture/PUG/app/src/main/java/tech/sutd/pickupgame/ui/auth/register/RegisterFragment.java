@@ -21,6 +21,7 @@ import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
 import tech.sutd.pickupgame.models.User;
+import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class RegisterFragment extends DaggerFragment implements View.OnClickListener {
@@ -28,7 +29,7 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
     private FragmentRegisterBinding binding;
     private NavController navController;
 
-    private RegisterViewModel viewModel;
+    private UserViewModel viewModel;
 
     @Inject
     FirebaseAuth fAuth;
@@ -46,7 +47,7 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
         binding.signIn.setOnClickListener(this);
         binding.registerCV.setOnClickListener(this);
 
-        viewModel = new ViewModelProvider(this, providerFactory).get(RegisterViewModel.class);
+        viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
         return binding.getRoot();
     }
 

@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -21,6 +22,7 @@ import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
 import tech.sutd.pickupgame.models.User;
+import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class LoginFragment extends DaggerFragment implements View.OnClickListener {
@@ -28,7 +30,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     private FragmentLoginBinding binding;
     private NavController navController;
 
-    private LoginViewModel viewModel;
+    private UserViewModel viewModel;
 
     @Inject
     FirebaseAuth firebaseAuth;
@@ -46,7 +48,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         binding.signUp.setOnClickListener(this);
         binding.login.setOnClickListener(this);
 
-        viewModel = new ViewModelProvider(this, providerFactory).get(LoginViewModel.class);
+        viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
         return binding.getRoot();
     }
 

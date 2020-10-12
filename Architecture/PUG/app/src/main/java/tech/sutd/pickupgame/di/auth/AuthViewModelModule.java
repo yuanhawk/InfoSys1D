@@ -6,19 +6,13 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
 import tech.sutd.pickupgame.di.ViewModelKey;
-import tech.sutd.pickupgame.ui.auth.login.LoginViewModel;
-import tech.sutd.pickupgame.ui.auth.register.RegisterViewModel;
+import tech.sutd.pickupgame.ui.auth.UserViewModel;
 
 @Module
 public abstract class AuthViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(RegisterViewModel.class)
-    public abstract ViewModel bindRegisterViewModel(RegisterViewModel viewModel);
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(LoginViewModel.class)
-    public abstract ViewModel bindLoginViewModel(LoginViewModel viewModel);
+    @ViewModelKey(UserViewModel.class)
+    public abstract ViewModel bindUserViewModel(UserViewModel viewModel);
 }
