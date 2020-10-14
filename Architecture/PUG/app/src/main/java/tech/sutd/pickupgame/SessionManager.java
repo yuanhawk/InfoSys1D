@@ -13,9 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import tech.sutd.pickupgame.data.UserRepository;
 import tech.sutd.pickupgame.models.User;
-import tech.sutd.pickupgame.ui.auth.AuthResource;
 
 @Singleton
 public class SessionManager {
