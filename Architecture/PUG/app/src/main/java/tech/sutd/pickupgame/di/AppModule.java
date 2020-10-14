@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Singleton;
@@ -23,8 +24,13 @@ public class AppModule {
 
     @Singleton
     @Provides
-    static FirebaseDatabase provideFirebaseDatabase() {
-        return FirebaseDatabase.getInstance();
+    static DatabaseReference provideUserReference() {
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://pickupgame-a91c7.firebaseio.com/");
+        db.setPersistenceEnabled(true);
+
+        DatabaseReference reff = db.getReference();
+        reff.keepSynced(true);
+        return reff;
     }
 
     @Singleton

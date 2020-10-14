@@ -1,10 +1,25 @@
 package tech.sutd.pickupgame.models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import com.google.gson.annotations.SerializedName;
+
+@Entity(tableName = "users")
 public class User {
 
+    @PrimaryKey
+    @SerializedName("id")
     private int id;
 
-    private String username, email, passwd;
+    @SerializedName("username")
+    private String username;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("passwd")
+    private String passwd;
 
     public User(int id, String username, String email, String passwd) {
         this.id = id;

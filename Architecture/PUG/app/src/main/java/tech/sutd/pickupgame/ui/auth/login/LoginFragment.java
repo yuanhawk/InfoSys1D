@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -38,9 +37,6 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     @Inject
     ViewModelProviderFactory providerFactory;
 
-    @Inject
-    User user;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +45,17 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         binding.login.setOnClickListener(this);
 
         viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
+
+        subscribeObserver();
         return binding.getRoot();
+    }
+
+    private void subscribeObserver() {
+        viewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
+            if (!users.get(0).getEmail().equalsIgnoreCase("-1")) {
+                binding.userId.setText(users.get(0).getEmail());
+            }
+        });
     }
 
     @Override
@@ -83,10 +89,13 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
             return;
         }
 
+        User user = new User();
+        user.setId(0);
         user.setEmail(email);
         user.setPasswd(passwd);
 
         binding.progress.setVisibility(View.VISIBLE);
-        viewModel.login(getContext(), binding);
+        viewModel.login(getContext(), binding, user);
+
     }
 }

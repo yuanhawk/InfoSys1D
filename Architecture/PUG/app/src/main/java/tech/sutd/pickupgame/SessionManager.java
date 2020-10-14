@@ -1,8 +1,11 @@
 package tech.sutd.pickupgame;
 
+import android.app.Application;
 import android.content.Context;
-import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MediatorLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -10,7 +13,9 @@ import com.google.firebase.auth.FirebaseUser;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import tech.sutd.pickupgame.data.UserRepository;
 import tech.sutd.pickupgame.models.User;
+import tech.sutd.pickupgame.ui.auth.AuthResource;
 
 @Singleton
 public class SessionManager {
