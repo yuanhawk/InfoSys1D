@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/getStartedFragment"
         android:name="tech.sutd.pickupgame.ui.auth.GetStartedFragment"
-        android:label="GetStartedFragment" >
+        android:label="GetStartedFragment"
+        tools:layout="@layout/fragment_get_started" >
         <action
             android:id="@+id/action_getStartedFragment_to_loginFragment"
             app:destination="@id/loginFragment"

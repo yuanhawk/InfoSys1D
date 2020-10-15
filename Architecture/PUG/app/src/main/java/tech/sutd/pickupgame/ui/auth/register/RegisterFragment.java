@@ -72,19 +72,29 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
         String name = String.valueOf(binding.name.getText()).trim();
         String email = String.valueOf(binding.userId.getText()).trim();
         String passwd = String.valueOf(binding.passwd.getText()).trim();
+        String confirmPasswd = String.valueOf(binding.confirmPasswd.getText()).trim();
 
         if (TextUtils.isEmpty(email)) {
             binding.userId.setError("Email is Required");
+            binding.progress.setVisibility(View.GONE);
             return;
         }
 
         if (TextUtils.isEmpty(passwd)) {
             binding.passwd.setError("Password is Required");
+            binding.progress.setVisibility(View.GONE);
             return;
         }
 
-        if (passwd.length() < 6) {
+        if (passwd.length() < 6 || confirmPasswd.length() < 6) {
             binding.passwd.setError("Password must be longer than 6 Characters");
+            binding.progress.setVisibility(View.GONE);
+            return;
+        }
+
+        if (!confirmPasswd.equals(passwd)) {
+            binding.confirmPasswd.setError("Please reconfirm your password, your password is not the same");
+            binding.progress.setVisibility(View.GONE);
             return;
         }
 

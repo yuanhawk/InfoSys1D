@@ -39,6 +39,7 @@ public class SessionManager {
                         navController.navigate(R.id.action_registerFragment_to_loginFragment);
 
                         reff.child("users").child(user.getUsername()).setValue(user);
+                        fAuth.signOut();
                     } else {
                         Toast.makeText(context, "Error! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }

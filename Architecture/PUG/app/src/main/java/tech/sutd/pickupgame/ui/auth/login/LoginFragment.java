@@ -26,6 +26,8 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class LoginFragment extends DaggerFragment implements View.OnClickListener {
 
+    // TODO: Create a remember me btn
+
     private FragmentLoginBinding binding;
     private NavController navController;
 
@@ -72,6 +74,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
                 break;
             case R.id.login:
                 login();
+                break;
         }
     }
 
