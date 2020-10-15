@@ -68,6 +68,7 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
     }
 
     private void registerUser() {
+        binding.progress.setVisibility(View.VISIBLE);
         String name = String.valueOf(binding.name.getText()).trim();
         String email = String.valueOf(binding.userId.getText()).trim();
         String passwd = String.valueOf(binding.passwd.getText()).trim();
@@ -87,7 +88,6 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
             return;
         }
 
-        binding.progress.setVisibility(View.VISIBLE);
         viewModel.register(getContext(), binding, new User(0, name, email, passwd));
     }
 }

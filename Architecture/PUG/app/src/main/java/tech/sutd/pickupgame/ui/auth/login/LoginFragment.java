@@ -76,6 +76,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     }
 
     private void login() {
+        binding.progress.setVisibility(View.VISIBLE);
         String email = String.valueOf(binding.userId.getText()).trim();
         String passwd = String.valueOf(binding.passwd.getText()).trim();
 
@@ -94,8 +95,6 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         user.setEmail(email);
         user.setPasswd(passwd);
 
-        binding.progress.setVisibility(View.VISIBLE);
         viewModel.login(getContext(), binding, user);
-
     }
 }

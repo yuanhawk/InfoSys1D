@@ -23,6 +23,8 @@ import tech.sutd.pickupgame.models.User;
 
 public class UserViewModel extends ViewModel {
 
+    // TODO: Rmb to implement Visitor Pattern in a recycleradapter
+
     private SessionManager sessionManager;
     private UserRepository repository;
 
@@ -59,8 +61,9 @@ public class UserViewModel extends ViewModel {
         binding.passwd.setText(null);
     }
 
+    // Remember to reset the user details to -1
     public void logout(Context context, User user) {
-        repository.delete(user);
+        repository.update(user);
     }
 
     public void update(User user) {
