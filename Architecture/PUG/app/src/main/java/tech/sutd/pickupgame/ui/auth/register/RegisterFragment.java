@@ -88,6 +88,6 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
             return;
         }
 
-        viewModel.register(getContext(), binding, new User(0, name, email, passwd));
+        viewModel.register(getContext(), navController, binding, new User(0, name, email, passwd));
     }
 }

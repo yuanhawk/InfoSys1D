@@ -59,10 +59,4 @@ public class AppModule {
     static FirebaseAuth provideFirebaseAuth() {
         return FirebaseAuth.getInstance();
     }
-
-    @Singleton
-    @Provides
-    static User provideUser() {
-        return new User();
-    }
 }

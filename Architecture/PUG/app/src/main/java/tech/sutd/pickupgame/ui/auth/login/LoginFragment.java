@@ -95,6 +95,6 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         user.setEmail(email);
         user.setPasswd(passwd);
 
-        viewModel.login(getContext(), binding, user);
+        viewModel.login(this, getContext(), binding, user);
     }
 }
