@@ -110,3 +110,11 @@ Packages<br>
 >
 > SessionManager
 > * used to keep track of auth status of user (register, login, logout, user instance)
+
+
+### Things to Work On
+> 1. Material design styling of the text: typography, color
+> 2. Purchase/Drawing of background image, injecting directly into ShapeableImageView (cropping/scaling may be required)
+> 3. Shifting of user menu to the bottom, custom the design/utilize the menu<br>
+> <a href="https://www.youtube.com/watch?v=IfgV9WzYOn8">Bottom App Bar</a><br>
+> <a href="https://www.youtube.com/watch?v=tPV8xA7m-iw">Bottom Navigation View</a>
