@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.5.0'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -62,13 +62,13 @@ dependencies {
     def dagger_version = "2.28.1"
 
     // Dagger2 core
-    implementation "com.google.dagger:dagger:$dagger_version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.google.dagger:dagger:2.29.1"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.29.1"
 
     // Dagger Android
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
+    implementation "com.google.dagger:dagger-android:2.29.1"
+    implementation "com.google.dagger:dagger-android-support:2.29.1"
+    annotationProcessor "com.google.dagger:dagger-android-processor:2.29.1"
 
     // Glide
     def glideVersion = "4.11.0"
@@ -76,7 +76,7 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 
     // architecture comp. navigation
-    def nav_version = "2.3.0"
+    def nav_version = "2.3.1"
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation "androidx.navigation:navigation-runtime:$nav_version"
