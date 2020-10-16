@@ -18,7 +18,7 @@ Packages<br>
 
 *data*
 > UserDao
-> * Room database methods for mods to User Model
+> * Room database methods for modifications to User Model
 >
 > UserDatabase
 > * Creates a singleton instance of Room database
