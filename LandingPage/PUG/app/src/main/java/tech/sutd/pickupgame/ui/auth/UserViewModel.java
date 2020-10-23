@@ -25,6 +25,7 @@ import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
 import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
+import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
 
 public class UserViewModel extends ViewModel {
 
@@ -44,9 +45,9 @@ public class UserViewModel extends ViewModel {
         this.reff = reff;
     }
 
-    public void register(Context context, NavController navController, FragmentRegisterBinding binding, User user) {
+    public void register(RegisterFragment fragment, Context context, NavController navController, FragmentRegisterBinding binding, User user) {
         repository.update(user);
-        sessionManager.register(context, navController, reff, user);
+        sessionManager.register(fragment, context, navController, reff, user);
         binding.progress.setVisibility(View.GONE);
     }
 

@@ -19,6 +19,7 @@ import javax.inject.Singleton;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
+import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
 import tech.sutd.pickupgame.ui.main.MainActivity;
 
 @Singleton
@@ -31,7 +32,7 @@ public class SessionManager {
         this.fAuth = fAuth;
     }
 
-    public void register(Context context, NavController navController, DatabaseReference reff, User user) {
+    public void register(RegisterFragment fragment, Context context, NavController navController, DatabaseReference reff, User user) {
         fAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPasswd()).addOnCompleteListener(
                 task -> {
                     if (task.isSuccessful()) {
@@ -42,6 +43,7 @@ public class SessionManager {
                         fAuth.signOut();
                     } else {
                         Toast.makeText(context, "Error! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        fragment.registerFailed();
                     }
                 }
         );
@@ -56,6 +58,7 @@ public class SessionManager {
                         ((AuthActivity) fragment.getActivity()).login();
                     } else {
                         Toast.makeText(context, "Error! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        fragment.loginFailed();
                     }
                 }
         );

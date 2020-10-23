@@ -19,12 +19,15 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class RegisterFragment extends DaggerFragment implements View.OnClickListener {
+
+    private int clickState = ClickState.NONE;
 
     private FragmentRegisterBinding binding;
     private NavController navController;
@@ -62,12 +65,14 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
                 navController.navigate(R.id.action_registerFragment_to_loginFragment);
                 break;
             case R.id.registerCV:
-                registerUser();
+                if (clickState == ClickState.NONE)
+                   registerUser();
                 break;
         }
     }
 
     private void registerUser() {
+        clickState = ClickState.CLICKED;
         binding.progress.setVisibility(View.VISIBLE);
         String name = String.valueOf(binding.name.getText()).trim();
         String email = String.valueOf(binding.userId.getText()).trim();
@@ -76,28 +81,33 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
 
         if (TextUtils.isEmpty(email)) {
             binding.userId.setError("Email is Required");
-            binding.progress.setVisibility(View.GONE);
+            registerFailed();
             return;
         }
 
         if (TextUtils.isEmpty(passwd)) {
             binding.passwd.setError("Password is Required");
-            binding.progress.setVisibility(View.GONE);
+            registerFailed();
             return;
         }
 
         if (passwd.length() < 6 || confirmPasswd.length() < 6) {
             binding.passwd.setError("Password must be longer than 6 Characters");
-            binding.progress.setVisibility(View.GONE);
+            registerFailed();
             return;
         }
 
         if (!confirmPasswd.equals(passwd)) {
             binding.confirmPasswd.setError("Please reconfirm your password, your password is not the same");
-            binding.progress.setVisibility(View.GONE);
+            registerFailed();
             return;
         }
 
-        viewModel.register(getContext(), navController, binding, new User(0, name, email, passwd));
+        viewModel.register(this, getContext(), navController, binding, new User(0, name, email, passwd));
+    }
+
+    public void registerFailed() {
+        clickState = ClickState.NONE;
+        binding.progress.setVisibility(View.GONE);
     }
 }

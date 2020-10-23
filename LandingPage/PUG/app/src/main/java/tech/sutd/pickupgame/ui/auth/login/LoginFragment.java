@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.ui.auth.UserViewModel;
@@ -27,6 +28,8 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 public class LoginFragment extends DaggerFragment implements View.OnClickListener {
 
     // TODO: Create a remember me btn
+
+    private int clickState = ClickState.NONE;
 
     private FragmentLoginBinding binding;
     private NavController navController;
@@ -73,18 +76,21 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
                 navController.navigate(R.id.action_loginFragment_to_registerFragment);
                 break;
             case R.id.login:
-                login();
+                if (clickState == ClickState.NONE)
+                    login();
                 break;
         }
     }
 
     private void login() {
+        clickState = ClickState.CLICKED;
         binding.progress.setVisibility(View.VISIBLE);
         String email = String.valueOf(binding.userId.getText()).trim();
         String passwd = String.valueOf(binding.passwd.getText()).trim();
 
         if (TextUtils.isEmpty(email)) {
             binding.userId.setError("Email is Required");
+            loginFailed();
             return;
         }
 
@@ -99,5 +105,10 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         user.setPasswd(passwd);
 
         viewModel.login(this, getContext(), binding, user);
+    }
+
+    public void loginFailed() {
+        clickState = ClickState.NONE;
+        binding.progress.setVisibility(View.GONE);
     }
 }
