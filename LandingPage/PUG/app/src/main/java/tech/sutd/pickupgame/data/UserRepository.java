@@ -22,78 +22,74 @@ public class UserRepository {
     }
 
     public void insert(User user) {
-        new InsertUserAsyncTask(userDao).execute(user);
+        new InsertUserExecutor(userDao).execute(user);
     }
 
     public void update(User user) {
-        new UpdateUserAsyncTask(userDao).execute(user);
+        new UpdateUserExecutor(userDao).execute(user);
     }
 
     public void delete(User user) {
-        new DeleteUserAsyncTask(userDao).execute(user);
+        new DeleteUserExecutor(userDao).execute(user);
     }
 
     public void deleteAllUsers() {
-        new DeleteAllUsersAsyncTask(userDao).execute();
+        new DeleteAllUsersExecutor(userDao).execute();
     }
 
     public LiveData<List<User>> getAllUsers() {
         return allUsers;
     }
 
-    private static class InsertUserAsyncTask extends AsyncTask<User, Void, Void> {
+    private static class InsertUserExecutor {
         private UserDao userDao;
 
-        private InsertUserAsyncTask(UserDao userDao) {
+        public InsertUserExecutor(UserDao userDao) {
             this.userDao = userDao;
         }
 
-        @Override
-        protected Void doInBackground(User... users) {
-            userDao.insert(users[0]);
-            return null;
+        private void execute(User user) {
+            AppExecutors.getInstance().getDiskIO().execute(() ->
+                    userDao.insert(user));
         }
     }
 
-    private static class UpdateUserAsyncTask extends AsyncTask<User, Void, Void> {
+    private static class UpdateUserExecutor {
         private UserDao userDao;
 
-        private UpdateUserAsyncTask(UserDao userDao) {
+        public UpdateUserExecutor(UserDao userDao) {
             this.userDao = userDao;
         }
 
-        @Override
-        protected Void doInBackground(User... users) {
-            userDao.update(users[0]);
-            return null;
+        private void execute(User user) {
+            AppExecutors.getInstance().getDiskIO().execute(() ->
+                    userDao.update(user));
         }
     }
 
-    private static class DeleteUserAsyncTask extends AsyncTask<User, Void, Void> {
+    private static class DeleteUserExecutor {
         private UserDao userDao;
 
-        private DeleteUserAsyncTask(UserDao userDao) {
+        public DeleteUserExecutor(UserDao userDao) {
             this.userDao = userDao;
         }
 
-        @Override
-        protected Void doInBackground(User... users) {
-            userDao.delete(users[0]);
-            return null;
+        private void execute(User user) {
+            AppExecutors.getInstance().getDiskIO().execute(() ->
+                    userDao.delete(user));
         }
     }
 
-    private static class DeleteAllUsersAsyncTask extends AsyncTask<User, Void, Void> {
+    private static class DeleteAllUsersExecutor {
         private UserDao userDao;
 
-        private DeleteAllUsersAsyncTask(UserDao userDao) {
+        public DeleteAllUsersExecutor(UserDao userDao) {
             this.userDao = userDao;
         }
 
-        @Override
-        protected Void doInBackground(User... users) {
-            userDao.deleteAllUsers();
-            return null;
+        private void execute() {
+            AppExecutors.getInstance().getDiskIO().execute(() ->
+                    userDao.deleteAllUsers());
         }
     }
 }
