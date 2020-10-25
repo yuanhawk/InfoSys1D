@@ -16,15 +16,19 @@ public abstract class UserDatabase extends RoomDatabase {
 
     public static UserDatabase instance;
 
+    private static final Object LOCK = new Object();
+
     public abstract UserDao userDao();
 
     public static synchronized UserDatabase getInstance(Context context) {
         if (instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(),
-                    UserDatabase.class, "user_database")
-                    .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
-                    .build();
+            synchronized (LOCK) {
+                instance = Room.databaseBuilder(context.getApplicationContext(),
+                        UserDatabase.class, "user_database")
+                        .fallbackToDestructiveMigration()
+                        .addCallback(roomCallback)
+                        .build();
+            }
         }
         return instance;
     }

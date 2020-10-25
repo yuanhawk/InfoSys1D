@@ -11,6 +11,8 @@ public class AppExecutors {
     private static AppExecutors instance;
     private final Executor diskIO, mainThread, networkIO;
 
+    private static final Object LOCK = new Object();
+
     public AppExecutors(Executor diskIO, Executor mainThread, Executor networkIO) {
         this.diskIO = diskIO;
         this.mainThread = mainThread;
@@ -19,9 +21,11 @@ public class AppExecutors {
 
     public static AppExecutors getInstance() {
         if (instance == null) {
-            instance = new AppExecutors(Executors.newSingleThreadExecutor(),
-                    Executors.newFixedThreadPool(3),
-                    new MainThreadExecutor());
+            synchronized (LOCK) {
+                instance = new AppExecutors(Executors.newSingleThreadExecutor(),
+                        Executors.newFixedThreadPool(3),
+                        new MainThreadExecutor());
+            }
         }
         return instance;
     }
