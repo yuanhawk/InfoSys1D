@@ -6,7 +6,6 @@ import android.os.Bundle;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
-import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.databinding.ActivityAuthBinding;
 import tech.sutd.pickupgame.ui.main.MainActivity;

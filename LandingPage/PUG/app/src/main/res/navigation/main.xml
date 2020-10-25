@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="tech.sutd.pickupgame.ui.main.main.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main"/>
+    <fragment
+        android:id="@+id/bookingFragment"
+        android:name="tech.sutd.pickupgame.ui.main.BookingFragment"
+        android:label="BookingFragment"
+        tools:layout="@layout/fragment_booking" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="tech.sutd.pickupgame.ui.main.user.UserFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_user" />
+</navigation>
