@@ -3,14 +3,15 @@
 
     <item
         android:id="@+id/mainFragment"
-        android:title="Home"
-        android:icon="@drawable/ic_home"/>
+        android:title=""
+        android:icon="@drawable/ic_home"
+        />
     <item
         android:id="@+id/bookingFragment"
-        android:title="Add"
+        android:title=""
         android:icon="@drawable/ic_add"/>
     <item
         android:id="@+id/userFragment"
-        android:title="User"
+        android:title=""
         android:icon="@drawable/ic_person"/>
 </menu>

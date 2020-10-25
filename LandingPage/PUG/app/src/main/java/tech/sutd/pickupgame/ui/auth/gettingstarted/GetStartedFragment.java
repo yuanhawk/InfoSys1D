@@ -1,4 +1,4 @@
-package tech.sutd.pickupgame.ui.auth;
+package tech.sutd.pickupgame.ui.auth.gettingstarted;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;

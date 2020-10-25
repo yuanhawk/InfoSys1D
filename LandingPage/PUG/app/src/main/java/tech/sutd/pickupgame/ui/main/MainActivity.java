@@ -29,13 +29,6 @@ public class MainActivity extends DaggerAppCompatActivity {
     private NavController navController;
     private AppBarConfiguration configuration;
 
-
-    /**
-     * bottomnavigationview
-     * navcontroller
-     * setupwithnavcontroller
-     */
-
     @Inject
     SessionManager sessionManager;
 

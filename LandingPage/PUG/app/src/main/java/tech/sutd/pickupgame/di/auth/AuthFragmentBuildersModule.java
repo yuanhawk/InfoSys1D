@@ -2,7 +2,7 @@ package tech.sutd.pickupgame.di.auth;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import tech.sutd.pickupgame.ui.auth.GetStartedFragment;
+import tech.sutd.pickupgame.ui.auth.gettingstarted.GetStartedFragment;
 import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
 import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
 
