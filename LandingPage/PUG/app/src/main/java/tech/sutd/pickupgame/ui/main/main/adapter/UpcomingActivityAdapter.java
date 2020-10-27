@@ -22,6 +22,7 @@ public class UpcomingActivityAdapter extends RecyclerView.Adapter<RecyclerView.V
     public static final int LAYOUT_TWO = 1;
 
     private List upcomingActivities = new ArrayList();
+    private RequestManager requestManager;
 
     @NonNull
     @Override
@@ -50,10 +51,14 @@ public class UpcomingActivityAdapter extends RecyclerView.Adapter<RecyclerView.V
                 holder1.binding.location.setText(upcomingActivities.getLocation());
                 holder1.binding.organizer.setText(upcomingActivities.getOrganizer());
 
-                holder1.binding.clockImg.setImageResource(upcomingActivities.getClockImg());
-                holder1.binding.locationImg.setImageResource(upcomingActivities.getLocationImg());
-                holder1.binding.organizerImg.setImageResource(upcomingActivities.getOrganizerImg());
-                holder1.binding.sportImg.setImageResource(upcomingActivities.getSportImg());
+                requestManager.load(upcomingActivities.getClockImg())
+                        .into(holder1.binding.clockImg);
+                requestManager.load(upcomingActivities.getLocationImg())
+                        .into(holder1.binding.locationImg);
+                requestManager.load(upcomingActivities.getOrganizerImg())
+                        .into(holder1.binding.organizerImg);
+                requestManager.load(upcomingActivities.getSportImg())
+                        .into(holder1.binding.sportImg);
                 break;
             case LAYOUT_TWO:
                 Friends newActivities = (Friends) this.upcomingActivities.get(position);
@@ -74,8 +79,9 @@ public class UpcomingActivityAdapter extends RecyclerView.Adapter<RecyclerView.V
         return 1;
     }
 
-    public void setNotifications(List<UpcomingActivity> upcomingActivities) {
+    public void setNotifications(List<UpcomingActivity> upcomingActivities, RequestManager requestManager) {
         this.upcomingActivities = upcomingActivities;
+        this.requestManager = requestManager;
         notifyDataSetChanged();
     }
 

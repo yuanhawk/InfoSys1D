@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.RequestManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import tech.sutd.pickupgame.models.ui.NewActivity;
 public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.ViewHolder> {
 
     private List<NewActivity> newActivities = new ArrayList<>();
+    private RequestManager requestManager;
 
     @NonNull
     @Override
@@ -38,6 +41,15 @@ public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.
         holder.binding.locationImg.setImageResource(newActivity.getLocationImg());
         holder.binding.organizerImg.setImageResource(newActivity.getOrganizerImg());
         holder.binding.sportImg.setImageResource(newActivity.getSportImg());
+
+        requestManager.load(newActivity.getClockImg())
+                .into(holder.binding.clockImg);
+        requestManager.load(newActivity.getLocationImg())
+                .into(holder.binding.locationImg);
+        requestManager.load(newActivity.getOrganizerImg())
+                .into(holder.binding.organizerImg);
+        requestManager.load(newActivity.getSportImg())
+                .into(holder.binding.sportImg);
     }
 
     @Override
@@ -45,8 +57,9 @@ public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.
         return newActivities.size();
     }
 
-    public void setNotifications(List<NewActivity> newActivities) {
+    public void setNotifications(List<NewActivity> newActivities, RequestManager requestManager) {
         this.newActivities = newActivities;
+        this.requestManager = requestManager;
         notifyDataSetChanged();
     }
 

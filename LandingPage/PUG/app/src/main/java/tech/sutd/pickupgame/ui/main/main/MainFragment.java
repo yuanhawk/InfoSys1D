@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestManager;
+
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
@@ -40,6 +42,9 @@ public class MainFragment extends DaggerFragment {
     @Inject
     ViewModelProviderFactory providerFactory;
 
+    @Inject
+    RequestManager requestManager;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,10 +71,10 @@ public class MainFragment extends DaggerFragment {
 
     private void subscribeObserver() {
         upcomingActViewModel.getUpcomingActivities().observe(getViewLifecycleOwner(), upcomingActivities ->
-            adapter.setNotifications(upcomingActivities));
+            adapter.setNotifications(upcomingActivities, requestManager));
 
         newActViewModel.getNewActivities().observe(getViewLifecycleOwner(), newActivities ->
-            newAdapter.setNotifications(newActivities));
+            newAdapter.setNotifications(newActivities, requestManager));
     }
 
     private void initViews() {
