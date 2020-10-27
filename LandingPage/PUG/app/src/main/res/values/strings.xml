@@ -15,4 +15,8 @@
     <string name="register">Register</string>
     <string name="name">Name</string>
     <string name="logout">logout</string>
+    <string name="upcoming_activities">UPCOMING ACTIVITIES</string>
+    <string name="desc_upcoming_activities">What you have to look forward to</string>
+    <string name="new_activities">NEW ACTIVITIES</string>
+    <string name="desc_new_activities">You might be interested to join these</string>
 </resources>

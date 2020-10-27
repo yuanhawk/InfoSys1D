@@ -29,8 +29,6 @@ import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
 
 public class UserViewModel extends ViewModel {
 
-    // TODO: Rmb to implement Visitor Pattern in a recycleradapter
-
     private SessionManager sessionManager;
     private UserRepository repository;
     private DatabaseReference reff;

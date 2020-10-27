@@ -16,7 +16,7 @@ import tech.sutd.pickupgame.models.User;
 @Dao
 public interface UserDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(User user);
 
     @Update
