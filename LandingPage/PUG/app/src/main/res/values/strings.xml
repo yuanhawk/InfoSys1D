@@ -15,8 +15,13 @@
     <string name="register">Register</string>
     <string name="name">Name</string>
     <string name="logout">logout</string>
-    <string name="upcoming_activities">UPCOMING ACTIVITIES</string>
+    <string name="upcoming_activities">UPCOMING\nACTIVITIES</string>
     <string name="desc_upcoming_activities">What you have to look forward to</string>
-    <string name="new_activities">NEW ACTIVITIES</string>
+    <string name="new_activities">NEW\nACTIVITIES</string>
     <string name="desc_new_activities">You might be interested to join these</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="your_activities">YOUR ACTIVITIES</string>
+    <string name="events_you_organized">Events you organized</string>
+    <string name="past_activities">PAST ACTIVITIES</string>
 </resources>
