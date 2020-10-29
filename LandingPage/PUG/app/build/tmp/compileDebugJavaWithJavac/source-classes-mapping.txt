@@ -1,0 +1,111 @@
+tech/sutd/pickupgame/data/ui/upcoming_activity/UpcomingDatabase.java
+ tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingDatabase
+tech/sutd/pickupgame/databinding/FragmentBookingBinding.java
+ tech.sutd.pickupgame.databinding.FragmentBookingBinding
+tech/sutd/pickupgame/data/ui/new_activity/NewRepository.java
+ tech.sutd.pickupgame.data.ui.new_activity.NewRepository
+ tech.sutd.pickupgame.data.ui.new_activity.NewRepository$DeleteAllNewActivitiesExecutor
+ tech.sutd.pickupgame.data.ui.new_activity.NewRepository$DeleteNewActivityExecutor
+ tech.sutd.pickupgame.data.ui.new_activity.NewRepository$InsertNewActivityExecutor
+ tech.sutd.pickupgame.data.ui.new_activity.NewRepository$UpdateNewActivityExecutor
+tech/sutd/pickupgame/ui/auth/UserViewModel.java
+ tech.sutd.pickupgame.ui.auth.UserViewModel
+tech/sutd/pickupgame/data/ui/new_activity/NewDatabase.java
+ tech.sutd.pickupgame.data.ui.new_activity.NewDatabase
+tech/sutd/pickupgame/data/AppExecutors.java
+ tech.sutd.pickupgame.data.AppExecutors
+ tech.sutd.pickupgame.data.AppExecutors$1
+ tech.sutd.pickupgame.data.AppExecutors$MainThreadExecutor
+tech/sutd/pickupgame/ui/main/main/viewmodel/NewActViewModel.java
+ tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel
+tech/sutd/pickupgame/databinding/ActivityMainBinding.java
+ tech.sutd.pickupgame.databinding.ActivityMainBinding
+tech/sutd/pickupgame/ui/main/main/MainFragment.java
+ tech.sutd.pickupgame.ui.main.main.MainFragment
+tech/sutd/pickupgame/ui/auth/gettingstarted/GetStartedFragment.java
+ tech.sutd.pickupgame.ui.auth.gettingstarted.GetStartedFragment
+tech/sutd/pickupgame/databinding/FragmentMainBinding.java
+ tech.sutd.pickupgame.databinding.FragmentMainBinding
+tech/sutd/pickupgame/databinding/FragmentUserBinding.java
+ tech.sutd.pickupgame.databinding.FragmentUserBinding
+tech/sutd/pickupgame/ui/auth/register/RegisterFragment.java
+ tech.sutd.pickupgame.ui.auth.register.RegisterFragment
+tech/sutd/pickupgame/models/ui/NewActivity.java
+ tech.sutd.pickupgame.models.ui.NewActivity
+tech/sutd/pickupgame/databinding/FragmentRegisterBinding.java
+ tech.sutd.pickupgame.databinding.FragmentRegisterBinding
+tech/sutd/pickupgame/databinding/FragmentGetStartedBinding.java
+ tech.sutd.pickupgame.databinding.FragmentGetStartedBinding
+tech/sutd/pickupgame/models/User.java
+ tech.sutd.pickupgame.models.User
+tech/sutd/pickupgame/ui/main/MainActivity.java
+ tech.sutd.pickupgame.ui.main.MainActivity
+tech/sutd/pickupgame/ui/main/main/adapter/NewActivityAdapter.java
+ tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter
+ tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter$ViewHolder
+tech/sutd/pickupgame/data/ui/upcoming_activity/UpcomingRepository.java
+ tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingRepository
+ tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingRepository$DeleteAllUpcomingActivitiesExecutor
+ tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingRepository$DeleteUpcomingActivityExecutor
+ tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingRepository$InsertUpcomingActivityExecutor
+ tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingRepository$UpdateUpcomingActivityExecutor
+tech/sutd/pickupgame/data/ui/new_activity/NewDao.java
+ tech.sutd.pickupgame.data.ui.new_activity.NewDao
+tech/sutd/pickupgame/data/ui/upcoming_activity/UpcomingDao.java
+ tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingDao
+tech/sutd/pickupgame/di/auth/AuthFragmentBuildersModule.java
+ tech.sutd.pickupgame.di.auth.AuthFragmentBuildersModule
+tech/sutd/pickupgame/ui/main/main/viewmodel/UpcomingActViewModel.java
+ tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel
+tech/sutd/pickupgame/data/UserDao.java
+ tech.sutd.pickupgame.data.UserDao
+tech/sutd/pickupgame/di/auth/AuthScope.java
+ tech.sutd.pickupgame.di.auth.AuthScope
+tech/sutd/pickupgame/data/UserDatabase.java
+ tech.sutd.pickupgame.data.UserDatabase
+ tech.sutd.pickupgame.data.UserDatabase$1
+ tech.sutd.pickupgame.data.UserDatabase$PopulateDbExecutor
+tech/sutd/pickupgame/di/AppComponent.java
+ tech.sutd.pickupgame.di.AppComponent
+ tech.sutd.pickupgame.di.AppComponent$Builder
+tech/sutd/pickupgame/ui/auth/AuthActivity.java
+ tech.sutd.pickupgame.ui.auth.AuthActivity
+tech/sutd/pickupgame/databinding/ActivityAuthBinding.java
+ tech.sutd.pickupgame.databinding.ActivityAuthBinding
+tech/sutd/pickupgame/ui/main/user/UserFragment.java
+ tech.sutd.pickupgame.ui.main.user.UserFragment
+tech/sutd/pickupgame/ui/main/BookingFragment.java
+ tech.sutd.pickupgame.ui.main.BookingFragment
+tech/sutd/pickupgame/di/main/MainFragmentBuildersModule.java
+ tech.sutd.pickupgame.di.main.MainFragmentBuildersModule
+tech/sutd/pickupgame/di/auth/AuthViewModelModule.java
+ tech.sutd.pickupgame.di.auth.AuthViewModelModule
+tech/sutd/pickupgame/viewmodels/ViewModelProviderFactory.java
+ tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory
+tech/sutd/pickupgame/di/AppModule.java
+ tech.sutd.pickupgame.di.AppModule
+tech/sutd/pickupgame/constant/ClickState.java
+ tech.sutd.pickupgame.constant.ClickState
+ tech.sutd.pickupgame.constant.ClickState$State
+tech/sutd/pickupgame/databinding/FragmentLoginBinding.java
+ tech.sutd.pickupgame.databinding.FragmentLoginBinding
+tech/sutd/pickupgame/di/ActivityBuildersModule.java
+ tech.sutd.pickupgame.di.ActivityBuildersModule
+tech/sutd/pickupgame/ui/auth/login/LoginFragment.java
+ tech.sutd.pickupgame.ui.auth.login.LoginFragment
+tech/sutd/pickupgame/data/UserRepository.java
+ tech.sutd.pickupgame.data.UserRepository
+ tech.sutd.pickupgame.data.UserRepository$DeleteAllUsersExecutor
+ tech.sutd.pickupgame.data.UserRepository$DeleteUserExecutor
+ tech.sutd.pickupgame.data.UserRepository$InsertUserExecutor
+ tech.sutd.pickupgame.data.UserRepository$UpdateUserExecutor
+tech/sutd/pickupgame/SessionManager.java
+ tech.sutd.pickupgame.SessionManager
+tech/sutd/pickupgame/models/ui/UpcomingActivity.java
+ tech.sutd.pickupgame.models.ui.UpcomingActivity
+tech/sutd/pickupgame/BaseApplication.java
+ tech.sutd.pickupgame.BaseApplication
+tech/sutd/pickupgame/ui/main/main/adapter/UpcomingActivityAdapter.java
+ tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter
+ tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter$FriendsViewHolder
+ tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter$UpcomingActViewHolder

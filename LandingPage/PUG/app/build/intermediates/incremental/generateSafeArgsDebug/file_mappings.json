@@ -1,0 +1,1 @@
+[{"navFile":"src\\main\\res\\navigation\\auth.xml","javaFiles":["tech.sutd.pickupgame.ui.auth.gettingstarted.GetStartedFragmentDirections","tech.sutd.pickupgame.ui.auth.login.LoginFragmentDirections","tech.sutd.pickupgame.ui.auth.register.RegisterFragmentDirections"]},{"navFile":"src\\main\\res\\navigation\\main.xml","javaFiles":[]}]
