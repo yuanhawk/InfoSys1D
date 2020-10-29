@@ -23,9 +23,12 @@ import tech.sutd.pickupgame.databinding.FragmentUpcomingActBinding;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
+import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class UpcomingActFragment extends DaggerFragment {
+
+    private CustomSnapHelper helper = new CustomSnapHelper();
 
     private FragmentUpcomingActBinding binding;
     private NavController navController;
@@ -82,5 +85,13 @@ public class UpcomingActFragment extends DaggerFragment {
         binding.upcomingRc.setAdapter(upcomingAdapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
+
+        helper.attachToRecyclerView(binding.upcomingRc);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding.upcomingRc.setOnFlingListener(null);
     }
 }

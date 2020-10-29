@@ -27,8 +27,13 @@
                 android:text="@string/upcoming_activities"
                 android:textColor="@color/colorBlue"
                 android:textSize="30sp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="30sp"
+                android:autoSizeMaxTextSize="40sp"
+                android:autoSizeStepGranularity="2sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/upcoming_activities" />
+                app:layout_constraintTop_toTopOf="@+id/upcoming_activities"
+                tools:targetApi="o" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/upcoming_act"
@@ -49,7 +54,12 @@
             android:text="@string/desc_upcoming_activities"
             android:textColor="@color/colorBlue"
             android:textSize="13sp"
-            app:fontFamily="@font/ralewaysemibold" />
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeStepGranularity="2sp"
+            app:fontFamily="@font/ralewaysemibold"
+            tools:targetApi="o" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/upcoming_rc"
@@ -74,8 +84,13 @@
                 android:textColor="@color/colorRed"
                 android:textSize="30sp"
                 app:fontFamily="@font/ralewayextrabold"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="30sp"
+                android:autoSizeMaxTextSize="40sp"
+                android:autoSizeStepGranularity="2sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/new_activities" />
+                app:layout_constraintTop_toTopOf="@+id/new_activities"
+                tools:targetApi="o" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/shapeableImageView2"
@@ -96,7 +111,12 @@
             android:text="@string/desc_new_activities"
             android:textColor="@color/colorRed"
             android:textSize="13sp"
-            app:fontFamily="@font/ralewaysemibold" />
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeStepGranularity="2sp"
+            app:fontFamily="@font/ralewaysemibold"
+            tools:targetApi="o" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/new_rc"
