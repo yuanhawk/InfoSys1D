@@ -4,13 +4,13 @@
     <string name="desc">Working life is a mess</string>
     <string name="cool_stuff">But with PUG it has never been easier to get active</string>
     <string name="get_started">Get Started</string>
-    
+
     <string name="sign_in">Sign In</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="login">LOGIN</string>
     <string name="sign_in_with_google">Sign In With Google</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="sign_up">SIGN UP</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
     <string name="name">Name</string>

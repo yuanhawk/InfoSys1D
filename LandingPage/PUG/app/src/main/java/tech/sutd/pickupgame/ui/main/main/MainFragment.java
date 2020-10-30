@@ -30,8 +30,6 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class MainFragment extends DaggerFragment implements View.OnClickListener {
 
-    // TODO: Put 2 Upcoming & 2 New Activities ONLY not infinite scroll list
-
     private FragmentMainBinding binding;
     private NavController navController;
 
