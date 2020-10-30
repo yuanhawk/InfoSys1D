@@ -81,14 +81,14 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
 
     private void initViews() {
 
-        upcomingActViewModel.insert(new UpcomingActivity(0, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(1, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(2, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.cycling));
+        upcomingActViewModel.insert(new UpcomingActivity(0, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        upcomingActViewModel.insert(new UpcomingActivity(1, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        upcomingActViewModel.insert(new UpcomingActivity(2, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
 
         adapter = new UpcomingActivityAdapter();
         binding.upcomingRc.setAdapter(adapter);
@@ -96,14 +96,14 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
         binding.upcomingRc.setHasFixedSize(true);
 
 
-        newActViewModel.insert(new NewActivity(0, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.badminton));
-        newActViewModel.insert(new NewActivity(1, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.badminton));
-        newActViewModel.insert(new NewActivity(2, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.badminton));
-        newActViewModel.insert(new NewActivity(3, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.badminton));
+        newActViewModel.insert(new NewActivity(0, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
+        newActViewModel.insert(new NewActivity(1, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
+        newActViewModel.insert(new NewActivity(2, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
+        newActViewModel.insert(new NewActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
 
 
         newAdapter = new NewActivityAdapter();

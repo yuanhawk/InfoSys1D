@@ -52,7 +52,7 @@ public class AppModule {
     @Singleton
     @Provides
     static Drawable provideLoginDrawable(Application application) {
-        return ContextCompat.getDrawable(application, R.drawable.pug);
+        return ContextCompat.getDrawable(application, R.drawable.ic_pug);
     }
 
     @Singleton

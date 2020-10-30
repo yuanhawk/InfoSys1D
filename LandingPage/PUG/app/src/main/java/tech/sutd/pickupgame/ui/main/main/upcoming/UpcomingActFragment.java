@@ -72,14 +72,14 @@ public class UpcomingActFragment extends DaggerFragment {
 
     private void initViews() {
 
-        upcomingActViewModel.insert(new UpcomingActivity(0, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(1, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(2, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.clock,"14 Sep, 7pm - 10pm", R.drawable.location,
-                "S123456, East Coast Park", R.drawable.profile, "John Doe", R.drawable.cycling));
+        upcomingActViewModel.insert(new UpcomingActivity(0, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        upcomingActViewModel.insert(new UpcomingActivity(1, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        upcomingActViewModel.insert(new UpcomingActivity(2, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
 
         upcomingAdapter = new UpcomingActivityAdapter();
         binding.upcomingRc.setAdapter(upcomingAdapter);
