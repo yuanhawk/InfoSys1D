@@ -12,7 +12,7 @@ import com.bumptech.glide.RequestManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.sutd.pickupgame.databinding.ItemlistNewActivitiesBinding;
+import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 
 public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.ViewHolder> {
@@ -20,17 +20,24 @@ public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.
     private List<NewActivity> newActivities = new ArrayList<>();
     private RequestManager requestManager;
 
+    private int numOfViews = 0;
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ItemlistNewActivitiesBinding binding = ItemlistNewActivitiesBinding.inflate(inflater, parent, false);
+        ItemlistActivitiesBinding binding = ItemlistActivitiesBinding.inflate(inflater, parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         NewActivity newActivity = newActivities.get(position);
+
+        if (position > numOfViews) {
+            holder.binding.cardView.setVisibility(View.GONE);
+            return;
+        }
 
         holder.binding.sport.setText(newActivity.getSport());
         holder.binding.time.setText(newActivity.getClock());
@@ -50,6 +57,18 @@ public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.
                 .into(holder.binding.organizerImg);
         requestManager.load(newActivity.getSportImg())
                 .into(holder.binding.sportImg);
+
+        // add margins to left, right & bottom if lesser numOfViews
+        if (position < numOfViews) {
+            RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) holder.binding.layout.getLayoutParams();
+            lp.setMargins(20, 0, 20, 20);
+        }
+
+        // add margins to left & right if numOfViews reached
+        if (position == numOfViews) {
+            RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) holder.binding.layout.getLayoutParams();
+            lp.setMargins(20, 0, 20, 0);
+        }
     }
 
     @Override
@@ -57,17 +76,18 @@ public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.
         return newActivities.size();
     }
 
-    public void setNotifications(List<NewActivity> newActivities, RequestManager requestManager) {
+    public void setNotifications(List<NewActivity> newActivities, RequestManager requestManager, int numOfViews) {
         this.newActivities = newActivities;
         this.requestManager = requestManager;
+        this.numOfViews = numOfViews;
         notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemlistNewActivitiesBinding binding;
+        private ItemlistActivitiesBinding binding;
 
-        public ViewHolder(@NonNull ItemlistNewActivitiesBinding binding) {
+        public ViewHolder(@NonNull ItemlistActivitiesBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

@@ -1,10 +1,9 @@
-package tech.sutd.pickupgame.ui.main;
+package tech.sutd.pickupgame.ui.main.booking;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import dagger.android.support.DaggerFragment;
-import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentBookingBinding;
 
 public class BookingFragment extends DaggerFragment {

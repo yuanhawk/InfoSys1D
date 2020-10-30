@@ -33,7 +33,7 @@ public class SessionManager {
                 task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(context, "User Created", Toast.LENGTH_SHORT).show();
-                        navController.navigate(R.id.action_registerFragment_to_loginFragment);
+                        navController.popBackStack(R.id.loginFragment, false);
 
                         reff.child("users").child(user.getUsername()).setValue(user);
                         fAuth.signOut();

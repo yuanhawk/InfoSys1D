@@ -6,33 +6,70 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.login.LoginFragment">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/background"
+        android:layout_width="wrap_content"
+        android:layout_height="170dp"
+        android:background="@drawable/ic_login_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/signIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
-        android:layout_marginTop="48dp"
-        android:text="@string/sign_in"
+        android:layout_marginTop="0dp"
+        android:fontFamily="@font/ralewayextrabold"
+        android:text="@string/login"
+        android:textColor="@color/colorRed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/background" />
+
+    <View
+        android:id="@+id/myRectangleView1"
+        android:layout_width="100dp"
+        android:layout_height="5dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rectangle"
+        android:backgroundTint="@color/colorBlue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signIn" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="102dp"
+        android:fontFamily="@font/ralewayextrabold"
         android:text="@string/sign_up"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@color/colorRedAccent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/background" />
+
+    <View
+        android:id="@+id/myRectangleView2"
+        android:layout_width="100dp"
+        android:layout_height="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="76dp"
+        android:background="@drawable/rectangle"
+        android:backgroundTint="@color/colorBlueAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/userId"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
+        android:backgroundTint="@color/colorBlue"
+        android:fontFamily="@font/raleway"
         android:hint="@string/email"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +80,8 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:backgroundTint="@color/colorBlue"
+        android:fontFamily="@font/raleway"
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,10 +91,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/loginCV"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        app:cardBackgroundColor="@android:color/holo_red_dark"
+        app:cardBackgroundColor="@color/colorRed"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -64,13 +103,15 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/login"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
-            android:text="@string/login"
+            android:fontFamily="@font/ralewayextrabold"
+            android:text="@string/sign_in"
+            android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
     </androidx.cardview.widget.CardView>

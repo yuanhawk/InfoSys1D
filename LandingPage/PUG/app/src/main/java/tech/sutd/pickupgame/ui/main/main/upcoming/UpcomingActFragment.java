@@ -1,4 +1,4 @@
-package tech.sutd.pickupgame.ui.main.main;
+package tech.sutd.pickupgame.ui.main.main.upcoming;
 
 import android.os.Bundle;
 
@@ -19,25 +19,23 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
-import tech.sutd.pickupgame.databinding.FragmentMainBinding;
-import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.databinding.FragmentUpcomingActBinding;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
-import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
-import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
+import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class MainFragment extends DaggerFragment implements View.OnClickListener {
+public class UpcomingActFragment extends DaggerFragment {
 
-    private FragmentMainBinding binding;
+    private CustomSnapHelper helper = new CustomSnapHelper();
+
+    private FragmentUpcomingActBinding binding;
     private NavController navController;
 
     private UpcomingActViewModel upcomingActViewModel;
-    private NewActViewModel newActViewModel;
 
-    private NewActivityAdapter newAdapter;
-    private UpcomingActivityAdapter adapter;
+    private UpcomingActivityAdapter upcomingAdapter;
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -48,11 +46,9 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentMainBinding.inflate(inflater, container, false);
+        binding = FragmentUpcomingActBinding.inflate(inflater, container, false);
 
         upcomingActViewModel = new ViewModelProvider(this, providerFactory).get(UpcomingActViewModel.class);
-        newActViewModel = new ViewModelProvider(this, providerFactory).get(NewActViewModel.class);
-
         return binding.getRoot();
     }
 
@@ -71,10 +67,7 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
 
     private void subscribeObserver() {
         upcomingActViewModel.getUpcomingActivities().observe(getViewLifecycleOwner(), upcomingActivities ->
-            adapter.setNotifications(upcomingActivities, requestManager, 1));
-
-        newActViewModel.getNewActivities().observe(getViewLifecycleOwner(), newActivities ->
-            newAdapter.setNotifications(newActivities, requestManager, 1));
+                upcomingAdapter.setNotifications(upcomingActivities, requestManager, 9999));
     }
 
     private void initViews() {
@@ -88,32 +81,17 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
         upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
 
-        adapter = new UpcomingActivityAdapter();
-        binding.upcomingRc.setAdapter(adapter);
+        upcomingAdapter = new UpcomingActivityAdapter();
+        binding.upcomingRc.setAdapter(upcomingAdapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
 
-
-        newActViewModel.insert(new NewActivity(0, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
-                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
-        newActViewModel.insert(new NewActivity(1, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
-                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
-        newActViewModel.insert(new NewActivity(2, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
-                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
-        newActViewModel.insert(new NewActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
-                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
-
-
-        newAdapter = new NewActivityAdapter();
-        binding.newRc.setAdapter(newAdapter);
-        binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.newRc.setHasFixedSize(true);
-
-        binding.upcomingAct.setOnClickListener(this);
+        helper.attachToRecyclerView(binding.upcomingRc);
     }
 
     @Override
-    public void onClick(View v) {
-        navController.navigate(R.id.action_mainFragment_to_upcomingActFragment);
+    public void onDestroy() {
+        super.onDestroy();
+        binding.upcomingRc.setOnFlingListener(null);
     }
 }

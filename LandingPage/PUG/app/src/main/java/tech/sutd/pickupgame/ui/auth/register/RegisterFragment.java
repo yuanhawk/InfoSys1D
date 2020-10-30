@@ -62,7 +62,7 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.signIn:
-                navController.navigate(R.id.action_registerFragment_to_loginFragment);
+                navController.popBackStack(R.id.loginFragment, false);
                 break;
             case R.id.registerCV:
                 if (clickState == ClickState.NONE)
