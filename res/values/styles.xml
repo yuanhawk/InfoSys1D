@@ -1,0 +1,63 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="fade_header">
+        <item name="android:fontFamily">@font/ralewayextrabold</item>
+        <item name="android:textColor">@color/colorRedAccent</item>
+    </style>
+
+    <style name="header">
+        <item name="android:fontFamily">@font/ralewayextrabold</item>
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
+    <style name="fade_line">
+        <item name="android:background">@drawable/rectangle</item>
+        <item name="android:backgroundTint">@color/colorBlueAccent</item>
+    </style>
+
+    <style name="line">
+        <item name="android:background">@drawable/rectangle</item>
+        <item name="android:backgroundTint">@color/colorBlue</item>
+    </style>
+
+    <style name="user_text_input">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:fontFamily">@font/raleway</item>
+        <item name="android:backgroundTint">@color/colorBlue</item>
+    </style>
+
+    <style name="word_button_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:fontFamily">@font/ralewayextrabold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="button_cardview">
+        <item name="android:layout_width">170dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">28dp</item>
+    </style>
+
+    <style name="progressbar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+</resources>
