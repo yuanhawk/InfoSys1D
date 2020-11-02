@@ -1,15 +1,11 @@
 <resources>
     <string name="app_name">PUG</string>
     <string name="pick_up_games">ick</string>
-    <string name="up_games">p</string>
-    <string name="games">ames</string>
     <string name="desc">Working life is a mess</string>
     <string name="cool_stuff">But with PUG it has never been easier to get active</string>
-    <string name="get_started">Get Started</string>
-    <string name="P">P</string>
-    <string name="U">U</string>
-    <string name="G">G</string>
-    <string name="sign_in">Sign In</string>
+    <string name="get_started">GET STARTED</string>
+
+    <string name="sign_in">SIGN IN</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
@@ -30,4 +26,9 @@
     <string name="age">Age</string>
     <string name="username">Username</string>
     <string name="username_or_email">Username or email</string>
+    <string name="up_games">p</string>
+    <string name="games">ames</string>
+    <string name="u">U</string>
+    <string name="p">P</string>
+    <string name="g">G</string>
 </resources>

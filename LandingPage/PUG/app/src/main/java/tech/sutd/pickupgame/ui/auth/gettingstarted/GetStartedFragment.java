@@ -26,24 +26,12 @@ public class GetStartedFragment extends DaggerFragment implements View.OnClickLi
     private FragmentGetStartedBinding binding;
     private NavController navController;
 
-    @Inject
-    Drawable logo;
-
-    @Inject
-    RequestManager requestManager;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentGetStartedBinding.inflate(inflater, container, false);
-        setLogo();
 
         return binding.getRoot();
-    }
-
-    private void setLogo() {
-        requestManager.load(logo)
-                .into(binding.loginImg);
     }
 
     @Override

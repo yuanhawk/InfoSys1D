@@ -20,10 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
-        android:layout_marginTop="0dp"
-        android:fontFamily="@font/ralewayextrabold"
         android:text="@string/login"
-        android:textColor="@color/colorRed"
+        style="@style/header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/background" />
 
@@ -33,8 +31,7 @@
         android:layout_height="5dp"
         android:layout_marginStart="76dp"
         android:layout_marginTop="4dp"
-        android:background="@drawable/rectangle"
-        android:backgroundTint="@color/colorBlue"
+        style="@style/line"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signIn" />
 
@@ -44,9 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="102dp"
-        android:fontFamily="@font/ralewayextrabold"
         android:text="@string/sign_up"
-        android:textColor="@color/colorRedAccent"
+        style="@style/fade_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/background" />
 
@@ -56,71 +52,50 @@
         android:layout_height="5dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="76dp"
-        android:background="@drawable/rectangle"
-        android:backgroundTint="@color/colorBlueAccent"
+        style="@style/fade_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/userId"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:backgroundTint="@color/colorBlue"
-        android:fontFamily="@font/raleway"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
+        style="@style/user_text_input"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signIn" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/passwd"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="@color/colorBlue"
-        android:fontFamily="@font/raleway"
         android:hint="@string/password"
         android:inputType="textPassword"
+        style="@style/user_text_input"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userId" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/loginCV"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        style="@style/button_cardview"
         app:cardBackgroundColor="@color/colorRed"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwd">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/ralewayextrabold"
             android:text="@string/sign_in"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            style="@style/word_button_style" />
     </androidx.cardview.widget.CardView>
 
     <ProgressBar
         android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+        style="@style/progressbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

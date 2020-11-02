@@ -22,8 +22,7 @@
         android:layout_marginStart="108dp"
         android:layout_marginTop="0dp"
         android:text="@string/login"
-        android:fontFamily="@font/ralewayextrabold"
-        android:textColor="@color/colorRedAccent"
+        style="@style/fade_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/background" />
 
@@ -33,8 +32,7 @@
         android:layout_height="5dp"
         android:layout_marginStart="76dp"
         android:layout_marginTop="4dp"
-        android:background="@drawable/rectangle"
-        android:backgroundTint="@color/colorBlueAccent"
+        style="@style/fade_line"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signIn" />
 
@@ -45,8 +43,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="102dp"
         android:text="@string/sign_up"
-        android:fontFamily="@font/ralewayextrabold"
-        android:textColor="@color/colorRed"
+        style="@style/header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/background" />
 
@@ -56,72 +53,54 @@
         android:layout_height="5dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="76dp"
-        android:background="@drawable/rectangle"
-        android:backgroundTint="@color/colorBlue"
+        style="@style/line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/name"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:backgroundTint="@color/colorBlue"
         android:hint="@string/username"
         android:inputType="textPersonName"
-        android:fontFamily="@font/raleway"
+        style="@style/user_text_input"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signIn" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/userId"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="@color/colorBlue"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:fontFamily="@font/raleway"
+        style="@style/user_text_input"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/passwd"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/colorBlue"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:fontFamily="@font/raleway"
+        style="@style/user_text_input"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userId" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/confirmPasswd"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:backgroundTint="@color/colorBlue"
         android:hint="@string/confirm_password"
         android:inputType="textPassword"
-        android:fontFamily="@font/raleway"
+        style="@style/user_text_input"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userId" />
+        app:layout_constraintTop_toBottomOf="@+id/passwd" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/registerCV"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        style="@style/button_cardview"
         app:cardBackgroundColor="@color/colorRed"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -131,24 +110,13 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
             android:text="@string/sign_up"
-            android:textAlignment="center"
-            android:fontFamily="@font/ralewayextrabold"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            style="@style/word_button_style" />
     </androidx.cardview.widget.CardView>
 
     <ProgressBar
         android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+        style="@style/progressbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

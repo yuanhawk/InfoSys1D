@@ -43,16 +43,14 @@ public class UserViewModel extends ViewModel {
         this.reff = reff;
     }
 
-    public void register(RegisterFragment fragment, Context context, NavController navController, FragmentRegisterBinding binding, User user) {
+    public void register(RegisterFragment fragment, Context context, NavController navController, User user) {
         repository.update(user);
         sessionManager.register(fragment, context, navController, reff, user);
-        binding.progress.setVisibility(View.GONE);
     }
 
-    public void login(LoginFragment fragment, Context context, FragmentLoginBinding binding, User user) {
+    public void login(LoginFragment fragment, Context context, User user) {
         repository.update(user);
         sessionManager.login(fragment, context, user);
-        binding.progress.setVisibility(View.GONE);
     }
 
     // Remember to reset the user details to -1
