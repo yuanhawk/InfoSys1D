@@ -31,4 +31,11 @@
     <string name="u">U</string>
     <string name="p">P</string>
     <string name="g">G</string>
+    <string name="organise_activity">Organise Activity&#8230;</string>
+    <string name="select_sport">Select Sport&#8230;</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
+    <string name="participants">Participants</string>
+    <string name="additional_notes">Additional Notes</string>
+    <string name="confirm">Confirm</string>
 </resources>

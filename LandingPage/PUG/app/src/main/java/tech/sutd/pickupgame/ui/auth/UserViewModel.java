@@ -21,8 +21,6 @@ import javax.inject.Inject;
 
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.data.UserRepository;
-import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
-import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
 import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
