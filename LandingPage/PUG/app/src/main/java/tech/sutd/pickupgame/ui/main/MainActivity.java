@@ -12,6 +12,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -36,11 +38,11 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     private static final String TAG = "booking";
 
     private ActivityMainBinding binding;
-
-    private BottomNavigationView bottomNavView;
     private NavController navController;
 
-    private Fragment fragment;
+    private FragmentManager fragmentManager;
+    private Menu menu;
+    private Handler handler = new Handler(Looper.getMainLooper());
 //    private AppBarConfiguration configuration;
 
     @Inject
@@ -50,7 +52,6 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        bottomNavView = binding.bottomNavView;
 
         setContentView(binding.getRoot());
     }
@@ -58,6 +59,7 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     @Override
     protected void onResume() {
         super.onResume();
+        fragmentManager = getSupportFragmentManager();
         init();
     }
 
@@ -67,13 +69,8 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
 //                .build();
 //        NavigationUI.setupActionBarWithNavController(this, navController);
 //        NavigationUI.setupWithNavController(bottomNavView, navController);
-        bottomNavView.setOnNavigationItemSelectedListener(this);
-
-        if (clickState == ClickState.CLICKED) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.nav_host_fragment, new BookingFragment(), TAG)
-                    .commit();
-        }
+        binding.bottomNavView.setOnNavigationItemSelectedListener(this);
+        menu = binding.bottomNavView.getMenu();
     }
 
     @Override
@@ -82,46 +79,57 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
             case R.id.mainFragment:
                 checkBookingFragment();
                 navController.popBackStack(R.id.mainFragment, false);
-                clickState = ClickState.NONE;
                 break;
             case R.id.bookingFragment:
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragment = fragmentManager.findFragmentByTag(TAG);
+                Fragment fragment = fragmentManager.findFragmentByTag(TAG);
                 if (fragment == null && clickState == ClickState.NONE) {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.add(R.id.nav_host_fragment, new BookingFragment(), TAG)
                             .commit();
                     clickState = ClickState.CLICKED;
+
+                    setIcon(R.drawable.ic_remove);
                 } else {
                     fragmentManager.beginTransaction().remove(fragment).commit();
                     clickState = ClickState.NONE;
+
+                    setIcon(R.drawable.ic_add);
                 }
                 break;
             case R.id.userFragment:
                 checkBookingFragment();
                 navController.popBackStack(R.id.userFragment, true);
                 navController.navigate(R.id.userFragment);
-                clickState = ClickState.NONE;
                 break;
         }
         return true;
     }
 
+    private void setIcon(int drawable) {
+        handler.post(() -> {
+            runOnUiThread(() ->
+                    menu.findItem(R.id.bookingFragment).setIcon(drawable));
+            Thread.currentThread().interrupt();
+        });
+    }
+
     public void checkBookingFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(TAG);
         if (fragment != null) {
             fragmentManager.beginTransaction().remove(fragment).commit();
+            clickState = ClickState.NONE;
+
+            setIcon(R.drawable.ic_add);
         }
     }
 
     @Override
     public void onBackPressed() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(TAG);
         if (fragment != null) {
             fragmentManager.beginTransaction().remove(fragment).commit();
             clickState = ClickState.NONE;
+            setIcon(R.drawable.ic_add);
         } else
             super.onBackPressed();
     }
@@ -129,6 +137,7 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.bottom_menu, menu);
         return true;
     }
 
