@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.SessionManager;
+import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
@@ -30,12 +31,16 @@ import tech.sutd.pickupgame.ui.main.user.UserFragment;
 
 public class MainActivity extends DaggerAppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private int clickState = ClickState.NONE;
+
     private static final String TAG = "booking";
 
     private ActivityMainBinding binding;
 
     private BottomNavigationView bottomNavView;
     private NavController navController;
+
+    private Fragment fragment;
 //    private AppBarConfiguration configuration;
 
     @Inject
@@ -58,6 +63,12 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
 //        NavigationUI.setupActionBarWithNavController(this, navController);
 //        NavigationUI.setupWithNavController(bottomNavView, navController);
         bottomNavView.setOnNavigationItemSelectedListener(this);
+
+        if (clickState == ClickState.CLICKED) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.nav_host_fragment, new BookingFragment(), TAG)
+                    .commit();
+        }
     }
 
     @Override
@@ -66,21 +77,26 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
             case R.id.mainFragment:
                 checkBookingFragment();
                 navController.popBackStack(R.id.mainFragment, false);
+                clickState = ClickState.NONE;
                 break;
             case R.id.bookingFragment:
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                Fragment fragment = fragmentManager.findFragmentByTag(TAG);
-                if (fragment == null) {
+                fragment = fragmentManager.findFragmentByTag(TAG);
+                if (fragment == null && clickState == ClickState.NONE) {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.add(R.id.nav_host_fragment, new BookingFragment(), TAG)
                             .commit();
-                } else
+                    clickState = ClickState.CLICKED;
+                } else {
                     fragmentManager.beginTransaction().remove(fragment).commit();
+                    clickState = ClickState.NONE;
+                }
                 break;
             case R.id.userFragment:
                 checkBookingFragment();
                 navController.popBackStack(R.id.userFragment, true);
                 navController.navigate(R.id.userFragment);
+                clickState = ClickState.NONE;
                 break;
         }
         return true;
