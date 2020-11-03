@@ -102,19 +102,22 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
         return true;
     }
 
-    public boolean checkBookingFragment() {
+    public void checkBookingFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag(TAG);
         if (fragment != null) {
             fragmentManager.beginTransaction().remove(fragment).commit();
-            return true;
         }
-        return false;
     }
 
     @Override
     public void onBackPressed() {
-        if (!checkBookingFragment())
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(TAG);
+        if (fragment != null) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+            clickState = ClickState.NONE;
+        } else
             super.onBackPressed();
     }
 
