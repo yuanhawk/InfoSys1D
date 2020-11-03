@@ -11,6 +11,7 @@ import tech.sutd.pickupgame.ui.auth.UserViewModel;
 @Module
 public abstract class AuthViewModelModule {
 
+    @AuthScope
     @Binds
     @IntoMap
     @ViewModelKey(UserViewModel.class)

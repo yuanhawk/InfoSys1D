@@ -1,4 +1,4 @@
-package tech.sutd.pickupgame.di.main.main_fragment;
+package tech.sutd.pickupgame.di.main.upcoming_fragment;
 
 import androidx.lifecycle.ViewModel;
 
@@ -11,6 +11,7 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 @Module
 public abstract class UpcomingActFragmentViewModelModule {
 
+    @UpcomingActFragmentScope
     @Binds
     @IntoMap
     @ViewModelKey(UpcomingActViewModel.class)

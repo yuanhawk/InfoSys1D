@@ -42,11 +42,13 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
 
     private FragmentManager fragmentManager;
     private Menu menu;
-    private Handler handler = new Handler(Looper.getMainLooper());
 //    private AppBarConfiguration configuration;
 
     @Inject
     SessionManager sessionManager;
+
+    @Inject
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

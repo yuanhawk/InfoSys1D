@@ -64,7 +64,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version"
 
     // Dagger
-    def dagger_version = "2.28.1"
+    def dagger_version = "2.29.1"
 
     // Dagger2 core
     implementation "com.google.dagger:dagger:$dagger_version"

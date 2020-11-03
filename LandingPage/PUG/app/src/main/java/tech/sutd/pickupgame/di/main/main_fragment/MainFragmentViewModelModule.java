@@ -12,11 +12,13 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 @Module
 public abstract class MainFragmentViewModelModule {
 
+    @MainFragmentScope
     @Binds
     @IntoMap
     @ViewModelKey(UpcomingActViewModel.class)
     public abstract ViewModel bindUpcomingActViewModel(UpcomingActViewModel viewModel);
 
+    @MainFragmentScope
     @Binds
     @IntoMap
     @ViewModelKey(NewActViewModel.class)

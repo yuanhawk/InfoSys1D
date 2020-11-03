@@ -6,6 +6,7 @@ import tech.sutd.pickupgame.di.auth.AuthFragmentBuildersModule;
 import tech.sutd.pickupgame.di.auth.AuthScope;
 import tech.sutd.pickupgame.di.auth.AuthViewModelModule;
 import tech.sutd.pickupgame.di.main.MainFragmentBuildersModule;
+import tech.sutd.pickupgame.di.main.MainModule;
 import tech.sutd.pickupgame.di.main.MainScope;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.MainActivity;
@@ -24,7 +25,7 @@ public abstract class ActivityBuildersModule {
     @MainScope
     @ContributesAndroidInjector(
             modules = {
-                    MainFragmentBuildersModule.class
+                    MainFragmentBuildersModule.class, MainModule.class
             }
     )
     abstract MainActivity contributeMainActivity();
