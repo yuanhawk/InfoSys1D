@@ -53,6 +53,11 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
         bottomNavView = binding.bottomNavView;
 
         setContentView(binding.getRoot());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         init();
     }
 

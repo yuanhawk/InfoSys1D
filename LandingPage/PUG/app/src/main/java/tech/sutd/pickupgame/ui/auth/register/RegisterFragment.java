@@ -91,7 +91,7 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
             return;
         }
 
-        if (passwd.length() < 6 || confirmPasswd.length() < 6) {
+        if (passwd.length() < 6) {
             binding.passwd.setError("Password must be longer than 6 Characters");
             registerFailed();
             return;
