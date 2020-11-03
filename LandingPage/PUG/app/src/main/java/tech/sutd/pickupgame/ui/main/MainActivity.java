@@ -137,7 +137,6 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        getMenuInflater().inflate(R.menu.bottom_menu, menu);
         return true;
     }
 
