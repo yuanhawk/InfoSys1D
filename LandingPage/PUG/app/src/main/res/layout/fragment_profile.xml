@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="204dp">
+
+        <ImageView
+            android:id="@+id/UserAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:contentDescription="UserAvatar"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/UserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:gravity="center"
+            android:text="@string/name"
+            style="@style/header"
+            android:textSize="36sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+
+
+                <TextView
+                    android:id="@+id/ActivitiesJoined"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="#9CAFE6"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="X\nActivities\nJoined"
+                    android:textColor="#2E51D3" />
+
+
+
+
+
+            <TextView
+                android:id="@+id/ActivitiesOrganised"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="#E8CF8F"
+                android:gravity="center"
+                android:padding="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="X\nActivities\nOrganised"
+                android:textColor="@android:color/holo_red_light" />
+
+            <TextView
+                android:id="@+id/DifferentActivitiesTried"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="#9CAFE6"
+                android:gravity="center"
+                android:padding="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="X\nDifferent Activities\nTried"
+                android:textColor="#2E51D3" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/profile_line1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FF0000"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"/>
+
+        <Button
+            android:id="@+id/ProfileInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_information"
+            android:gravity="center"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            />
+
+        <View
+            android:id="@+id/profile_line2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FF0000"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"/>
+
+        <Button
+            android:id="@+id/NotificationPreferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/notification_preferences"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            />
+
+        <View
+            android:id="@+id/profile_line3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FF0000"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"/>
+
+        <Button
+            android:id="@+id/Logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/logout"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            />
+
+        <View
+            android:id="@+id/profile_line4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#FF0000"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
