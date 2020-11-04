@@ -41,6 +41,12 @@
     <string name="title_activity_profile_fragment">ProfileFragment</string>
     <string name="profile_information">Profile Information</string>
     <string name="notification_preferences">Notification Preferences</string>
+    <string name="number_of_activities_joined">X</string>
+    <string name="number_of_activities_organised">X</string>
+    <string name="number_of_different_activities_tried">X</string>
+    <string name="activities_joined">Activities Joined</string>
+    <string name="activities_organised">Activities Organised</string>
+    <string name="different_activities_tried">Different Activities Joined</string>
 
     <!--
     This string is used for square devices and overridden by hello_world in

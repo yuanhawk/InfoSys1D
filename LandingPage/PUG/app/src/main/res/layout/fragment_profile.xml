@@ -9,7 +9,7 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/UserAvatar"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:contentDescription="UserAvatar"
@@ -35,65 +35,116 @@
         app:layout_constraintTop_toBottomOf="@+id/UserAvatar"/>
 
     <LinearLayout
+        android:id="@+id/LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/ProfileInformation"
         app:layout_constraintTop_toBottomOf="@+id/UserName">
 
-
-        <TextView
-            android:id="@+id/ActivitiesJoined"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="#9CAFE6"
-            android:gravity="center"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:padding="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="X\nActivities\nJoined"
-            android:textColor="#2E51D3"
-            app:layout_constraintTop_toBottomOf="@id/UserName"/>
+            android:backgroundTint="@color/colorBlueAccent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/ActivitiesOrganised"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="#E8CF8F"
-            android:gravity="center"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/NumberOfActivitiesJoined"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/number_of_activities_joined" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/ActivitiesJoined"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/activities_joined" />
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:padding="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="X\nActivities\nOrganised"
-            android:textColor="@android:color/holo_red_light" />
+            android:backgroundTint="@color/colorRedAccent">
 
-        <TextView
-            android:id="@+id/DifferentActivitiesTried"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:background="#9CAFE6"
-            android:gravity="center"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/NumberOfActivitiesOrganised"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/number_of_activities_organised" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/ActivitiesOrganised"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/activities_organised" />
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:padding="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="X\nDifferent Activities\nTried"
-            android:textColor="#2E51D3" />
+            android:backgroundTint="@color/colorBlueAccent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/NumberOfDifferentActivitiesTried"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/number_of_different_activities_tried" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/DifferentActivitiesTried"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/different_activities_tried" />
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
 
     <View
         android:id="@+id/profile_line1"
@@ -103,7 +154,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        app:layout_constraintTop_toBottomOf="@id/UserName"/>
+        app:layout_constraintTop_toBottomOf="@id/LinearLayout"/>
 
     <Button
         android:id="@+id/ProfileInformation"
