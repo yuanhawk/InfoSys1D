@@ -20,10 +20,13 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentUpcomingActBinding;
+import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
+import tech.sutd.pickupgame.ui.main.main.adapter.PastActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.YourActivityAdapter;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.PastActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.YourActViewModel;
 import tech.sutd.pickupgame.util.CustomSnapHelper;
@@ -36,17 +39,17 @@ public class UpcomingActFragment extends DaggerFragment {
 
     private UpcomingActViewModel upcomingActViewModel;
     private YourActViewModel yourActViewModel;
+    private PastActViewModel pastActViewModel;
 
-    @Inject
-    UpcomingActivityAdapter upcomingAdapter;
+    @Inject UpcomingActivityAdapter upcomingAdapter;
 
-    private YourActivityAdapter yourAdapter;
+    @Inject YourActivityAdapter yourAdapter;
 
-    @Inject
-    ViewModelProviderFactory providerFactory;
+    @Inject PastActivityAdapter pastAdapter;
 
-    @Inject
-    RequestManager requestManager;
+    @Inject ViewModelProviderFactory providerFactory;
+
+    @Inject RequestManager requestManager;
 
     @Nullable
     @Override
@@ -55,6 +58,7 @@ public class UpcomingActFragment extends DaggerFragment {
 
         upcomingActViewModel = new ViewModelProvider(this, providerFactory).get(UpcomingActViewModel.class);
         yourActViewModel = new ViewModelProvider(this, providerFactory).get(YourActViewModel.class);
+        pastActViewModel = new ViewModelProvider(this, providerFactory).get(PastActViewModel.class);
         return binding.getRoot();
     }
 
@@ -77,6 +81,9 @@ public class UpcomingActFragment extends DaggerFragment {
 
         yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), yourActivities ->
                 yourAdapter.setNotifications(yourActivities, requestManager, 9999));
+
+        pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActivities ->
+                pastAdapter.setNotifications(pastActivities, requestManager, 9999));
     }
 
     private void initViews() {
@@ -108,8 +115,25 @@ public class UpcomingActFragment extends DaggerFragment {
         binding.eventsRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.eventsRc.setHasFixedSize(true);
 
+
+        pastActViewModel.insert(new PastActivity(0, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        pastActViewModel.insert(new PastActivity(1, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        pastActViewModel.insert(new PastActivity(2, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        pastActViewModel.insert(new PastActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+
+        pastAdapter = new PastActivityAdapter();
+        binding.pastRc.setAdapter(pastAdapter);
+        binding.pastRc.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.pastRc.setHasFixedSize(true);
+
+
         new CustomSnapHelper().attachToRecyclerView(binding.upcomingRc);
         new CustomSnapHelper().attachToRecyclerView(binding.eventsRc);
+        new CustomSnapHelper().attachToRecyclerView(binding.pastRc);
     }
 
     @Override
@@ -117,5 +141,6 @@ public class UpcomingActFragment extends DaggerFragment {
         super.onDestroy();
         binding.upcomingRc.setOnFlingListener(null);
         binding.eventsRc.setOnFlingListener(null);
+        binding.pastRc.setOnFlingListener(null);
     }
 }
