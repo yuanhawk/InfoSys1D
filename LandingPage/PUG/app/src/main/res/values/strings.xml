@@ -46,7 +46,7 @@
     <string name="number_of_different_activities_tried">X</string>
     <string name="activities_joined">Activities Joined</string>
     <string name="activities_organised">Activities Organised</string>
-    <string name="different_activities_tried">Different Activities Joined</string>
+    <string name="different_activities_tried">Different Activities Tried</string>
 
     <!--
     This string is used for square devices and overridden by hello_world in

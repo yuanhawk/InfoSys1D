@@ -60,4 +60,9 @@
         <item name="android:visibility">gone</item>
     </style>
 
+    <style name="profile_page_stats">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
 </resources>

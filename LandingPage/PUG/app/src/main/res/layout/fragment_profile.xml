@@ -30,7 +30,7 @@
         android:gravity="center"
         android:text="@string/name"
         style="@style/header"
-        android:textSize="36sp"
+        android:textSize="36dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/UserAvatar"/>
 
@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toTopOf="@+id/ProfileInformation"
         app:layout_constraintTop_toBottomOf="@+id/UserName">
 
@@ -48,7 +49,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:padding="10dp"
-            android:backgroundTint="@color/colorBlueAccent">
+            android:backgroundTint="@color/colorBlueAccent"
+            app:cardElevation="0dp"
+            app:shapeAppearance="@style/profile_page_stats">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -62,15 +65,20 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="@string/number_of_activities_joined" />
+                    android:text="@string/number_of_activities_joined"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="24dp"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/ActivitiesJoined"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/activities_joined" />
+                    android:paddingHorizontal="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/activities_joined"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="10dp"/>
             </LinearLayout>
 
 
@@ -82,7 +90,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:padding="10dp"
-            android:backgroundTint="@color/colorRedAccent">
+            android:backgroundTint="@color/colorRedAccent"
+            app:cardElevation="0dp"
+            app:shapeAppearance="@style/profile_page_stats">
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -95,15 +106,20 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="@string/number_of_activities_organised" />
+                    android:text="@string/number_of_activities_organised"
+                    android:textColor="@color/colorRed"
+                    android:textSize="24dp"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/ActivitiesOrganised"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/activities_organised" />
+                    android:paddingHorizontal="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/activities_organised"
+                    android:textColor="@color/colorRed"
+                    android:textSize="10dp"/>
             </LinearLayout>
 
 
@@ -115,7 +131,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:padding="10dp"
-            android:backgroundTint="@color/colorBlueAccent">
+            android:backgroundTint="@color/colorBlueAccent"
+            app:cardElevation="0dp"
+            app:shapeAppearance="@style/profile_page_stats">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -128,15 +146,20 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="@string/number_of_different_activities_tried" />
+                    android:text="@string/number_of_different_activities_tried"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="24dp"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/DifferentActivitiesTried"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/different_activities_tried" />
+                    android:paddingHorizontal="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/different_activities_tried"
+                    android:textColor="@color/colorBlue"
+                    android:textSize="10dp"/>
             </LinearLayout>
 
 
@@ -150,7 +173,7 @@
         android:id="@+id/profile_line1"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#FF0000"
+        android:background="@color/colorRed"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
@@ -163,13 +186,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/profile_information"
+        android:textColor="@color/colorBlue"
         app:layout_constraintTop_toBottomOf="@id/profile_line1"/>
 
     <View
         android:id="@+id/profile_line2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#FF0000"
+        android:background="@color/colorRed"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         app:layout_constraintTop_toBottomOf="@id/ProfileInformation"/>
@@ -180,6 +204,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/notification_preferences"
+        android:textColor="@color/colorBlue"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         app:layout_constraintTop_toBottomOf="@id/profile_line2"/>
 
@@ -187,7 +212,7 @@
         android:id="@+id/profile_line3"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#FF0000"
+        android:background="@color/colorRed"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         app:layout_constraintTop_toBottomOf="@id/NotificationPreferences"/>
@@ -198,6 +223,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/logout"
+        android:textColor="@color/colorBlue"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         app:layout_constraintTop_toBottomOf="@id/profile_line3"/>
 
@@ -205,7 +231,7 @@
         android:id="@+id/profile_line4"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#FF0000"
+        android:background="@color/colorRed"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         app:layout_constraintTop_toBottomOf="@id/Logout"/>
