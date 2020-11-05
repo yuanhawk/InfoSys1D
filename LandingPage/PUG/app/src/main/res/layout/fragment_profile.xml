@@ -45,13 +45,14 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:padding="10dp"
             android:backgroundTint="@color/colorBlueAccent"
             app:cardElevation="0dp"
-            app:shapeAppearance="@style/profile_page_stats">
+            app:shapeAppearance="@style/profile_page_stats"
+            app:layout_constraintDimensionRatio="1:1">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -86,13 +87,14 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:padding="10dp"
             android:backgroundTint="@color/colorRedAccent"
             app:cardElevation="0dp"
-            app:shapeAppearance="@style/profile_page_stats">
+            app:shapeAppearance="@style/profile_page_stats"
+            app:layout_constraintDimensionRatio="1:1">
 
 
             <LinearLayout
@@ -126,14 +128,19 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:padding="10dp"
             android:backgroundTint="@color/colorBlueAccent"
             app:cardElevation="0dp"
-            app:shapeAppearance="@style/profile_page_stats">
+            app:shapeAppearance="@style/profile_page_stats"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintWidth_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
