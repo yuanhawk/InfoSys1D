@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import dagger.Module;
 import dagger.Provides;
+import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
 
 @Module
 public class MainModule {

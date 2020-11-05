@@ -7,6 +7,7 @@ import dagger.Module;
 import dagger.multibindings.IntoMap;
 import tech.sutd.pickupgame.di.ViewModelKey;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.YourActViewModel;
 
 @Module
 public abstract class UpcomingActFragmentViewModelModule {
@@ -16,4 +17,10 @@ public abstract class UpcomingActFragmentViewModelModule {
     @IntoMap
     @ViewModelKey(UpcomingActViewModel.class)
     public abstract ViewModel bindUpcomingActViewModel(UpcomingActViewModel viewModel);
+
+    @UpcomingActFragmentScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(YourActViewModel.class)
+    public abstract ViewModel bindYourActViewModel(YourActViewModel viewModel);
 }

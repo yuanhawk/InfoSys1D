@@ -21,21 +21,26 @@ import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentUpcomingActBinding;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
+import tech.sutd.pickupgame.models.ui.YourActivity;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
+import tech.sutd.pickupgame.ui.main.main.adapter.YourActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.YourActViewModel;
 import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class UpcomingActFragment extends DaggerFragment {
 
-    private CustomSnapHelper helper = new CustomSnapHelper();
-
     private FragmentUpcomingActBinding binding;
     private NavController navController;
 
     private UpcomingActViewModel upcomingActViewModel;
+    private YourActViewModel yourActViewModel;
 
-    private UpcomingActivityAdapter upcomingAdapter;
+    @Inject
+    UpcomingActivityAdapter upcomingAdapter;
+
+    private YourActivityAdapter yourAdapter;
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -49,6 +54,7 @@ public class UpcomingActFragment extends DaggerFragment {
         binding = FragmentUpcomingActBinding.inflate(inflater, container, false);
 
         upcomingActViewModel = new ViewModelProvider(this, providerFactory).get(UpcomingActViewModel.class);
+        yourActViewModel = new ViewModelProvider(this, providerFactory).get(YourActViewModel.class);
         return binding.getRoot();
     }
 
@@ -68,6 +74,9 @@ public class UpcomingActFragment extends DaggerFragment {
     private void subscribeObserver() {
         upcomingActViewModel.getUpcomingActivities().observe(getViewLifecycleOwner(), upcomingActivities ->
                 upcomingAdapter.setNotifications(upcomingActivities, requestManager, 9999));
+
+        yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), yourActivities ->
+                yourAdapter.setNotifications(yourActivities, requestManager, 9999));
     }
 
     private void initViews() {
@@ -81,17 +90,32 @@ public class UpcomingActFragment extends DaggerFragment {
         upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
 
-        upcomingAdapter = new UpcomingActivityAdapter();
         binding.upcomingRc.setAdapter(upcomingAdapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
 
-        helper.attachToRecyclerView(binding.upcomingRc);
+        yourActViewModel.insert(new YourActivity(0, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        yourActViewModel.insert(new YourActivity(1, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        yourActViewModel.insert(new YourActivity(2, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        yourActViewModel.insert(new YourActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+                "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+
+        yourAdapter = new YourActivityAdapter();
+        binding.eventsRc.setAdapter(yourAdapter);
+        binding.eventsRc.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.eventsRc.setHasFixedSize(true);
+
+        new CustomSnapHelper().attachToRecyclerView(binding.upcomingRc);
+        new CustomSnapHelper().attachToRecyclerView(binding.eventsRc);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         binding.upcomingRc.setOnFlingListener(null);
+        binding.eventsRc.setOnFlingListener(null);
     }
 }

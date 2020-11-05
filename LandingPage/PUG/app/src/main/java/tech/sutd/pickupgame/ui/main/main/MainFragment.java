@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +23,6 @@ import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentMainBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
-import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
@@ -38,8 +37,11 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
     private UpcomingActViewModel upcomingActViewModel;
     private NewActViewModel newActViewModel;
 
-    private NewActivityAdapter newAdapter;
-    private UpcomingActivityAdapter adapter;
+    @Inject
+    UpcomingActivityAdapter adapter;
+
+    @Inject
+    NewActivityAdapter newAdapter;
 
     @Inject
     ViewModelProviderFactory providerFactory;
@@ -90,7 +92,6 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
         upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
 
-        adapter = new UpcomingActivityAdapter();
         binding.upcomingRc.setAdapter(adapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
@@ -105,8 +106,6 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
         newActViewModel.insert(new NewActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
 
-
-        newAdapter = new NewActivityAdapter();
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);
