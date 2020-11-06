@@ -42,11 +42,9 @@ public class UpcomingActFragment extends DaggerFragment {
     private YourActViewModel yourActViewModel;
     private PastActViewModel pastActViewModel;
 
-    private PagedList yourActivitiesList;
-
     @Inject UpcomingActivityAdapter upcomingAdapter;
 
-    private YourActivityAdapter yourAdapter;
+    @Inject YourActivityAdapter yourAdapter;
 
     @Inject PastActivityAdapter pastAdapter;
 
