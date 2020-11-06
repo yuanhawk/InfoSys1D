@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.paging.PagedList;
 
 import java.util.List;
 
@@ -19,10 +20,13 @@ public class YourActViewModel extends ViewModel {
 
     private LiveData<List<YourActivity>> yourActivities;
 
+    private LiveData<PagedList<YourActivity>> yourActivitiesByClock;
+
     @Inject
     public YourActViewModel(@NonNull Application application) {
         this.repository = new YourRepository(application);
         yourActivities = repository.getAllYourActivities();
+        yourActivitiesByClock = repository.getYourActivitiesByClock();
     }
 
     public void insert(YourActivity yourActivity) {
@@ -43,5 +47,9 @@ public class YourActViewModel extends ViewModel {
 
     public LiveData<List<YourActivity>> getYourActivities() {
         return yourActivities;
+    }
+
+    public LiveData<PagedList<YourActivity>> getYourActivitiesByClock() {
+        return yourActivitiesByClock;
     }
 }

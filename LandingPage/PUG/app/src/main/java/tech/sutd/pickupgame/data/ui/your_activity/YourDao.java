@@ -1,6 +1,7 @@
 package tech.sutd.pickupgame.data.ui.your_activity;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -30,4 +31,6 @@ public interface YourDao {
     @Query("SELECT * FROM your_activity")
     LiveData<List<YourActivity>> getYourActivities();
 
+    @Query("SELECT * FROM your_activity ORDER BY clock")
+    DataSource.Factory<Integer, YourActivity> getYourActivityByClock();
 }

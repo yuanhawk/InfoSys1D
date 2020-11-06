@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -41,9 +42,11 @@ public class UpcomingActFragment extends DaggerFragment {
     private YourActViewModel yourActViewModel;
     private PastActViewModel pastActViewModel;
 
+    private PagedList yourActivitiesList;
+
     @Inject UpcomingActivityAdapter upcomingAdapter;
 
-    @Inject YourActivityAdapter yourAdapter;
+    private YourActivityAdapter yourAdapter;
 
     @Inject PastActivityAdapter pastAdapter;
 
@@ -79,8 +82,7 @@ public class UpcomingActFragment extends DaggerFragment {
         upcomingActViewModel.getUpcomingActivities().observe(getViewLifecycleOwner(), upcomingActivities ->
                 upcomingAdapter.setNotifications(upcomingActivities, requestManager, 9999));
 
-        yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), yourActivities ->
-                yourAdapter.setNotifications(yourActivities, requestManager, 9999));
+        yourActViewModel.getYourActivitiesByClock().observe(getViewLifecycleOwner(), yourAdapter::submitList);
 
         pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActivities ->
                 pastAdapter.setNotifications(pastActivities, requestManager, 9999));
@@ -101,11 +103,11 @@ public class UpcomingActFragment extends DaggerFragment {
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
 
-        yourActViewModel.insert(new YourActivity(0, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+        yourActViewModel.insert(new YourActivity(0, "Cycling", R.drawable.ic_clock,"17 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        yourActViewModel.insert(new YourActivity(1, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+        yourActViewModel.insert(new YourActivity(1, "Cycling", R.drawable.ic_clock,"16 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        yourActViewModel.insert(new YourActivity(2, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
+        yourActViewModel.insert(new YourActivity(2, "Cycling", R.drawable.ic_clock,"15 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
         yourActViewModel.insert(new YourActivity(3, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
@@ -114,7 +116,7 @@ public class UpcomingActFragment extends DaggerFragment {
         binding.eventsRc.setAdapter(yourAdapter);
         binding.eventsRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.eventsRc.setHasFixedSize(true);
-
+        yourAdapter.setNotifications(requestManager, 9999);
 
         pastActViewModel.insert(new PastActivity(0, "Cycling", R.drawable.ic_clock,"14 Sep, 7pm - 10pm", R.drawable.ic_location,
                 "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));

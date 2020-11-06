@@ -1,10 +1,15 @@
 package tech.sutd.pickupgame.ui.main.main.adapter;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.AsyncDifferConfig;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
@@ -13,14 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
+import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
 
-public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapter.ViewHolder> {
+public class YourActivityAdapter extends PagedListAdapter<YourActivity, YourActivityAdapter.ViewHolder> {
 
-    private List<YourActivity> yourActivities = new ArrayList<>();
     private RequestManager requestManager;
 
-    private int numOfViews = 0;
+    private int numOfViews;
+
+    public YourActivityAdapter() {
+        super(DIFF_CALLBACK);
+    }
 
     @NonNull
     @Override
@@ -32,30 +41,25 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        YourActivity yourActivity = yourActivities.get(position);
+        YourActivity pastActivity = getItem(position);
 
         if (position > numOfViews) {
             holder.binding.cardView.setVisibility(View.GONE);
             return;
         }
 
-        holder.binding.sport.setText(yourActivity.getSport());
-        holder.binding.time.setText(yourActivity.getClock());
-        holder.binding.location.setText(yourActivity.getLocation());
-        holder.binding.organizer.setText(yourActivity.getOrganizer());
+        holder.binding.sport.setText(pastActivity.getSport());
+        holder.binding.time.setText(pastActivity.getClock());
+        holder.binding.location.setText(pastActivity.getLocation());
+        holder.binding.organizer.setText(pastActivity.getOrganizer());
 
-        holder.binding.clockImg.setImageResource(yourActivity.getClockImg());
-        holder.binding.locationImg.setImageResource(yourActivity.getLocationImg());
-        holder.binding.organizerImg.setImageResource(yourActivity.getOrganizerImg());
-        holder.binding.sportImg.setImageResource(yourActivity.getSportImg());
-
-        requestManager.load(yourActivity.getClockImg())
+        requestManager.load(pastActivity.getClockImg())
                 .into(holder.binding.clockImg);
-        requestManager.load(yourActivity.getLocationImg())
+        requestManager.load(pastActivity.getLocationImg())
                 .into(holder.binding.locationImg);
-        requestManager.load(yourActivity.getOrganizerImg())
+        requestManager.load(pastActivity.getOrganizerImg())
                 .into(holder.binding.organizerImg);
-        requestManager.load(yourActivity.getSportImg())
+        requestManager.load(pastActivity.getSportImg())
                 .into(holder.binding.sportImg);
 
         // add margins to left, right & bottom if lesser numOfViews
@@ -71,17 +75,24 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return yourActivities.size();
-    }
-
-    public void setNotifications(List<YourActivity> yourActivities, RequestManager requestManager, int numOfViews) {
-        this.yourActivities = yourActivities;
+    public void setNotifications(RequestManager requestManager, int numOfViews) {
         this.requestManager = requestManager;
         this.numOfViews = numOfViews;
         notifyDataSetChanged();
     }
+
+    private static final DiffUtil.ItemCallback<YourActivity> DIFF_CALLBACK = new DiffUtil.ItemCallback<YourActivity>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull YourActivity oldItem, @NonNull YourActivity newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @SuppressLint("DiffUtilEquals")
+        @Override
+        public boolean areContentsTheSame(@NonNull YourActivity oldItem, @NonNull YourActivity newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

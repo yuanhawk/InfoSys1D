@@ -17,12 +17,6 @@ public class UpcomingActFragmentModule {
 
     @UpcomingActFragmentScope
     @Provides
-    static YourActivityAdapter provideYourActivityAdapter() {
-        return new YourActivityAdapter();
-    }
-
-    @UpcomingActFragmentScope
-    @Provides
     static PastActivityAdapter providePastActivityAdapter() {
         return new PastActivityAdapter();
     }
