@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".ui.main.user.UserFragment">
 
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -37,14 +37,16 @@
     <LinearLayout
         android:id="@+id/LinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:orientation="horizontal"
+        android:gravity="center"
         android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toTopOf="@+id/ProfileInformation"
         app:layout_constraintTop_toBottomOf="@+id/UserName">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
+            android:id="@+id/square1"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -52,7 +54,11 @@
             android:backgroundTint="@color/colorBlueAccent"
             app:cardElevation="0dp"
             app:shapeAppearance="@style/profile_page_stats"
-            app:layout_constraintDimensionRatio="1:1">
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/square2"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -65,10 +71,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
+                    android:paddingTop="10dp"
                     android:text="@string/number_of_activities_joined"
                     android:textColor="@color/colorBlue"
-                    android:textSize="24dp"/>
+                    android:textSize="36dp"
+                    android:fontFamily="@font/ralewayextrabold"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/ActivitiesJoined"
@@ -77,16 +84,19 @@
                     android:gravity="center"
                     android:paddingHorizontal="10dp"
                     android:paddingBottom="10dp"
+                    android:paddingTop="5dp"
                     android:text="@string/activities_joined"
                     android:textColor="@color/colorBlue"
-                    android:textSize="10dp"/>
+                    android:textSize="11dp"
+                    android:fontFamily="@font/ralewaybold"/>
             </LinearLayout>
 
 
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
+            android:id="@+id/square2"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -94,7 +104,11 @@
             android:backgroundTint="@color/colorRedAccent"
             app:cardElevation="0dp"
             app:shapeAppearance="@style/profile_page_stats"
-            app:layout_constraintDimensionRatio="1:1">
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/square1"
+            app:layout_constraintRight_toLeftOf="@+id/square3"
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <LinearLayout
@@ -107,10 +121,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
+                    android:paddingTop="10dp"
                     android:text="@string/number_of_activities_organised"
                     android:textColor="@color/colorRed"
-                    android:textSize="24dp"/>
+                    android:textSize="36dp"
+                    android:fontFamily="@font/ralewayextrabold"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/ActivitiesOrganised"
@@ -119,16 +134,19 @@
                     android:gravity="center"
                     android:paddingHorizontal="10dp"
                     android:paddingBottom="10dp"
+                    android:paddingTop="5dp"
                     android:text="@string/activities_organised"
                     android:textColor="@color/colorRed"
-                    android:textSize="10dp"/>
+                    android:textSize="11dp"
+                    android:fontFamily="@font/ralewaybold"/>
             </LinearLayout>
 
 
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
+            android:id="@+id/square3"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
@@ -152,10 +170,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="10dp"
+                    android:paddingTop="10dp"
                     android:text="@string/number_of_different_activities_tried"
                     android:textColor="@color/colorBlue"
-                    android:textSize="24dp"/>
+                    android:textSize="36dp"
+                    android:fontFamily="@font/ralewayextrabold"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/DifferentActivitiesTried"
@@ -164,16 +183,17 @@
                     android:gravity="center"
                     android:paddingHorizontal="10dp"
                     android:paddingBottom="10dp"
+                    android:paddingTop="5dp"
                     android:text="@string/different_activities_tried"
                     android:textColor="@color/colorBlue"
-                    android:textSize="10dp"/>
+                    android:textSize="11dp"
+                    android:fontFamily="@font/ralewaybold"/>
             </LinearLayout>
 
 
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
-
 
 
     <View
@@ -194,7 +214,9 @@
         android:gravity="center"
         android:text="@string/profile_information"
         android:textColor="@color/colorBlue"
-        app:layout_constraintTop_toBottomOf="@id/profile_line1"/>
+        app:layout_constraintTop_toBottomOf="@id/profile_line1"
+        android:textAllCaps="false"
+        android:fontFamily="@font/raleway" />
 
     <View
         android:id="@+id/profile_line2"
@@ -213,7 +235,9 @@
         android:text="@string/notification_preferences"
         android:textColor="@color/colorBlue"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        app:layout_constraintTop_toBottomOf="@id/profile_line2"/>
+        app:layout_constraintTop_toBottomOf="@id/profile_line2"
+        android:textAllCaps="false"
+        android:fontFamily="@font/raleway" />
 
     <View
         android:id="@+id/profile_line3"
@@ -229,10 +253,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/logout"
+        android:text="@string/logout2"
         android:textColor="@color/colorBlue"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        app:layout_constraintTop_toBottomOf="@id/profile_line3"/>
+        app:layout_constraintTop_toBottomOf="@id/profile_line3"
+        android:textAllCaps="false"
+        android:fontFamily="@font/raleway" />
 
     <View
         android:id="@+id/profile_line4"
