@@ -39,7 +39,7 @@
     <string name="additional_notes">Additional Notes</string>
     <string name="confirm">Confirm</string>
     <string name="title_activity_profile_fragment">ProfileFragment</string>
-    <string name="profile_information">Profile Information</string>
+    <string name="edit_profile">Edit Profile</string>
     <string name="notification_preferences">Notification Preferences</string>
     <string name="number_of_activities_joined">X</string>
     <string name="number_of_activities_organised">X</string>
