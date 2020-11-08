@@ -1,4 +1,4 @@
-package tech.sutd.pickupgame.di.main.main_fragment;
+package tech.sutd.pickupgame.di.main;
 
 import androidx.lifecycle.ViewModel;
 
@@ -10,15 +10,15 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 
 @Module
-public abstract class MainFragmentViewModelModule {
+public abstract class MainActivityViewModelModule {
 
-    @MainFragmentScope
+    @MainScope
     @Binds
     @IntoMap
     @ViewModelKey(UpcomingActViewModel.class)
     public abstract ViewModel bindUpcomingActViewModel(UpcomingActViewModel viewModel);
 
-    @MainFragmentScope
+    @MainScope
     @Binds
     @IntoMap
     @ViewModelKey(NewActViewModel.class)

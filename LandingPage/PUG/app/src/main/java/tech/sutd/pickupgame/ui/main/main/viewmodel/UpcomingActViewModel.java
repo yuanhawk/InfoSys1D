@@ -5,8 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
-import java.util.List;
+import androidx.paging.PagedList;
 
 import javax.inject.Inject;
 
@@ -17,12 +16,13 @@ public class UpcomingActViewModel extends ViewModel {
 
     private UpcomingRepository repository;
 
-    private LiveData<List<UpcomingActivity>> upcomingActivities;
+    private LiveData<PagedList<UpcomingActivity>> allUpcomingActivitiesByClock, upcomingActivitiesByClock2;
 
     @Inject
     public UpcomingActViewModel(@NonNull Application application) {
         this.repository = new UpcomingRepository(application);
-        upcomingActivities = repository.getAllUpcomingActivities();
+        allUpcomingActivitiesByClock = repository.getAllUpcomingActivitiesByClock();
+        upcomingActivitiesByClock2 = repository.getUpcomingActivitiesByClockTwo();
     }
 
     public void insert(UpcomingActivity upcomingActivity) {
@@ -41,7 +41,11 @@ public class UpcomingActViewModel extends ViewModel {
         repository.deleteAllUpcomingActivities();
     }
 
-    public LiveData<List<UpcomingActivity>> getUpcomingActivities() {
-        return upcomingActivities;
+    public LiveData<PagedList<UpcomingActivity>> getAllUpcomingActivitiesByClock() {
+        return allUpcomingActivitiesByClock;
+    }
+
+    public LiveData<PagedList<UpcomingActivity>> getUpcomingActivitiesByClock2() {
+        return upcomingActivitiesByClock2;
     }
 }

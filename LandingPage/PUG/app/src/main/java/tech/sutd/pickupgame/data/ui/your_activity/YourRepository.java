@@ -9,7 +9,6 @@ import androidx.paging.PagedList;
 import java.util.List;
 
 import tech.sutd.pickupgame.data.AppExecutors;
-import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
 
 public class YourRepository {
@@ -17,15 +16,10 @@ public class YourRepository {
     private YourDao yourDao;
     private LiveData<List<YourActivity>> allYourActivities;
 
-    private final LiveData<PagedList<YourActivity>> yourActivitiesByClock;
-
     public YourRepository(Application application) {
         YourDatabase database = YourDatabase.getInstance(application);
         yourDao = database.yourDao();
         allYourActivities = yourDao.getYourActivities();
-        yourActivitiesByClock = new LivePagedListBuilder<>(
-                yourDao.getYourActivityByClock(), 50
-        ).build();
     }
 
     public void insert(YourActivity yourActivity) {
@@ -46,10 +40,6 @@ public class YourRepository {
 
     public LiveData<List<YourActivity>> getAllYourActivities() {
         return allYourActivities;
-    }
-
-    public LiveData<PagedList<YourActivity>> getYourActivitiesByClock() {
-        return yourActivitiesByClock;
     }
 
     private static class InsertYourActivityExecutor {

@@ -27,6 +27,6 @@ public interface PastDao {
     @Query("DELETE FROM past_activity")
     void deleteAllPastActivities();
 
-    @Query("SELECT * FROM past_activity")
+    @Query("SELECT * FROM past_activity ORDER BY clock DESC LIMIT 10")
     LiveData<List<PastActivity>> getPastActivities();
 }

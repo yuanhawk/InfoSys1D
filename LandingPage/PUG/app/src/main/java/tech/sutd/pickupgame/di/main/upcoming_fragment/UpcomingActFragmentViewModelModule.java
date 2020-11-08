@@ -16,12 +16,6 @@ public abstract class UpcomingActFragmentViewModelModule {
     @UpcomingActFragmentScope
     @Binds
     @IntoMap
-    @ViewModelKey(UpcomingActViewModel.class)
-    public abstract ViewModel bindUpcomingActViewModel(UpcomingActViewModel viewModel);
-
-    @UpcomingActFragmentScope
-    @Binds
-    @IntoMap
     @ViewModelKey(YourActViewModel.class)
     public abstract ViewModel bindYourActViewModel(YourActViewModel viewModel);
 

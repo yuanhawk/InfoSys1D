@@ -14,22 +14,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
 
-public class YourActivityAdapter extends PagedListAdapter<YourActivity, YourActivityAdapter.ViewHolder> {
+public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapter.ViewHolder> {
+
+    private List<YourActivity> yourActivities = new ArrayList<>();
 
     private RequestManager requestManager;
 
     private int numOfViews;
-
-    public YourActivityAdapter() {
-        super(DIFF_CALLBACK);
-    }
 
     @NonNull
     @Override
@@ -41,25 +43,34 @@ public class YourActivityAdapter extends PagedListAdapter<YourActivity, YourActi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        YourActivity pastActivity = getItem(position);
+        YourActivity yourActivity = yourActivities.get(position);
 
         if (position > numOfViews) {
             holder.binding.cardView.setVisibility(View.GONE);
             return;
         }
 
-        holder.binding.sport.setText(pastActivity.getSport());
-        holder.binding.time.setText(pastActivity.getClock());
-        holder.binding.location.setText(pastActivity.getLocation());
-        holder.binding.organizer.setText(pastActivity.getOrganizer());
+        holder.binding.sport.setText(yourActivity.getSport());
 
-        requestManager.load(pastActivity.getClockImg())
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, ha", Locale.getDefault());
+        String dateFormat = sdf.format(new Date(Long.parseLong(yourActivity.getClock())));
+
+        SimpleDateFormat sdfEnd = new SimpleDateFormat("ha", Locale.getDefault());
+        String dateEndFormat = sdfEnd.format(new Date(Long.parseLong(yourActivity.getEndClock())));
+
+        String time = dateFormat + " - " + dateEndFormat;
+
+        holder.binding.time.setText(time);
+        holder.binding.location.setText(yourActivity.getLocation());
+        holder.binding.organizer.setText(yourActivity.getOrganizer());
+
+        requestManager.load(yourActivity.getClockImg())
                 .into(holder.binding.clockImg);
-        requestManager.load(pastActivity.getLocationImg())
+        requestManager.load(yourActivity.getLocationImg())
                 .into(holder.binding.locationImg);
-        requestManager.load(pastActivity.getOrganizerImg())
+        requestManager.load(yourActivity.getOrganizerImg())
                 .into(holder.binding.organizerImg);
-        requestManager.load(pastActivity.getSportImg())
+        requestManager.load(yourActivity.getSportImg())
                 .into(holder.binding.sportImg);
 
         // add margins to left, right & bottom if lesser numOfViews
@@ -75,24 +86,17 @@ public class YourActivityAdapter extends PagedListAdapter<YourActivity, YourActi
         }
     }
 
-    public void setNotifications(RequestManager requestManager, int numOfViews) {
+    @Override
+    public int getItemCount() {
+        return yourActivities.size();
+    }
+
+    public void setNotifications(List<YourActivity> yourActivities, RequestManager requestManager, int numOfViews) {
+        this.yourActivities = yourActivities;
         this.requestManager = requestManager;
         this.numOfViews = numOfViews;
         notifyDataSetChanged();
     }
-
-    private static final DiffUtil.ItemCallback<YourActivity> DIFF_CALLBACK = new DiffUtil.ItemCallback<YourActivity>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull YourActivity oldItem, @NonNull YourActivity newItem) {
-            return oldItem.getId() == newItem.getId();
-        }
-
-        @SuppressLint("DiffUtilEquals")
-        @Override
-        public boolean areContentsTheSame(@NonNull YourActivity oldItem, @NonNull YourActivity newItem) {
-            return oldItem.equals(newItem);
-        }
-    };
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

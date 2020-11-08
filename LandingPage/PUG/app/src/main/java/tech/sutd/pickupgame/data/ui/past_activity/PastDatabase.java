@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 
-@Database(entities = {PastActivity.class}, version = 1)
+@Database(entities = {PastActivity.class}, version = 1, exportSchema = false)
 public abstract class PastDatabase extends RoomDatabase {
 
     public static PastDatabase instance;

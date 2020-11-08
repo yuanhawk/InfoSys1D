@@ -3,24 +3,26 @@ package tech.sutd.pickupgame.data.ui.new_activity;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
-
-import java.util.List;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 import tech.sutd.pickupgame.data.AppExecutors;
-import tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingDatabase;
-import tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingRepository;
-import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 
 public class NewRepository {
 
     private NewDao newDao;
-    private LiveData<List<NewActivity>> allNewActivities;
+    private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, newActivitiesByClock2;
 
     public NewRepository(Application application) {
         NewDatabase database = NewDatabase.getInstance(application);
         newDao = database.newDao();
-        allNewActivities = newDao.getNewActivities();
+        allNewActivitiesByClock = new LivePagedListBuilder<>(
+                newDao.getAllNewActivitiesByClock(), 20
+        ).build();
+        newActivitiesByClock2 = new LivePagedListBuilder<>(
+                newDao.getNewActivitiesByClockLimit2(), 2
+        ).build();
     }
 
     public void insert(NewActivity newActivity) {
@@ -39,8 +41,12 @@ public class NewRepository {
         new NewRepository.DeleteAllNewActivitiesExecutor(newDao).execute();
     }
 
-    public LiveData<List<NewActivity>> getAllNewActivities() {
-        return allNewActivities;
+    public LiveData<PagedList<NewActivity>> getAllNewActivitiesByClock() {
+        return allNewActivitiesByClock;
+    }
+
+    public LiveData<PagedList<NewActivity>> getNewActivitiesByClock2() {
+        return newActivitiesByClock2;
     }
 
     private static class InsertNewActivityExecutor {

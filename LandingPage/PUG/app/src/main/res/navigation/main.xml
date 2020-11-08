@@ -17,6 +17,13 @@
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_mainFragment_to_newActFragment"
+            app:destination="@id/newActFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/bookingFragment"
@@ -30,7 +37,12 @@
         tools:layout="@layout/fragment_user" />
     <fragment
         android:id="@+id/upcomingActFragment"
-        android:name="tech.sutd.pickupgame.ui.main.main.upcoming.UpcomingActFragment"
+        android:name="tech.sutd.pickupgame.ui.main.main.upcomingact.UpcomingActFragment"
         android:label="fragment_upcoming_act"
         tools:layout="@layout/fragment_upcoming_act" />
+    <fragment
+        android:id="@+id/newActFragment"
+        android:name="tech.sutd.pickupgame.ui.main.main.newact.NewActFragment"
+        android:label="fragment_new_act"
+        tools:layout="@layout/fragment_new_act" />
 </navigation>

@@ -1,26 +1,36 @@
 package tech.sutd.pickupgame.ui.main.main.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.models.ui.YourActivity;
 
-public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.ViewHolder> {
+public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActivityAdapter.ViewHolder> {
 
-    private List<NewActivity> newActivities = new ArrayList<>();
     private RequestManager requestManager;
 
     private int numOfViews = 0;
+
+    public NewActivityAdapter() {
+        super(DIFF_CALLBACK);
+    }
 
     @NonNull
     @Override
@@ -32,22 +42,27 @@ public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        NewActivity newActivity = newActivities.get(position);
+        NewActivity newActivity = getItem(position);
 
         if (position > numOfViews) {
             holder.binding.cardView.setVisibility(View.GONE);
             return;
         }
 
+        assert newActivity != null;
         holder.binding.sport.setText(newActivity.getSport());
-        holder.binding.time.setText(newActivity.getClock());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, ha", Locale.getDefault());
+        String dateFormat = sdf.format(new Date(Long.parseLong(newActivity.getClock())));
+
+        SimpleDateFormat sdfEnd = new SimpleDateFormat("ha", Locale.getDefault());
+        String dateEndFormat = sdfEnd.format(new Date(Long.parseLong(newActivity.getEndClock())));
+
+        String time = dateFormat + " - " + dateEndFormat;
+
+        holder.binding.time.setText(time);
         holder.binding.location.setText(newActivity.getLocation());
         holder.binding.organizer.setText(newActivity.getOrganizer());
-
-        holder.binding.clockImg.setImageResource(newActivity.getClockImg());
-        holder.binding.locationImg.setImageResource(newActivity.getLocationImg());
-        holder.binding.organizerImg.setImageResource(newActivity.getOrganizerImg());
-        holder.binding.sportImg.setImageResource(newActivity.getSportImg());
 
         requestManager.load(newActivity.getClockImg())
                 .into(holder.binding.clockImg);
@@ -71,13 +86,20 @@ public class NewActivityAdapter extends RecyclerView.Adapter<NewActivityAdapter.
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return newActivities.size();
-    }
+    private static DiffUtil.ItemCallback<NewActivity> DIFF_CALLBACK = new DiffUtil.ItemCallback<NewActivity>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull NewActivity oldItem, @NonNull NewActivity newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
 
-    public void setNotifications(List<NewActivity> newActivities, RequestManager requestManager, int numOfViews) {
-        this.newActivities = newActivities;
+        @SuppressLint("DiffUtilEquals")
+        @Override
+        public boolean areContentsTheSame(@NonNull NewActivity oldItem, @NonNull NewActivity newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+
+    public void setNotifications(RequestManager requestManager, int numOfViews) {
         this.requestManager = requestManager;
         this.numOfViews = numOfViews;
         notifyDataSetChanged();

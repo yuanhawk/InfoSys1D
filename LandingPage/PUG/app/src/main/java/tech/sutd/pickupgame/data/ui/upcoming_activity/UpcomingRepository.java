@@ -3,8 +3,8 @@ package tech.sutd.pickupgame.data.ui.upcoming_activity;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
-
-import java.util.List;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
 import tech.sutd.pickupgame.data.AppExecutors;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
@@ -12,12 +12,17 @@ import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 public class UpcomingRepository {
 
     private UpcomingDao upcomingDao;
-    private LiveData<List<UpcomingActivity>> allUpcomingActivities;
+    private final LiveData<PagedList<UpcomingActivity>> allUpcomingActivitiesByClock, upcomingActivitiesByClockTwo;
 
     public UpcomingRepository(Application application) {
         UpcomingDatabase database = UpcomingDatabase.getInstance(application);
         upcomingDao = database.upcomingDao();
-        allUpcomingActivities = upcomingDao.getUpcomingActivities();
+        allUpcomingActivitiesByClock = new LivePagedListBuilder<>(
+                upcomingDao.getAllUpcomingActivitiesByClock(), 20
+        ).build();
+        upcomingActivitiesByClockTwo = new LivePagedListBuilder<>(
+                upcomingDao.getUpcomingActivitiesByClockLimit2(), 2
+        ).build();
     }
 
     public void insert(UpcomingActivity upcomingActivity) {
@@ -36,8 +41,12 @@ public class UpcomingRepository {
         new DeleteAllUpcomingActivitiesExecutor(upcomingDao).execute();
     }
 
-    public LiveData<List<UpcomingActivity>> getAllUpcomingActivities() {
-        return allUpcomingActivities;
+    public LiveData<PagedList<UpcomingActivity>> getAllUpcomingActivitiesByClock() {
+        return allUpcomingActivitiesByClock;
+    }
+
+    public LiveData<PagedList<UpcomingActivity>> getUpcomingActivitiesByClockTwo() {
+        return upcomingActivitiesByClockTwo;
     }
 
     private static class InsertUpcomingActivityExecutor {

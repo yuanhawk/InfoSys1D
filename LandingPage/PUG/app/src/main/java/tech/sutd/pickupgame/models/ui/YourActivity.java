@@ -5,6 +5,8 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.time.OffsetDateTime;
+
 @Entity(tableName = "your_activity")
 public class YourActivity {
     @PrimaryKey
@@ -19,6 +21,9 @@ public class YourActivity {
 
     @SerializedName("clock")
     private String clock;
+
+    @SerializedName("end_clock")
+    private String endClock;
 
     @SerializedName("location_img")
     private int locationImg;
@@ -35,11 +40,12 @@ public class YourActivity {
     @SerializedName("sport_img")
     private int sportImg;
 
-    public YourActivity(int id, String sport, int clockImg, String clock, int locationImg, String location, int organizerImg, String organizer, int sportImg) {
+    public YourActivity(int id, String sport, int clockImg, String clock, String endClock, int locationImg, String location, int organizerImg, String organizer, int sportImg) {
         this.id = id;
         this.sport = sport;
         this.clockImg = clockImg;
         this.clock = clock;
+        this.endClock = endClock;
         this.locationImg = locationImg;
         this.location = location;
         this.organizerImg = organizerImg;
@@ -77,6 +83,14 @@ public class YourActivity {
 
     public void setClock(String clock) {
         this.clock = clock;
+    }
+
+    public String getEndClock() {
+        return endClock;
+    }
+
+    public void setEndClock(String endClock) {
+        this.endClock = endClock;
     }
 
     public int getLocationImg() {

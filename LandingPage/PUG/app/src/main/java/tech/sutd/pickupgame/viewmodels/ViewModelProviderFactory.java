@@ -1,6 +1,7 @@
 package tech.sutd.pickupgame.viewmodels;
 
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,6 +22,7 @@ public class ViewModelProviderFactory implements ViewModelProvider.Factory {
         this.creators = creators;
     }
 
+    @NonNull
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         Provider<? extends ViewModel> creator = creators.get(modelClass);

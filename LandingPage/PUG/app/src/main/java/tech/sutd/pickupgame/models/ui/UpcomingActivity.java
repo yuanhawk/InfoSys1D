@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "upcoming_activity")
 public class UpcomingActivity {
-
     @PrimaryKey
     @SerializedName("id")
     private int id;
@@ -20,6 +19,9 @@ public class UpcomingActivity {
 
     @SerializedName("clock")
     private String clock;
+
+    @SerializedName("end_clock")
+    private String endClock;
 
     @SerializedName("location_img")
     private int locationImg;
@@ -36,11 +38,12 @@ public class UpcomingActivity {
     @SerializedName("sport_img")
     private int sportImg;
 
-    public UpcomingActivity(int id, String sport, int clockImg, String clock, int locationImg, String location, int organizerImg, String organizer, int sportImg) {
+    public UpcomingActivity(int id, String sport, int clockImg, String clock, String endClock, int locationImg, String location, int organizerImg, String organizer, int sportImg) {
         this.id = id;
         this.sport = sport;
         this.clockImg = clockImg;
         this.clock = clock;
+        this.endClock = endClock;
         this.locationImg = locationImg;
         this.location = location;
         this.organizerImg = organizerImg;
@@ -78,6 +81,14 @@ public class UpcomingActivity {
 
     public void setClock(String clock) {
         this.clock = clock;
+    }
+
+    public String getEndClock() {
+        return endClock;
+    }
+
+    public void setEndClock(String endClock) {
+        this.endClock = endClock;
     }
 
     public int getLocationImg() {

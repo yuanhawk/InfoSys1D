@@ -1,6 +1,7 @@
 package tech.sutd.pickupgame.models;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -28,6 +29,7 @@ public class User {
         this.passwd = passwd;
     }
 
+    @Ignore
     public User() {
     }
 

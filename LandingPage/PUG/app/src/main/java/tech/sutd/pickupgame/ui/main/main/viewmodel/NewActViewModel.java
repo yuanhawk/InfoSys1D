@@ -5,25 +5,24 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
-import java.util.List;
+import androidx.paging.PagedList;
 
 import javax.inject.Inject;
 
 import tech.sutd.pickupgame.data.ui.new_activity.NewRepository;
 import tech.sutd.pickupgame.models.ui.NewActivity;
-import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 
 public class NewActViewModel extends ViewModel {
 
     private NewRepository repository;
 
-    private LiveData<List<NewActivity>> newActivities;
+    private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, newActivitiesByClock2;
 
     @Inject
     public NewActViewModel(@NonNull Application application) {
         this.repository = new NewRepository(application);
-        newActivities = repository.getAllNewActivities();
+        allNewActivitiesByClock = repository.getAllNewActivitiesByClock();
+        newActivitiesByClock2 = repository.getNewActivitiesByClock2();
     }
 
     public void insert(NewActivity newActivity) {
@@ -42,7 +41,11 @@ public class NewActViewModel extends ViewModel {
         repository.deleteAllNewActivities();
     }
 
-    public LiveData<List<NewActivity>> getNewActivities() {
-        return newActivities;
+    public LiveData<PagedList<NewActivity>> getAllNewActivitiesByClock() {
+        return allNewActivitiesByClock;
+    }
+
+    public LiveData<PagedList<NewActivity>> getNewActivitiesByClock2() {
+        return newActivitiesByClock2;
     }
 }

@@ -1,6 +1,7 @@
 package tech.sutd.pickupgame.data.ui.new_activity;
 
 import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,6 +12,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.models.ui.PastActivity;
 
 @Dao
 public interface NewDao {
@@ -27,7 +29,9 @@ public interface NewDao {
     @Query("DELETE FROM new_activity")
     void deleteAllNewActivities();
 
-    @Query("SELECT * FROM new_activity")
-    LiveData<List<NewActivity>> getNewActivities();
+    @Query("SELECT * FROM new_activity ORDER BY clock ASC")
+    DataSource.Factory<Integer, NewActivity> getAllNewActivitiesByClock();
 
+    @Query("SELECT * FROM new_activity ORDER BY clock ASC LIMIT 2")
+    DataSource.Factory<Integer, NewActivity> getNewActivitiesByClockLimit2();
 }

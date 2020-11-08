@@ -17,16 +17,12 @@ import tech.sutd.pickupgame.models.ui.YourActivity;
 public class YourActViewModel extends ViewModel {
 
     private YourRepository repository;
-
     private LiveData<List<YourActivity>> yourActivities;
-
-    private LiveData<PagedList<YourActivity>> yourActivitiesByClock;
 
     @Inject
     public YourActViewModel(@NonNull Application application) {
         this.repository = new YourRepository(application);
         yourActivities = repository.getAllYourActivities();
-        yourActivitiesByClock = repository.getYourActivitiesByClock();
     }
 
     public void insert(YourActivity yourActivity) {
@@ -47,9 +43,5 @@ public class YourActViewModel extends ViewModel {
 
     public LiveData<List<YourActivity>> getYourActivities() {
         return yourActivities;
-    }
-
-    public LiveData<PagedList<YourActivity>> getYourActivitiesByClock() {
-        return yourActivitiesByClock;
     }
 }

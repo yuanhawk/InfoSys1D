@@ -28,9 +28,6 @@ public interface YourDao {
     @Query("DELETE FROM your_activity")
     void deleteYourActivities();
 
-    @Query("SELECT * FROM your_activity")
+    @Query("SELECT * FROM your_activity ORDER BY clock DESC LIMIT 10")
     LiveData<List<YourActivity>> getYourActivities();
-
-    @Query("SELECT * FROM your_activity ORDER BY clock")
-    DataSource.Factory<Integer, YourActivity> getYourActivityByClock();
 }

@@ -1,23 +1,30 @@
 package tech.sutd.pickupgame.ui.main.main.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
+import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 
 public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapter.ViewHolder> {
-
     private List<PastActivity> pastActivities = new ArrayList<>();
+
     private RequestManager requestManager;
 
     private int numOfViews = 0;
@@ -40,14 +47,18 @@ public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapte
         }
 
         holder.binding.sport.setText(pastActivity.getSport());
-        holder.binding.time.setText(pastActivity.getClock());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, ha", Locale.getDefault());
+        String dateFormat = sdf.format(new Date(Long.parseLong(pastActivity.getClock())));
+
+        SimpleDateFormat sdfEnd = new SimpleDateFormat("ha", Locale.getDefault());
+        String dateEndFormat = sdfEnd.format(new Date(Long.parseLong(pastActivity.getEndClock())));
+
+        String time = dateFormat + " - " + dateEndFormat;
+
+        holder.binding.time.setText(time);
         holder.binding.location.setText(pastActivity.getLocation());
         holder.binding.organizer.setText(pastActivity.getOrganizer());
-
-        holder.binding.clockImg.setImageResource(pastActivity.getClockImg());
-        holder.binding.locationImg.setImageResource(pastActivity.getLocationImg());
-        holder.binding.organizerImg.setImageResource(pastActivity.getOrganizerImg());
-        holder.binding.sportImg.setImageResource(pastActivity.getSportImg());
 
         requestManager.load(pastActivity.getClockImg())
                 .into(holder.binding.clockImg);

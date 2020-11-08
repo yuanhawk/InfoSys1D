@@ -6,10 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
 
-@Database(entities = {YourActivity.class}, version = 1)
+@Database(entities = {YourActivity.class}, version = 1, exportSchema = false)
 public abstract class YourDatabase extends RoomDatabase {
 
     public static YourDatabase instance;
