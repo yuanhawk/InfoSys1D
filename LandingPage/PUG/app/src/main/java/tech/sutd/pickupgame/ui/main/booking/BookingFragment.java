@@ -1,5 +1,9 @@
 package tech.sutd.pickupgame.ui.main.booking;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,18 +11,28 @@ import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.util.Arrays;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentBookingBinding;
 
 public class BookingFragment extends DaggerFragment {
+
+    private int hour, min;
 
     private FragmentBookingBinding binding;
 
@@ -40,28 +54,93 @@ public class BookingFragment extends DaggerFragment {
     @Override
     public void onStart() {
         super.onStart();
-        initViews();
+        initSportSpinner();
+        initTimePicker();
     }
 
-    private void initViews() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.sport_array, R.layout.support_simple_spinner_dropdown_item);
+    @SuppressLint("DefaultLocale")
+    private void initTimePicker() {
+        binding.timeSpinner.setOnClickListener(v -> {
+            Dialog dialog = setDialog(R.layout.time_picker);
 
-        binding.sportSpinner.setAdapter(adapter);
-        binding.sportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            TimePicker timePicker = dialog.findViewById(R.id.time_picker);
+            Button button = dialog.findViewById(R.id.confirm_button);
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    return;
+            timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> {
+                hour = timePicker.getHour();
+                min = timePicker.getMinute();
+            });
+
+            button.setOnClickListener(view -> {
+                String time;
+
+                if (hour < 12)
+                    time = "AM";
+                else {
+                    time = "PM";
+                    hour -= 12;
                 }
-                Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                binding.timeSpinner.setText(String.format("%d : %d %s", hour, min, time));
 
-            }
+                dialog.dismiss();
+            });
         });
+    }
+
+    private void initSportSpinner() {
+        binding.sportSpinner.setOnClickListener(v -> {
+            Dialog dialog = setDialog(R.layout.sport_spinner);
+
+            EditText sport_et = dialog.findViewById(R.id.sport_et);
+            ListView listView = dialog.findViewById(R.id.sport_list);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    getContext(), R.layout.support_simple_spinner_dropdown_item, Arrays.asList(getResources().getStringArray(R.array.sport_array))
+            );
+
+            listView.setAdapter(adapter);
+
+            sport_et.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    adapter.getFilter().filter(s);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                binding.sportSpinner.setText(adapter.getItem(position));
+
+                dialog.dismiss();
+            });
+        });
+    }
+
+    private Dialog setDialog(int layout) {
+        Dialog dialog = new Dialog(getContext());
+
+        dialog.setContentView(layout);
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        dialog.getWindow().setAttributes(params);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
+
+        return dialog;
     }
 }

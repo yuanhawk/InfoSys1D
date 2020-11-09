@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/sport_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ralewaysemibold"
+        android:text="@string/select_sport"
+        android:padding="15dp"
+        android:paddingStart="20dp"
+        android:textColor="@color/colorBlue"
+        android:textColorHint="@color/colorBlue"
+        android:textSize="18sp"
+        tools:ignore="RtlSymmetry" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/sport_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway"
+        android:hint="@string/search"
+        android:padding="15dp"
+        android:paddingStart="20dp"
+        android:singleLine="true"
+        android:background="@android:drawable/editbox_background"
+        android:textColor="@color/colorBlue"
+        android:textColorHint="@color/colorBlue"
+        android:textSize="18sp"
+        tools:ignore="RtlSymmetry" />
+
+    <ListView
+        android:id="@+id/sport_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

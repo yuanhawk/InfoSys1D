@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:amPmTextColor="#0350A8"
+        android:headerBackground="@color/colorBlueAccent"
+        android:numbersBackgroundColor="#F3F3F3"
+        android:numbersInnerTextColor="#0350A8"
+        android:numbersSelectorColor="#FFBAB6"
+        android:numbersTextColor="#0350A8"
+        android:timePickerMode="clock" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/colorRed"
+        android:fontFamily="@font/ralewaysemibold"
+        android:paddingStart="15dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="8dp"
+        android:text="@string/confirm"
+        android:textColor="@color/colorWhite"
+        android:textSize="15sp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
