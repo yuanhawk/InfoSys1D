@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
+    android:layout_marginBottom="50dp"
     android:background="@drawable/gradient"
     android:orientation="vertical"
     android:paddingStart="20dp"
     android:paddingTop="50dp"
     android:paddingEnd="20dp"
-    android:paddingBottom="30dp"
-    android:layout_marginBottom="50dp">
+    android:paddingBottom="30dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -44,6 +44,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ralewaysemibold"
                     android:hint="@string/select_sport"
+                    android:importantForAutofill="noExcludeDescendants"
                     android:padding="15dp"
                     android:paddingStart="20dp"
                     android:textColor="@color/colorWhite"
@@ -51,24 +52,24 @@
                     android:textSize="18sp"
                     tools:ignore="RtlSymmetry" />
 
-<!--                <androidx.appcompat.widget.AppCompatSpinner-->
-<!--                    android:id="@+id/sport_spinner"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentEnd="true"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:layout_marginTop="15dp"-->
-<!--                    android:layout_marginEnd="5dp"-->
-<!--                    android:background="@android:color/transparent"-->
-<!--                    android:gravity="center"-->
-<!--                    android:spinnerMode="dropdown" />-->
+                <!--                <androidx.appcompat.widget.AppCompatSpinner-->
+                <!--                    android:id="@+id/sport_spinner"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_alignParentEnd="true"-->
+                <!--                    android:layout_centerVertical="true"-->
+                <!--                    android:layout_marginTop="15dp"-->
+                <!--                    android:layout_marginEnd="5dp"-->
+                <!--                    android:background="@android:color/transparent"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:spinnerMode="dropdown" />-->
 
                 <RelativeLayout
                     android:id="@+id/spinnerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_toEndOf="@+id/sport_tv"
                     android:background="@drawable/spinner_bg"
                     android:gravity="center"

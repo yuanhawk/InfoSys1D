@@ -5,19 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -28,8 +27,6 @@ import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
-import tech.sutd.pickupgame.ui.main.main.MainFragment;
-import tech.sutd.pickupgame.ui.main.user.UserFragment;
 
 public class MainActivity extends DaggerAppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -65,8 +62,14 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
         init();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        checkBookingFragment();
+    }
+
     private void init() {
-        navController = ((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)).getNavController();
+        navController = ((NavHostFragment) Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment))).getNavController();
 //        configuration = new AppBarConfiguration.Builder(R.id.mainFragment, R.id.userFragment)
 //                .build();
 //        NavigationUI.setupActionBarWithNavController(this, navController);
@@ -92,6 +95,7 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
 
                     setIcon(R.drawable.ic_remove);
                 } else {
+                    assert fragment != null;
                     fragmentManager.beginTransaction().remove(fragment).commit();
                     clickState = ClickState.NONE;
 

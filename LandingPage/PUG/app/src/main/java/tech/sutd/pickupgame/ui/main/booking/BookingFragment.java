@@ -52,6 +52,9 @@ public class BookingFragment extends DaggerFragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    return;
+                }
                 Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
             }
 
