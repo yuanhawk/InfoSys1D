@@ -24,6 +24,7 @@ import java.util.Locale;
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
+import tech.sutd.pickupgame.util.DateConverter;
 
 public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapter.ViewHolder> {
 
@@ -52,11 +53,8 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
 
         holder.binding.sport.setText(yourActivity.getSport());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, ha", Locale.getDefault());
-        String dateFormat = sdf.format(new Date(Long.parseLong(yourActivity.getClock())));
-
-        SimpleDateFormat sdfEnd = new SimpleDateFormat("ha", Locale.getDefault());
-        String dateEndFormat = sdfEnd.format(new Date(Long.parseLong(yourActivity.getEndClock())));
+        String dateFormat = DateConverter.clockConverter(yourActivity.getClock());
+        String dateEndFormat = DateConverter.endClockConverter(yourActivity.getEndClock());
 
         String time = dateFormat + " - " + dateEndFormat;
 

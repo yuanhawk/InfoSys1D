@@ -38,4 +38,12 @@
     <string name="participants">Participants</string>
     <string name="additional_notes">Additional Notes</string>
     <string name="confirm">Confirm</string>
+    <string name="badminton">Badminton</string>
+    <string name="cycling">Cycling</string>
+
+    <string-array name="sport_array">
+        <item></item>
+        <item>Badminton</item>
+        <item>Cycling</item>
+    </string-array>
 </resources>

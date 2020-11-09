@@ -23,6 +23,7 @@ import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
+import tech.sutd.pickupgame.util.DateConverter;
 
 public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivity, UpcomingActivityAdapter.ViewHolder> {
 
@@ -54,11 +55,8 @@ public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivit
         assert upcomingActivity != null;
         holder.binding.sport.setText(upcomingActivity.getSport());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, ha", Locale.getDefault());
-        String dateFormat = sdf.format(new Date(Long.parseLong(upcomingActivity.getClock())));
-
-        SimpleDateFormat sdfEnd = new SimpleDateFormat("ha", Locale.getDefault());
-        String dateEndFormat = sdfEnd.format(new Date(Long.parseLong(upcomingActivity.getEndClock())));
+        String dateFormat = DateConverter.clockConverter(upcomingActivity.getClock());
+        String dateEndFormat = DateConverter.endClockConverter(upcomingActivity.getEndClock());
 
         String time = dateFormat + " - " + dateEndFormat;
 

@@ -21,6 +21,7 @@ import java.util.Locale;
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
+import tech.sutd.pickupgame.util.DateConverter;
 
 public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActivityAdapter.ViewHolder> {
 
@@ -52,11 +53,8 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
         assert newActivity != null;
         holder.binding.sport.setText(newActivity.getSport());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, ha", Locale.getDefault());
-        String dateFormat = sdf.format(new Date(Long.parseLong(newActivity.getClock())));
-
-        SimpleDateFormat sdfEnd = new SimpleDateFormat("ha", Locale.getDefault());
-        String dateEndFormat = sdfEnd.format(new Date(Long.parseLong(newActivity.getEndClock())));
+        String dateFormat = DateConverter.clockConverter(newActivity.getClock());
+        String dateEndFormat = DateConverter.endClockConverter(newActivity.getEndClock());
 
         String time = dateFormat + " - " + dateEndFormat;
 
@@ -86,7 +84,7 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
         }
     }
 
-    private static DiffUtil.ItemCallback<NewActivity> DIFF_CALLBACK = new DiffUtil.ItemCallback<NewActivity>() {
+    private static final DiffUtil.ItemCallback<NewActivity> DIFF_CALLBACK = new DiffUtil.ItemCallback<NewActivity>() {
         @Override
         public boolean areItemsTheSame(@NonNull NewActivity oldItem, @NonNull NewActivity newItem) {
             return oldItem.getId() == newItem.getId();
