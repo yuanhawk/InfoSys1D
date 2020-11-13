@@ -1,4 +1,5 @@
 <resources>
+    <string name="shared_pref_file">tech.sutd.pickupgame.sharedpref</string>
     <string name="app_name">PUG</string>
     <string name="pick_up_games">ick</string>
     <string name="desc">Working life is a mess</string>
@@ -41,6 +42,7 @@
     <string name="badminton">Badminton</string>
     <string name="cycling">Cycling</string>
     <string name="search">Search&#8230;</string>
+    <string name="select_location">Select Location&#8230;</string>
 
     <string name="edit_profile">Edit Profile</string>
     <string name="notification_preferences">Notification Preferences</string>
@@ -50,9 +52,18 @@
     <string name="activities_joined">Activities Joined</string>
     <string name="activities_organised">Activities Organised</string>
     <string name="different_activities_tried">Different Activities Tried</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="select_num_participants">Select Number of Participants&#8230;</string>
+    <string name="desc_activity">Description of Activity</string>
+
 
     <string-array name="sport_array">
         <item>Badminton</item>
         <item>Cycling</item>
+    </string-array>
+
+    <string-array name="location_array">
+        <item>East Coast Park</item>
+        <item>Ang Mo Kio - Bishan Park</item>
     </string-array>
 </resources>

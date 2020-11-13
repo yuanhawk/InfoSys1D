@@ -21,8 +21,8 @@
         tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/sport_et"
-        android:layout_width="wrap_content"
+        android:id="@+id/search_category"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/raleway"
         android:hint="@string/search"
@@ -36,8 +36,10 @@
         tools:ignore="RtlSymmetry" />
 
     <ListView
-        android:id="@+id/sport_list"
+        android:id="@+id/category_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

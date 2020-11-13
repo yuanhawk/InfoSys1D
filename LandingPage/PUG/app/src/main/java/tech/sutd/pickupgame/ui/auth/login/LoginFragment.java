@@ -1,5 +1,6 @@
 package tech.sutd.pickupgame.ui.auth.login;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
@@ -35,6 +37,8 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     private FragmentLoginBinding binding;
     private NavController navController;
 
+    private SharedPreferences preferences;
+
     private UserViewModel viewModel;
 
     @Inject
@@ -48,12 +52,14 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
 
-        binding.signUp.setOnClickListener(this);
-        binding.login.setOnClickListener(this);
-
         viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
 
-        subscribeObserver();
+        preferences = BaseApplication.getSharedPref();
+        if (preferences.getBoolean(getString(R.string.remember_me), false)) {// if checked
+            subscribeObserver();
+            binding.rememberMe.setChecked(true);
+        }
+
         return binding.getRoot();
     }
 
@@ -69,6 +75,13 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        binding.signUp.setOnClickListener(this);
+        binding.login.setOnClickListener(this);
     }
 
     @Override
@@ -100,6 +113,18 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
         if (TextUtils.isEmpty(passwd)) {
             binding.passwd.setError("Password is Required");
             return;
+        }
+
+        if (binding.rememberMe.isChecked() && !preferences.getBoolean(getString(R.string.remember_me), false)) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(getString(R.string.remember_me), true);
+            editor.apply();
+        }
+
+        if (!binding.rememberMe.isChecked() && preferences.getBoolean(getString(R.string.remember_me), false)) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(getString(R.string.remember_me), false);
+            editor.apply();
         }
 
         User user = new User.Builder(0)

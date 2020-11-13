@@ -8,6 +8,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
@@ -21,6 +22,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
+import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.constant.ClickState;
@@ -47,6 +49,8 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     @Inject
     Handler handler;
 
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +62,32 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     @Override
     protected void onResume() {
         super.onResume();
-        fragmentManager = getSupportFragmentManager();
         init();
+        fragmentManager = getSupportFragmentManager();
+
+        preferences = BaseApplication.getSharedPref();
+
+        if (preferences.getBoolean(getString(R.string.activities_organised), false)) {
+            addBookingFragment();
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(getString(R.string.activities_organised), false);
+            editor.apply();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        checkBookingFragment();
+        Fragment fragment = fragmentManager.findFragmentByTag(TAG);
+        if (fragment != null) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+            clickState = ClickState.NONE;
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(getString(R.string.activities_organised), true);
+            editor.apply();
+        }
     }
 
     private void init() {
@@ -88,18 +110,14 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
             case R.id.bookingFragment:
                 Fragment fragment = fragmentManager.findFragmentByTag(TAG);
                 if (fragment == null && clickState == ClickState.NONE) {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.add(R.id.nav_host_fragment, new BookingFragment(), TAG)
-                            .commit();
-                    clickState = ClickState.CLICKED;
-
-                    setIcon(R.drawable.ic_remove);
+                    addBookingFragment();
                 } else {
-                    assert fragment != null;
-                    fragmentManager.beginTransaction().remove(fragment).commit();
-                    clickState = ClickState.NONE;
+                    if (fragment != null) {
+                        fragmentManager.beginTransaction().remove(fragment).commit();
+                        clickState = ClickState.NONE;
 
-                    setIcon(R.drawable.ic_add);
+                        setIcon(R.drawable.ic_add);
+                    }
                 }
                 break;
             case R.id.userFragment:
@@ -110,6 +128,17 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
         }
         return true;
     }
+
+    private void addBookingFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.nav_host_fragment, new BookingFragment(), TAG)
+                .commit();
+
+        clickState = ClickState.CLICKED;
+
+        setIcon(R.drawable.ic_remove);
+    }
+
 
     private void setIcon(int drawable) {
         handler.post(() -> {
@@ -127,6 +156,10 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
 
             setIcon(R.drawable.ic_add);
         }
+
+        clickState = ClickState.CLICKED;
+
+        setIcon(R.drawable.ic_remove);
     }
 
     @Override
