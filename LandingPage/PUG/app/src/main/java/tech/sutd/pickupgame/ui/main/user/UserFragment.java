@@ -12,6 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.RequestManager;
+
+import javax.inject.Inject;
+
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentUserBinding;
@@ -21,6 +25,9 @@ public class UserFragment extends DaggerFragment {
     private FragmentUserBinding binding;
 
     private NavController navController;
+
+    @Inject
+    RequestManager requestManager;
 
     @Nullable
     @Override
@@ -33,5 +40,12 @@ public class UserFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        requestManager.load(R.drawable.ic_pug)
+                .into(binding.profileImage);
     }
 }

@@ -13,6 +13,8 @@ public class AppExecutors {
 
     private static final Object LOCK = new Object();
 
+    private static int threadCt = Runtime.getRuntime().availableProcessors() + 1;
+
     public AppExecutors(Executor diskIO, Executor mainThread, Executor networkIO) {
         this.diskIO = diskIO;
         this.mainThread = mainThread;
@@ -23,7 +25,7 @@ public class AppExecutors {
         if (instance == null) {
             synchronized (LOCK) {
                 instance = new AppExecutors(Executors.newSingleThreadExecutor(),
-                        Executors.newFixedThreadPool(3),
+                        Executors.newFixedThreadPool(threadCt),
                         new MainThreadExecutor());
             }
         }

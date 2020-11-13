@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.NavController;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.functions.Function;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.data.UserRepository;
 import tech.sutd.pickupgame.models.User;
@@ -51,11 +53,6 @@ public class UserViewModel extends ViewModel {
         sessionManager.login(fragment, context, user);
     }
 
-    // Remember to reset the user details to -1
-    public void logout(Context context, User user) {
-        repository.update(user);
-    }
-
     public void update(User user) {
         repository.update(user);
     }
@@ -67,5 +64,4 @@ public class UserViewModel extends ViewModel {
     public LiveData<List<User>> getUsers() {
         return users;
     }
-
 }

@@ -1,6 +1,7 @@
 package tech.sutd.pickupgame.models.ui;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -51,6 +52,10 @@ public class YourActivity {
         this.organizerImg = organizerImg;
         this.organizer = organizer;
         this.sportImg = sportImg;
+    }
+
+    @Ignore
+    public YourActivity() {
     }
 
     public int getId() {
