@@ -37,6 +37,20 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/style_spinner"
                 android:hint="@string/select_sport"
+                android:fontFamily="@font/ralewaymedium"
+                android:textColorHint="@color/colorBlue"
+                android:spinnerMode="dropdown" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/date_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/style_spinner"
+                android:hint="@string/date"
+                android:fontFamily="@font/ralewaymedium"
+                android:textColorHint="@color/colorBlue"
                 android:spinnerMode="dropdown" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -46,6 +60,8 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/style_spinner"
                 android:hint="@string/time"
+                android:fontFamily="@font/ralewaymedium"
+                android:textColorHint="@color/colorBlue"
                 android:spinnerMode="dropdown" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -55,6 +71,8 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/style_spinner"
                 android:hint="@string/select_location"
+                android:fontFamily="@font/ralewaymedium"
+                android:textColorHint="@color/colorBlue"
                 android:spinnerMode="dropdown" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -64,6 +82,8 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/style_spinner"
                 android:hint="@string/select_num_participants"
+                android:fontFamily="@font/ralewaymedium"
+                android:textColorHint="@color/colorBlue"
                 android:spinnerMode="dropdown" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -73,6 +93,8 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/style_spinner"
                 android:hint="@string/desc_activity"
+                android:fontFamily="@font/ralewaymedium"
+                android:textColorHint="@color/colorBlue"
                 android:spinnerMode="dropdown" />
 
             <com.google.android.material.button.MaterialButton

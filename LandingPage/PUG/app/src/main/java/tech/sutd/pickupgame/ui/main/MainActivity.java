@@ -104,7 +104,6 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mainFragment:
-                checkBookingFragment();
                 navController.popBackStack(R.id.mainFragment, false);
                 break;
             case R.id.bookingFragment:
@@ -121,7 +120,6 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
                 }
                 break;
             case R.id.userFragment:
-                checkBookingFragment();
                 navController.popBackStack(R.id.userFragment, true);
                 navController.navigate(R.id.userFragment);
                 break;
@@ -171,24 +169,6 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
             setIcon(R.drawable.ic_add);
         } else
             super.onBackPressed();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout:
-                sessionManager.logout(this);
-                return true;
-
-            default:
-                return false;
-        }
     }
 
     public void logout() {

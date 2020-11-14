@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@android:color/white"
-    android:padding="20dp">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <tech.sutd.pickupgame.util.TextInputEditTextNoAutofill
-        android:id="@+id/add_notes"
-        android:layout_width="match_parent"
+    <DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ralewaysemibold"
-        android:hint="@string/additional_notes"
-        android:importantForAutofill="no"
-        android:padding="15dp"
-        android:paddingStart="20dp"
-        android:textColor="@color/colorBlue"
-        android:textColorHint="@color/colorBlue"
-        android:textSize="18sp"
-        tools:ignore="RtlSymmetry" />
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorWhite"
+        android:calendarTextColor="@color/colorBlue"
+        android:datePickerMode="calendar"
+        android:dayOfWeekBackground="@color/colorBlue"
+        android:headerBackground="@color/colorRed" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm_button"
@@ -32,11 +27,12 @@
         android:fontFamily="@font/ralewaysemibold"
         android:importantForAutofill="noExcludeDescendants"
         android:paddingStart="15dp"
-        android:paddingTop="20dp"
+        android:paddingTop="8dp"
         android:paddingEnd="15dp"
         android:paddingBottom="8dp"
         android:text="@string/confirm"
         android:textColor="@color/colorWhite"
         android:textSize="15sp" />
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

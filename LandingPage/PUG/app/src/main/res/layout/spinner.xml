@@ -20,7 +20,7 @@
         android:textSize="18sp"
         tools:ignore="RtlSymmetry" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <tech.sutd.pickupgame.util.TextInputEditTextNoAutofill
         android:id="@+id/search_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

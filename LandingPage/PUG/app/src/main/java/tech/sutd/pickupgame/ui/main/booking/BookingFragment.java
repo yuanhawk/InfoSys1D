@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -19,29 +21,37 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentBookingBinding;
+import tech.sutd.pickupgame.util.TextInputEditTextNoAutofill;
 
-public class BookingFragment extends DaggerFragment {
+public class BookingFragment extends BaseFragment {
 
-    private int hour, min, numberPicked;
+    private int hour, min, numberPicked, year, month, day;
 
     private FragmentBookingBinding binding;
 
     private NavController navController;
 
+    private Calendar calendar;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBookingBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
     }
 
@@ -51,10 +61,14 @@ public class BookingFragment extends DaggerFragment {
         navController = Navigation.findNavController(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onStart() {
         super.onStart();
+        calendar = Calendar.getInstance();
+
         initSportSpinner();
+        initDatePicker();
         initTimePicker();
         initLocationSpinner();
         initParticipantSpinner();
@@ -65,11 +79,11 @@ public class BookingFragment extends DaggerFragment {
         binding.addNotesSpinner.setOnClickListener(v -> {
             Dialog dialog = setDialog(R.layout.addon_notes);
 
-            EditText addNotes_et = dialog.findViewById(R.id.add_notes);
+            EditText add_notes_et = dialog.findViewById(R.id.add_notes);
             Button button = dialog.findViewById(R.id.confirm_button);
 
             button.setOnClickListener(view -> {
-                binding.addNotesSpinner.setText(String.valueOf(addNotes_et.getText()));
+                binding.addNotesSpinner.setText(String.valueOf(add_notes_et.getText()));
 
                 dialog.dismiss();
             });
@@ -144,6 +158,9 @@ public class BookingFragment extends DaggerFragment {
             TimePicker timePicker = dialog.findViewById(R.id.time_picker);
             Button button = dialog.findViewById(R.id.confirm_button);
 
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+            min = calendar.get(Calendar.MINUTE);
+
             timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> {
                 hour = hourOfDay;
                 min = minute;
@@ -154,12 +171,45 @@ public class BookingFragment extends DaggerFragment {
 
                 if (hour < 12)
                     time = "AM";
+                else if (hour == 12)
+                    time = "PM";
                 else {
                     time = "PM";
                     hour -= 12;
                 }
 
-                binding.timeSpinner.setText(String.format("%d : %d %s", hour, min, time));
+                if (min < 10)
+                    binding.timeSpinner.setText(String.format("%d : 0%d %s", hour, min, time));
+                else
+                    binding.timeSpinner.setText(String.format("%d : %d %s", hour, min, time));
+
+                dialog.dismiss();
+            });
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("DefaultLocale")
+    private void initDatePicker() {
+        binding.dateSpinner.setOnClickListener(v -> {
+            Dialog dialog = setDialog(R.layout.date_picker);
+
+            DatePicker datePicker = dialog.findViewById(R.id.date_picker);
+            Button button = dialog.findViewById(R.id.confirm_button);
+
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH) + 1;
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            datePicker.init(year, month, day, (view, year, monthOfYear, dayOfMonth) -> {
+                this.year = year;
+                month = monthOfYear + 1;
+                day = dayOfMonth;
+            });
+
+            button.setOnClickListener(view -> {
+                binding.dateSpinner.setText(new StringBuilder().append(day).append("/")
+                        .append(month).append("/").append(year));
 
                 dialog.dismiss();
             });

@@ -10,14 +10,8 @@
         android:id="@+id/time_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:amPmTextColor="#0350A8"
-        android:headerBackground="@color/colorBlueAccent"
-        android:importantForAutofill="noExcludeDescendants"
-        android:numbersBackgroundColor="#F3F3F3"
-        android:numbersInnerTextColor="#0350A8"
-        android:numbersSelectorColor="#FFBAB6"
-        android:numbersTextColor="#0350A8"
-        android:timePickerMode="clock" />
+        android:layout_gravity="center_horizontal"
+        android:timePickerMode="spinner" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm_button"
@@ -27,7 +21,6 @@
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/colorRed"
         android:fontFamily="@font/ralewaysemibold"
-        android:importantForAutofill="noExcludeDescendants"
         android:paddingStart="15dp"
         android:paddingTop="8dp"
         android:paddingEnd="15dp"

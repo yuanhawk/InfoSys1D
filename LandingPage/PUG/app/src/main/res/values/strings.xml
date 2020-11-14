@@ -55,6 +55,7 @@
     <string name="remember_me">Remember Me</string>
     <string name="select_num_participants">Select Number of Participants&#8230;</string>
     <string name="desc_activity">Description of Activity</string>
+    <string name="date">Date</string>
 
 
     <string-array name="sport_array">

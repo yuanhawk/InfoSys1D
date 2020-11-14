@@ -1,5 +1,6 @@
 package tech.sutd.pickupgame.ui.main.user;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,9 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.databinding.FragmentUserBinding;
+import tech.sutd.pickupgame.ui.main.MainActivity;
 
 public class UserFragment extends DaggerFragment {
 
@@ -28,6 +31,9 @@ public class UserFragment extends DaggerFragment {
 
     @Inject
     RequestManager requestManager;
+
+    @Inject
+    SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -47,5 +53,11 @@ public class UserFragment extends DaggerFragment {
         super.onStart();
         requestManager.load(R.drawable.ic_pug)
                 .into(binding.profileImage);
+
+        binding.logout.setOnClickListener(v -> {
+            MainActivity activity = (MainActivity) getActivity();
+            if (activity != null)
+                sessionManager.logout(activity);
+        });
     }
 }

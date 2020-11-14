@@ -12,8 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.main.MainActivity" />
-        <activity android:name=".ui.auth.AuthActivity">
+            android:name=".ui.main.MainActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".ui.auth.AuthActivity"
+            android:configChanges="orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
