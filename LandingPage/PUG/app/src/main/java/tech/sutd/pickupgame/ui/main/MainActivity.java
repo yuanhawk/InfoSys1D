@@ -11,9 +11,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,7 +31,7 @@ import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 
-public class MainActivity extends DaggerAppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends DaggerAppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, BaseInterface {
 
     private int clickState = ClickState.NONE;
 
@@ -43,6 +44,8 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     private Menu menu;
 //    private AppBarConfiguration configuration;
 
+    private BaseInterface listener;
+
     @Inject
     SessionManager sessionManager;
 
@@ -50,6 +53,28 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     Handler handler;
 
     private SharedPreferences preferences;
+
+    public void setListener(BaseInterface listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void customAction() { // showProgressBar
+        handler.post(() -> {
+            runOnUiThread(() -> binding.progress.setVisibility(View.VISIBLE));
+            Thread.currentThread().interrupt();
+        });
+
+        handler.postDelayed(() -> {
+            runOnUiThread(() -> {
+                binding.progress.setVisibility(View.GONE);
+
+                listener.customAction();
+                Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
+            });
+            Thread.currentThread().interrupt();
+        }, 5000);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,8 +154,11 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
 
     private void addBookingFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.nav_host_fragment, new BookingFragment(), TAG)
+        BookingFragment bookingFragment = new BookingFragment();
+        transaction.add(R.id.nav_host_fragment, bookingFragment, TAG)
                 .commit();
+
+        setListener(bookingFragment);
 
         clickState = ClickState.CLICKED;
 
@@ -176,4 +204,5 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
         startActivity(intent);
         finish();
     }
+
 }

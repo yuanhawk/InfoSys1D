@@ -1,5 +1,6 @@
 package tech.sutd.pickupgame.ui.auth.register;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,9 +17,12 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
@@ -58,6 +62,11 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
         navController = Navigation.findNavController(view);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
 
     @Override
     public void onClick(View v) {

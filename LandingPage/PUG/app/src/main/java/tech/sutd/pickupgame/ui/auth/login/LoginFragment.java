@@ -1,5 +1,6 @@
 package tech.sutd.pickupgame.ui.auth.login;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.ui.auth.UserViewModel;
+import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class LoginFragment extends DaggerFragment implements View.OnClickListener {
@@ -40,6 +42,8 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     private SharedPreferences preferences;
 
     private UserViewModel viewModel;
+
+    private BaseInterface listener;
 
     @Inject
     FirebaseAuth firebaseAuth;
@@ -139,5 +143,20 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     public void loginFailed() {
         clickState = ClickState.NONE;
         binding.progress.setVisibility(View.GONE);
+    }
+
+    public BaseInterface getListener() {
+        return listener;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (BaseInterface) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
     }
 }

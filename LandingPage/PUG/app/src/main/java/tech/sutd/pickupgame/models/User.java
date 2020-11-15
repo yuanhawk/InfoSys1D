@@ -36,6 +36,10 @@ public class User {
         passwd = builder.passwd;
     }
 
+    public static User defaultUser() {
+        return new User(0, "-1", "-1", "-1");
+    }
+
     public static class Builder {
         private int id;
         private String username;

@@ -2,6 +2,8 @@ package tech.sutd.pickupgame.ui.main.booking;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -30,13 +32,14 @@ import android.widget.TimePicker;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentBookingBinding;
-import tech.sutd.pickupgame.util.TextInputEditTextNoAutofill;
+import tech.sutd.pickupgame.ui.main.BaseInterface;
+import tech.sutd.pickupgame.ui.main.MainActivity;
 
-public class BookingFragment extends BaseFragment {
+public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private int hour, min, numberPicked, year, month, day;
 
@@ -46,11 +49,28 @@ public class BookingFragment extends BaseFragment {
 
     private Calendar calendar;
 
+    private SharedPreferences preferences;
+
+    private BaseInterface listener;
+
+    @Override
+    public void customAction() { // getActivityCache
+        binding.sportSpinner.setText(preferences.getString(getString(R.string.select_sport), ""));
+        binding.dateSpinner.setText(preferences.getString(getString(R.string.date), ""));
+        binding.timeSpinner.setText(preferences.getString(getString(R.string.time), ""));
+        binding.locationSpinner.setText(preferences.getString(getString(R.string.select_location), ""));
+        binding.participantSpinner.setText(preferences.getString(getString(R.string.select_num_participants), ""));
+        binding.addNotesSpinner.setText(preferences.getString(getString(R.string.additional_notes), ""));
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBookingBinding.inflate(inflater, container, false);
+
+        preferences = BaseApplication.getSharedPref();
+        customAction();
 
         return binding.getRoot();
     }
@@ -73,6 +93,20 @@ public class BookingFragment extends BaseFragment {
         initLocationSpinner();
         initParticipantSpinner();
         initAddNotesSpinner();
+        initConfirmBtn();
+    }
+
+    private void initConfirmBtn() {
+        binding.confirmButton.setOnClickListener(v -> {
+            saveData(getString(R.string.select_sport), "");
+            saveData(getString(R.string.date), "");
+            saveData(getString(R.string.time), "");
+            saveData(getString(R.string.select_location), "");
+            saveData(getString(R.string.select_num_participants), "");
+            saveData(getString(R.string.additional_notes), "");
+
+            listener.customAction(); // set ProgressBar on
+        });
     }
 
     private void initAddNotesSpinner() {
@@ -83,7 +117,10 @@ public class BookingFragment extends BaseFragment {
             Button button = dialog.findViewById(R.id.confirm_button);
 
             button.setOnClickListener(view -> {
-                binding.addNotesSpinner.setText(String.valueOf(add_notes_et.getText()));
+                String addNotes = String.valueOf(add_notes_et.getText()).trim();
+                binding.addNotesSpinner.setText(addNotes);
+
+                saveData(getString(R.string.additional_notes), addNotes);
 
                 dialog.dismiss();
             });
@@ -105,7 +142,10 @@ public class BookingFragment extends BaseFragment {
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> numberPicked = newVal);
 
             button.setOnClickListener(view -> {
-                binding.participantSpinner.setText(String.valueOf(numberPicked));
+                String numOfParticipants = String.valueOf(numberPicked);
+                binding.participantSpinner.setText(numOfParticipants);
+
+                saveData(getString(R.string.select_num_participants), numOfParticipants);
 
                 dialog.dismiss();
             });
@@ -143,7 +183,10 @@ public class BookingFragment extends BaseFragment {
             });
 
             listView.setOnItemClickListener((parent, view, position, id) -> {
-                binding.locationSpinner.setText(adapter.getItem(position));
+                String location = adapter.getItem(position);
+                binding.locationSpinner.setText(location);
+
+                saveData(getString(R.string.select_location), location);
 
                 dialog.dismiss();
             });
@@ -178,10 +221,16 @@ public class BookingFragment extends BaseFragment {
                     hour -= 12;
                 }
 
-                if (min < 10)
-                    binding.timeSpinner.setText(String.format("%d : 0%d %s", hour, min, time));
-                else
-                    binding.timeSpinner.setText(String.format("%d : %d %s", hour, min, time));
+                String timeFormat;
+                if (min < 10) {
+                    timeFormat = String.format("%d : 0%d %s", hour, min, time);
+                    binding.timeSpinner.setText(timeFormat);
+                } else {
+                    timeFormat = String.format("%d : %d %s", hour, min, time);
+                    binding.timeSpinner.setText(timeFormat);
+                }
+
+                saveData(getString(R.string.time), timeFormat);
 
                 dialog.dismiss();
             });
@@ -208,8 +257,10 @@ public class BookingFragment extends BaseFragment {
             });
 
             button.setOnClickListener(view -> {
-                binding.dateSpinner.setText(new StringBuilder().append(day).append("/")
-                        .append(month).append("/").append(year));
+                String date = day + "/" + month + "/" + year;
+                binding.dateSpinner.setText(date);
+
+                saveData(getString(R.string.date), date);
 
                 dialog.dismiss();
             });
@@ -247,7 +298,11 @@ public class BookingFragment extends BaseFragment {
             });
 
             listView.setOnItemClickListener((parent, view, position, id) -> {
-                binding.sportSpinner.setText(adapter.getItem(position));
+                String sport = adapter.getItem(position);
+
+                binding.sportSpinner.setText(sport);
+
+                saveData(getString(R.string.select_sport), sport);
 
                 dialog.dismiss();
             });
@@ -270,5 +325,21 @@ public class BookingFragment extends BaseFragment {
         dialog.show();
 
         return dialog;
+    }
+
+    private void saveData(String key, String val) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, val);
+        editor.apply();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (BaseInterface) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

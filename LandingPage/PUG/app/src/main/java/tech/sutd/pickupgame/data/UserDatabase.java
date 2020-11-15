@@ -50,12 +50,7 @@ public abstract class UserDatabase extends RoomDatabase {
 
         private void execute() {
             AppExecutors.getInstance().getDiskIO().execute(() ->
-                    userDao.insert(new User.Builder(0)
-                            .setUsername("-1")
-                            .setPasswd("-1")
-                            .setEmail("-1")
-                            .build()
-                    ));
+                    userDao.insert(User.defaultUser()));
         }
     }
 }

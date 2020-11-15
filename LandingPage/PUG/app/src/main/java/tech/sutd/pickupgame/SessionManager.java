@@ -54,7 +54,7 @@ public class SessionManager {
                     if (task.isSuccessful()) {
                         Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show();
 
-                        ((AuthActivity) fragment.getActivity()).login();
+                        fragment.getListener().customAction();
                     } else {
                         Toast.makeText(context, "Error! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         fragment.loginFailed();
