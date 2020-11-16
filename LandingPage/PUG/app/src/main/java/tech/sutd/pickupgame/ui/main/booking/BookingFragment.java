@@ -338,23 +338,23 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
         });
     }
 
-    private Dialog setDialog(int layout) {
-        Dialog dialog = new Dialog(getContext());
-
-        dialog.setContentView(layout);
-
-        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-
-        dialog.getWindow().setAttributes(params);
-
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        dialog.show();
-
-        return dialog;
-    }
+//    private Dialog setDialog(int layout) {
+//        Dialog dialog = new Dialog(getContext());
+//
+//        dialog.setContentView(layout);
+//
+//        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+//        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//
+//        dialog.getWindow().setAttributes(params);
+//
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//        dialog.show();
+//
+//        return dialog;
+//    }
 
     private void saveData(String key, String val) {
         SharedPreferences.Editor editor = preferences.edit();

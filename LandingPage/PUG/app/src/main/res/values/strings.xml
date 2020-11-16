@@ -58,6 +58,9 @@
     <string name="date">Date</string>
 
     <string name="required_fields">Required Fields</string>
+    <string name="filter_by">Filter By&#8230;</string>
+    <string name="sport">Sport</string>
+    <string name="near_me">Near Me</string>
 
 
     <string-array name="sport_array">

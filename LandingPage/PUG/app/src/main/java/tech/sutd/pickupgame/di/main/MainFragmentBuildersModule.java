@@ -2,6 +2,8 @@ package tech.sutd.pickupgame.di.main;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
+import tech.sutd.pickupgame.di.main.new_fragment.NewActFragmentModule;
+import tech.sutd.pickupgame.di.main.new_fragment.NewActFragmentScope;
 import tech.sutd.pickupgame.di.main.upcoming_fragment.UpcomingActFragmentModule;
 import tech.sutd.pickupgame.di.main.upcoming_fragment.UpcomingActFragmentScope;
 import tech.sutd.pickupgame.di.main.upcoming_fragment.UpcomingActFragmentViewModelModule;
@@ -31,6 +33,9 @@ public abstract class MainFragmentBuildersModule {
     )
     abstract UpcomingActFragment contributeUpcomingActFragment();
 
-    @ContributesAndroidInjector
+    @NewActFragmentScope
+    @ContributesAndroidInjector(
+            modules = {NewActFragmentModule.class}
+    )
     abstract NewActFragment contributeNewActFragment();
 }

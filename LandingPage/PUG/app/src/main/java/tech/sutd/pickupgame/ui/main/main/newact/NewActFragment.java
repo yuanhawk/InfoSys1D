@@ -1,5 +1,9 @@
 package tech.sutd.pickupgame.ui.main.main.newact;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,24 +14,33 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bumptech.glide.RequestManager;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentNewActBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.ui.main.main.adapter.FilterAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class NewActFragment extends DaggerFragment {
+public class NewActFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentNewActBinding binding;
 
@@ -43,6 +56,12 @@ public class NewActFragment extends DaggerFragment {
 
     @Inject
     RequestManager requestManager;
+
+    @Inject
+    FilterAdapter filterAdapter;
+
+    @Inject
+    Handler handler;
 
     @Nullable
     @Override
@@ -65,13 +84,20 @@ public class NewActFragment extends DaggerFragment {
         super.onStart();
         initViews();
         subscribeObserver();
-        binding.back.setOnClickListener(v -> navController.popBackStack(R.id.mainFragment, false));
+        binding.back.setOnClickListener(this);
+        binding.filter.setOnClickListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         navController.popBackStack(R.id.mainFragment, false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding.newRc.setOnFlingListener(null);
     }
 
     private void subscribeObserver() {
@@ -101,9 +127,41 @@ public class NewActFragment extends DaggerFragment {
         new CustomSnapHelper().attachToRecyclerView(binding.newRc);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        binding.newRc.setOnFlingListener(null);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                navController.popBackStack(R.id.mainFragment, false);
+                break;
+            case R.id.filter:
+                Dialog dialog = setDialog(R.layout.filter);
+
+                ListView filterList = dialog.findViewById(R.id.filter_list);
+                Button button = dialog.findViewById(R.id.confirm_button);
+
+                filterAdapter.setRequestManager(requestManager);
+                filterList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+                filterList.setAdapter(filterAdapter);
+
+                filterList.setOnItemClickListener((parent, view, position, id) -> {
+                    int pos = (int) parent.getItemAtPosition(position);
+
+                    switch (pos) {
+                        case R.drawable.ic_calendar:
+                            Toast.makeText(getContext(), "Date Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.drawable.ic_star:
+                            Toast.makeText(getContext(), "Sport Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.drawable.ic_location:
+                            Toast.makeText(getContext(), "Near Me Pressed", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                });
+
+                button.setOnClickListener(view -> dialog.dismiss());
+                break;
+        }
     }
 }
