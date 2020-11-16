@@ -116,6 +116,7 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
 
         if (TextUtils.isEmpty(passwd)) {
             binding.passwd.setError("Password is Required");
+            loginFailed();
             return;
         }
 

@@ -65,6 +65,13 @@ public class NewActFragment extends DaggerFragment {
         super.onStart();
         initViews();
         subscribeObserver();
+        binding.back.setOnClickListener(v -> navController.popBackStack(R.id.mainFragment, false));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        navController.popBackStack(R.id.mainFragment, false);
     }
 
     private void subscribeObserver() {

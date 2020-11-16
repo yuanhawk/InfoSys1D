@@ -57,6 +57,8 @@
     <string name="desc_activity">Description of Activity</string>
     <string name="date">Date</string>
 
+    <string name="required_fields">Required Fields</string>
+
 
     <string-array name="sport_array">
         <item>Badminton</item>

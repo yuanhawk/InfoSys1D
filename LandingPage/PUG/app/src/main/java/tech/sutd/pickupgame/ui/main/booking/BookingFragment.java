@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentBookingBinding;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.ui.main.MainActivity;
+import tech.sutd.pickupgame.util.DateConverter;
 
 public class BookingFragment extends BaseFragment implements BaseInterface {
 
@@ -85,8 +87,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     @Override
     public void onStart() {
         super.onStart();
-        calendar = Calendar.getInstance();
-
         initSportSpinner();
         initDatePicker();
         initTimePicker();
@@ -98,6 +98,37 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private void initConfirmBtn() {
         binding.confirmButton.setOnClickListener(v -> {
+
+            if (TextUtils.isEmpty(binding.sportSpinner.getText())) {
+                binding.sportSpinner.setError(getString(R.string.required_fields));
+                return;
+            }
+
+            if (TextUtils.isEmpty(binding.dateSpinner.getText())) {
+                binding.dateSpinner.setError(getString(R.string.required_fields));
+                return;
+            }
+
+            if (TextUtils.isEmpty(binding.timeSpinner.getText())) {
+                binding.timeSpinner.setError(getString(R.string.required_fields));
+                return;
+            }
+
+            if (TextUtils.isEmpty(binding.locationSpinner.getText())) {
+                binding.locationSpinner.setError(getString(R.string.required_fields));
+                return;
+            }
+
+            if (TextUtils.isEmpty(binding.participantSpinner.getText())) {
+                binding.participantSpinner.setError(getString(R.string.required_fields));
+                return;
+            }
+
+            if (TextUtils.isEmpty(binding.addNotesSpinner.getText())) {
+                binding.addNotesSpinner.setError(getString(R.string.required_fields));
+                return;
+            }
+
             saveData(getString(R.string.select_sport), "");
             saveData(getString(R.string.date), "");
             saveData(getString(R.string.time), "");
@@ -122,6 +153,8 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
                 saveData(getString(R.string.additional_notes), addNotes);
 
+                binding.addNotesSpinner.setError(null);
+
                 dialog.dismiss();
             });
         });
@@ -139,6 +172,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
             numberPicker.setWrapSelectorWheel(true);
 
+            numberPicked = 1;
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> numberPicked = newVal);
 
             button.setOnClickListener(view -> {
@@ -146,6 +180,8 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 binding.participantSpinner.setText(numOfParticipants);
 
                 saveData(getString(R.string.select_num_participants), numOfParticipants);
+
+                binding.participantSpinner.setError(null);
 
                 dialog.dismiss();
             });
@@ -188,12 +224,13 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
                 saveData(getString(R.string.select_location), location);
 
+                binding.locationSpinner.setError(null);
+
                 dialog.dismiss();
             });
         });
     }
 
-    @SuppressLint("DefaultLocale")
     private void initTimePicker() {
         binding.timeSpinner.setOnClickListener(v -> {
             Dialog dialog = setDialog(R.layout.time_picker);
@@ -201,36 +238,22 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             TimePicker timePicker = dialog.findViewById(R.id.time_picker);
             Button button = dialog.findViewById(R.id.confirm_button);
 
-            hour = calendar.get(Calendar.HOUR_OF_DAY);
-            min = calendar.get(Calendar.MINUTE);
-
-            timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> {
-                hour = hourOfDay;
-                min = minute;
-            });
-
             button.setOnClickListener(view -> {
-                String time;
+                calendar = Calendar.getInstance();
 
-                if (hour < 12)
-                    time = "AM";
-                else if (hour == 12)
-                    time = "PM";
-                else {
-                    time = "PM";
-                    hour -= 12;
-                }
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                min = calendar.get(Calendar.MINUTE);
 
-                String timeFormat;
-                if (min < 10) {
-                    timeFormat = String.format("%d : 0%d %s", hour, min, time);
-                    binding.timeSpinner.setText(timeFormat);
-                } else {
-                    timeFormat = String.format("%d : %d %s", hour, min, time);
-                    binding.timeSpinner.setText(timeFormat);
-                }
+                timePicker.setOnTimeChangedListener((timeView, hourOfDay, minute) -> {
+                    hour = hourOfDay;
+                    min = minute;
+                });
+
+                String timeFormat = DateConverter.timeConverter(binding, hour, min);
 
                 saveData(getString(R.string.time), timeFormat);
+
+                binding.timeSpinner.setError(null);
 
                 dialog.dismiss();
             });
@@ -246,21 +269,25 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             DatePicker datePicker = dialog.findViewById(R.id.date_picker);
             Button button = dialog.findViewById(R.id.confirm_button);
 
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH) + 1;
-            day = calendar.get(Calendar.DAY_OF_MONTH);
-
-            datePicker.init(year, month, day, (view, year, monthOfYear, dayOfMonth) -> {
-                this.year = year;
-                month = monthOfYear + 1;
-                day = dayOfMonth;
-            });
-
             button.setOnClickListener(view -> {
+                calendar = Calendar.getInstance();
+
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH) + 1;
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                datePicker.init(year, month, day, (dateView, year, monthOfYear, dayOfMonth) -> {
+                    this.year = year;
+                    month = monthOfYear + 1;
+                    day = dayOfMonth;
+                });
+
                 String date = day + "/" + month + "/" + year;
                 binding.dateSpinner.setText(date);
 
                 saveData(getString(R.string.date), date);
+
+                binding.dateSpinner.setError(null);
 
                 dialog.dismiss();
             });
@@ -303,6 +330,8 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 binding.sportSpinner.setText(sport);
 
                 saveData(getString(R.string.select_sport), sport);
+
+                binding.sportSpinner.setError(null);
 
                 dialog.dismiss();
             });

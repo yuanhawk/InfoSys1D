@@ -89,6 +89,12 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
         String passwd = String.valueOf(binding.passwd.getText()).trim();
         String confirmPasswd = String.valueOf(binding.confirmPasswd.getText()).trim();
 
+        if (TextUtils.isEmpty(name)) {
+            binding.name.setError("Name is Required");
+            registerFailed();
+            return;
+        }
+
         if (TextUtils.isEmpty(email)) {
             binding.userId.setError("Email is Required");
             registerFailed();

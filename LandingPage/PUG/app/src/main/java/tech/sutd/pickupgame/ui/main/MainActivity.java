@@ -71,6 +71,8 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
 
                 listener.customAction();
                 Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
+
+                checkBookingFragment();
             });
             Thread.currentThread().interrupt();
         }, 5000);
@@ -181,6 +183,7 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
             clickState = ClickState.NONE;
 
             setIcon(R.drawable.ic_add);
+            return;
         }
 
         clickState = ClickState.CLICKED;
