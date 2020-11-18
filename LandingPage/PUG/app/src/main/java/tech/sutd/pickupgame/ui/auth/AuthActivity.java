@@ -15,8 +15,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements BaseInterfa
 
     private ActivityAuthBinding binding;
 
-    @Inject
-    SessionManager sessionManager;
+    @Inject SessionManager sessionManager;
 
     @Override
     public void customAction() { // login from loginFragment

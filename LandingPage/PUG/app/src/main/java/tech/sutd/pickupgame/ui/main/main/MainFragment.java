@@ -28,7 +28,7 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class MainFragment extends DaggerFragment implements View.OnClickListener {
+public class MainFragment extends DaggerFragment {
 
     private FragmentMainBinding binding;
     private NavController navController;
@@ -36,17 +36,10 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
     private UpcomingActViewModel upcomingActViewModel;
     private NewActViewModel newActViewModel;
 
-    @Inject
-    UpcomingActivityAdapter<UpcomingActivity> adapter;
-
-    @Inject
-    NewActivityAdapter<NewActivity> newAdapter;
-
-    @Inject
-    ViewModelProviderFactory providerFactory;
-
-    @Inject
-    RequestManager requestManager;
+    @Inject UpcomingActivityAdapter<UpcomingActivity> adapter;
+    @Inject NewActivityAdapter<NewActivity> newAdapter;
+    @Inject ViewModelProviderFactory providerFactory;
+    @Inject RequestManager requestManager;
 
     @Nullable
     @Override
@@ -119,19 +112,7 @@ public class MainFragment extends DaggerFragment implements View.OnClickListener
         binding.newRc.setHasFixedSize(true);
         newAdapter.setNotifications(requestManager, 1);
 
-        binding.upcomingAct.setOnClickListener(this);
-        binding.newAct.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.upcoming_act:
-                navController.navigate(R.id.action_mainFragment_to_upcomingActFragment);
-                break;
-            case R.id.new_act:
-                navController.navigate(R.id.action_mainFragment_to_newActFragment);
-                break;
-        }
+        binding.upcomingAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_upcomingActFragment));
+        binding.newAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_newActFragment));
     }
 }

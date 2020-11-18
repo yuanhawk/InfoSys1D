@@ -12,13 +12,16 @@ import tech.sutd.pickupgame.models.ui.NewActivity;
 public class NewRepository {
 
     private NewDao newDao;
-    private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, newActivitiesByClock2;
+    private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
 
     public NewRepository(Application application) {
         NewDatabase database = NewDatabase.getInstance(application);
         newDao = database.newDao();
         allNewActivitiesByClock = new LivePagedListBuilder<>(
                 newDao.getAllNewActivitiesByClock(), 20
+        ).build();
+        allNewActivitiesBySport = new LivePagedListBuilder<>(
+                newDao.getAllNewActivitiesBySport(), 20
         ).build();
         newActivitiesByClock2 = new LivePagedListBuilder<>(
                 newDao.getNewActivitiesByClockLimit2(), 2
@@ -43,6 +46,10 @@ public class NewRepository {
 
     public LiveData<PagedList<NewActivity>> getAllNewActivitiesByClock() {
         return allNewActivitiesByClock;
+    }
+
+    public LiveData<PagedList<NewActivity>> getAllNewActivitiesBySport() {
+        return allNewActivitiesBySport;
     }
 
     public LiveData<PagedList<NewActivity>> getNewActivitiesByClock2() {

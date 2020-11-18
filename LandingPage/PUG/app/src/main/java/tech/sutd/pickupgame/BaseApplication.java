@@ -4,25 +4,31 @@ import android.content.SharedPreferences;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
+import tech.sutd.pickupgame.di.AppComponent;
 import tech.sutd.pickupgame.di.DaggerAppComponent;
+import tech.sutd.pickupgame.di.Provider;
 
 public class BaseApplication extends DaggerApplication {
 
-    public static SharedPreferences instance;
+    public static BaseApplication instance;
 
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
-        return DaggerAppComponent.builder().application(this).build();
+        AppComponent appComponent =  DaggerAppComponent.builder().application(this).build();
+        appComponent.inject(this);
+        Provider.setAppComponent(appComponent);
+        return appComponent;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         if (instance == null)
-            instance = getSharedPreferences(getString(R.string.shared_pref_file), MODE_PRIVATE);
+            instance = this;
     }
 
-    public static SharedPreferences getSharedPref() {
+    public static BaseApplication getInstance() {
         return instance;
     }
+
 }

@@ -16,12 +16,13 @@ public class NewActViewModel extends ViewModel {
 
     private NewRepository repository;
 
-    private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, newActivitiesByClock2;
+    private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
 
     @Inject
     public NewActViewModel(@NonNull Application application) {
         this.repository = new NewRepository(application);
         allNewActivitiesByClock = repository.getAllNewActivitiesByClock();
+        allNewActivitiesBySport = repository.getAllNewActivitiesBySport();
         newActivitiesByClock2 = repository.getNewActivitiesByClock2();
     }
 
@@ -43,6 +44,10 @@ public class NewActViewModel extends ViewModel {
 
     public LiveData<PagedList<NewActivity>> getAllNewActivitiesByClock() {
         return allNewActivitiesByClock;
+    }
+
+    public LiveData<PagedList<NewActivity>> getAllNewActivitiesBySport() {
+        return allNewActivitiesBySport;
     }
 
     public LiveData<PagedList<NewActivity>> getNewActivitiesByClock2() {

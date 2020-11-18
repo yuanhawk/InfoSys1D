@@ -30,7 +30,7 @@ import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class LoginFragment extends DaggerFragment implements View.OnClickListener {
+public class LoginFragment extends DaggerFragment {
 
     // TODO: Create a remember me btn
 
@@ -39,17 +39,13 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     private FragmentLoginBinding binding;
     private NavController navController;
 
-    private SharedPreferences preferences;
-
     private UserViewModel viewModel;
 
     private BaseInterface listener;
 
-    @Inject
-    FirebaseAuth firebaseAuth;
-
-    @Inject
-    ViewModelProviderFactory providerFactory;
+    @Inject FirebaseAuth firebaseAuth;
+    @Inject ViewModelProviderFactory providerFactory;
+    @Inject SharedPreferences preferences;
 
     @Nullable
     @Override
@@ -58,7 +54,6 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
 
         viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
 
-        preferences = BaseApplication.getSharedPref();
         if (preferences.getBoolean(getString(R.string.remember_me), false)) {// if checked
             subscribeObserver();
             binding.rememberMe.setChecked(true);
@@ -84,21 +79,11 @@ public class LoginFragment extends DaggerFragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        binding.signUp.setOnClickListener(this);
-        binding.login.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.signUp:
-                navController.navigate(R.id.action_loginFragment_to_registerFragment);
-                break;
-            case R.id.login:
-                if (clickState == ClickState.NONE)
-                    login();
-                break;
-        }
+        binding.signUp.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_registerFragment));
+        binding.login.setOnClickListener(v -> {
+            if (clickState == ClickState.NONE)
+                login();
+        });
     }
 
     private void login() {

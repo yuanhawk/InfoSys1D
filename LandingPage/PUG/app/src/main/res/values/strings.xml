@@ -1,5 +1,4 @@
 <resources>
-    <string name="shared_pref_file">tech.sutd.pickupgame.sharedpref</string>
     <string name="app_name">PUG</string>
     <string name="pick_up_games">ick</string>
     <string name="desc">Working life is a mess</string>
@@ -25,7 +24,6 @@
     <string name="events_you_organized">Events you organized</string>
     <string name="past_activities">PAST ACTIVITIES</string>
     <string name="age">Age</string>
-    <string name="username">Username</string>
     <string name="username_or_email">Username or email</string>
     <string name="up_games">p</string>
     <string name="games">ames</string>

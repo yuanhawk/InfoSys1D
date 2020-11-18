@@ -9,9 +9,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Handler;
@@ -34,6 +37,7 @@ import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentNewActBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.ui.main.main.adapter.FilterAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
@@ -48,20 +52,13 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     private NavController navController;
 
-    @Inject
-    NewActivityAdapter<NewActivity> newAdapter;
+    private Observer<PagedList<NewActivity>> observer;
 
-    @Inject
-    ViewModelProviderFactory providerFactory;
-
-    @Inject
-    RequestManager requestManager;
-
-    @Inject
-    FilterAdapter filterAdapter;
-
-    @Inject
-    Handler handler;
+    @Inject NewActivityAdapter<NewActivity> newAdapter;
+    @Inject ViewModelProviderFactory providerFactory;
+    @Inject RequestManager requestManager;
+    @Inject FilterAdapter filterAdapter;
+    @Inject Handler handler;
 
     @Nullable
     @Override
@@ -91,18 +88,13 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-        navController.popBackStack(R.id.mainFragment, false);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
         binding.newRc.setOnFlingListener(null);
     }
 
     private void subscribeObserver() {
-        newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), newActivities ->
-                newAdapter.submitList(newActivities));
+        observer = newActivities -> newAdapter.submitList(newActivities);
+
+        newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
     }
 
     private void initViews() {
@@ -118,6 +110,19 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
         newActViewModel.insert(new NewActivity(3, "Cycling", R.drawable.ic_clock,
                 String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
                 R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+
+        newActViewModel.insert(new NewActivity(4, "Badminton", R.drawable.ic_clock,
+                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
+                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
+        newActViewModel.insert(new NewActivity(5, "Badminton", R.drawable.ic_clock,
+                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
+                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
+        newActViewModel.insert(new NewActivity(6, "Badminton", R.drawable.ic_clock,
+                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
+                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
+        newActViewModel.insert(new NewActivity(7, "Badminton", R.drawable.ic_clock,
+                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
+                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
 
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -144,15 +149,19 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
                 filterList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
                 filterList.setAdapter(filterAdapter);
 
-                filterList.setOnItemClickListener((parent, view, position, id) -> {
+                filterList.setOnItemClickListener((parent, filterView, position, id) -> {
                     int pos = (int) parent.getItemAtPosition(position);
 
                     switch (pos) {
                         case R.drawable.ic_calendar:
-                            Toast.makeText(getContext(), "Date Pressed", Toast.LENGTH_SHORT).show();
+                            if (newActViewModel.getAllNewActivitiesBySport().hasActiveObservers())
+                                newActViewModel.getAllNewActivitiesBySport().removeObserver(observer);
+                            newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
                             break;
                         case R.drawable.ic_star:
-                            Toast.makeText(getContext(), "Sport Pressed", Toast.LENGTH_SHORT).show();
+                            if (newActViewModel.getAllNewActivitiesByClock().hasActiveObservers())
+                                newActViewModel.getAllNewActivitiesByClock().removeObserver(observer);
+                            newActViewModel.getAllNewActivitiesBySport().observe(getViewLifecycleOwner(), observer);
                             break;
                         case R.drawable.ic_location:
                             Toast.makeText(getContext(), "Near Me Pressed", Toast.LENGTH_SHORT).show();

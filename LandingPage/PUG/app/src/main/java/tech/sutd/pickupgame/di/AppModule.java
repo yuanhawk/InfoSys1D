@@ -1,6 +1,8 @@
 package tech.sutd.pickupgame.di;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
@@ -12,26 +14,33 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
-import tech.sutd.pickupgame.constant.ClickState;
-import tech.sutd.pickupgame.models.User;
 
 @Module
 public class AppModule {
 
     @Singleton
     @Provides
-    static DatabaseReference provideUserReference() {
-        FirebaseDatabase db = FirebaseDatabase.getInstance("https://pickupgame-a91c7.firebaseio.com/");
-        db.setPersistenceEnabled(true);
+    static SharedPreferences provideSharedPreferences() {
+        return BaseApplication
+                .getInstance()
+                .getSharedPreferences("tech.sutd.pickupgame.sharedpref", Context.MODE_PRIVATE);
+    }
 
-        DatabaseReference reff = db.getReference();
-        reff.keepSynced(true);
-        return reff;
+    @Singleton
+    @Provides
+    static DatabaseReference provideUserReference() {
+        return FirebaseDatabase
+                .getInstance("https://pickupgame-a91c7.firebaseio.com/")
+                .getReference();
     }
 
     @Singleton
@@ -61,4 +70,15 @@ public class AppModule {
         return FirebaseAuth.getInstance();
     }
 
+    @Singleton
+    @Provides
+    static MessageDigest provideMessageDigest() {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return md;
+    }
 }

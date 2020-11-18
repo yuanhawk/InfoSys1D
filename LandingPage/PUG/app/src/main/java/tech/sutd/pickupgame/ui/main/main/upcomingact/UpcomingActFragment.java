@@ -42,13 +42,9 @@ public class UpcomingActFragment extends DaggerFragment {
     private PastActViewModel pastActViewModel;
 
     @Inject UpcomingActivityAdapter<UpcomingActivity> upcomingAdapter;
-
     @Inject YourActivityAdapter yourAdapter;
-
     @Inject PastActivityAdapter pastAdapter;
-
     @Inject ViewModelProviderFactory providerFactory;
-
     @Inject RequestManager requestManager;
 
     @Nullable
@@ -79,7 +75,9 @@ public class UpcomingActFragment extends DaggerFragment {
     @Override
     public void onPause() {
         super.onPause();
-        navController.popBackStack(R.id.mainFragment, false);
+        binding.upcomingRc.setOnFlingListener(null);
+        binding.eventsRc.setOnFlingListener(null);
+        binding.pastRc.setOnFlingListener(null);
     }
 
     private void subscribeObserver() {
@@ -150,13 +148,5 @@ public class UpcomingActFragment extends DaggerFragment {
         new CustomSnapHelper().attachToRecyclerView(binding.upcomingRc);
         new CustomSnapHelper().attachToRecyclerView(binding.eventsRc);
         new CustomSnapHelper().attachToRecyclerView(binding.pastRc);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        binding.upcomingRc.setOnFlingListener(null);
-        binding.eventsRc.setOnFlingListener(null);
-        binding.pastRc.setOnFlingListener(null);
     }
 }

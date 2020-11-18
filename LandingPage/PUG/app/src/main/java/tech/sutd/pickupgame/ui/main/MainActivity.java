@@ -39,20 +39,15 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
 
     private ActivityMainBinding binding;
     private NavController navController;
-
-    private FragmentManager fragmentManager;
     private Menu menu;
 //    private AppBarConfiguration configuration;
 
     private BaseInterface listener;
 
-    @Inject
-    SessionManager sessionManager;
-
-    @Inject
-    Handler handler;
-
-    private SharedPreferences preferences;
+    @Inject FragmentManager fragmentManager;
+    @Inject SessionManager sessionManager;
+    @Inject Handler handler;
+    @Inject SharedPreferences preferences;
 
     public void setListener(BaseInterface listener) {
         this.listener = listener;
@@ -90,10 +85,6 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     protected void onResume() {
         super.onResume();
         init();
-        fragmentManager = getSupportFragmentManager();
-
-        preferences = BaseApplication.getSharedPref();
-
         if (preferences.getBoolean(getString(R.string.activities_organised), false)) {
             addBookingFragment();
 

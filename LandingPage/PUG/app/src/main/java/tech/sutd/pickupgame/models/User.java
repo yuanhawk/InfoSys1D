@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+
 @Entity(tableName = "users")
 public class User {
 
@@ -13,8 +14,8 @@ public class User {
     @SerializedName("id")
     private int id;
 
-    @SerializedName("username")
-    private String username;
+    @SerializedName("name")
+    private String name;
 
     @SerializedName("email")
     private String email;
@@ -22,16 +23,16 @@ public class User {
     @SerializedName("passwd")
     private String passwd;
 
-    public User(int id, String username, String email, String passwd) {
+    public User(int id, String name, String email, String passwd) {
         this.id = id;
-        this.username = username;
+        this.name = name;
         this.email = email;
         this.passwd = passwd;
     }
 
     public User(final Builder builder) {
         id = builder.id;
-        username = builder.username;
+        name = builder.name;
         email = builder.email;
         passwd = builder.passwd;
     }
@@ -42,7 +43,7 @@ public class User {
 
     public static class Builder {
         private int id;
-        private String username;
+        private String name;
         private String email;
         private String passwd;
 
@@ -50,8 +51,8 @@ public class User {
             this.id = id;
         }
 
-        public Builder setUsername(final String username) {
-            this.username = username;
+        public Builder setName(final String name) {
+            this.name = name;
             return this;
         }
 
@@ -82,12 +83,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

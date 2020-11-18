@@ -29,11 +29,8 @@ public class UserFragment extends DaggerFragment {
 
     private NavController navController;
 
-    @Inject
-    RequestManager requestManager;
-
-    @Inject
-    SessionManager sessionManager;
+    @Inject RequestManager requestManager;
+    @Inject SessionManager sessionManager;
 
     @Nullable
     @Override

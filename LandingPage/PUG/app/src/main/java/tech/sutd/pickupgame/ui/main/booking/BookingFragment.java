@@ -33,6 +33,8 @@ import android.widget.TimePicker;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
@@ -51,9 +53,11 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private Calendar calendar;
 
-    private SharedPreferences preferences;
-
     private BaseInterface listener;
+
+    private Dialog dialog;
+
+    @Inject SharedPreferences preferences;
 
     @Override
     public void customAction() { // getActivityCache
@@ -71,7 +75,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBookingBinding.inflate(inflater, container, false);
 
-        preferences = BaseApplication.getSharedPref();
         customAction();
 
         return binding.getRoot();
@@ -94,6 +97,13 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
         initParticipantSpinner();
         initAddNotesSpinner();
         initConfirmBtn();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (dialog != null)
+            dialog.dismiss();
     }
 
     private void initConfirmBtn() {
@@ -142,7 +152,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private void initAddNotesSpinner() {
         binding.addNotesSpinner.setOnClickListener(v -> {
-            Dialog dialog = setDialog(R.layout.addon_notes);
+            dialog = setDialog(R.layout.addon_notes);
 
             EditText add_notes_et = dialog.findViewById(R.id.add_notes);
             Button button = dialog.findViewById(R.id.confirm_button);
@@ -162,7 +172,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private void initParticipantSpinner() {
         binding.participantSpinner.setOnClickListener(v -> {
-            Dialog dialog = setDialog(R.layout.number_picker);
+            dialog = setDialog(R.layout.number_picker);
 
             NumberPicker numberPicker = dialog.findViewById(R.id.number_picker);
             Button button = dialog.findViewById(R.id.confirm_button);
@@ -190,7 +200,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private void initLocationSpinner() {
         binding.locationSpinner.setOnClickListener(v -> {
-            Dialog dialog = setDialog(R.layout.spinner);
+            dialog = setDialog(R.layout.spinner);
 
             EditText location_et = dialog.findViewById(R.id.search_category);
             ListView listView = dialog.findViewById(R.id.category_list);
@@ -233,7 +243,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private void initTimePicker() {
         binding.timeSpinner.setOnClickListener(v -> {
-            Dialog dialog = setDialog(R.layout.time_picker);
+            dialog = setDialog(R.layout.time_picker);
 
             TimePicker timePicker = dialog.findViewById(R.id.time_picker);
             Button button = dialog.findViewById(R.id.confirm_button);
@@ -264,7 +274,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     @SuppressLint("DefaultLocale")
     private void initDatePicker() {
         binding.dateSpinner.setOnClickListener(v -> {
-            Dialog dialog = setDialog(R.layout.date_picker);
+            dialog = setDialog(R.layout.date_picker);
 
             DatePicker datePicker = dialog.findViewById(R.id.date_picker);
             Button button = dialog.findViewById(R.id.confirm_button);
@@ -337,24 +347,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             });
         });
     }
-
-//    private Dialog setDialog(int layout) {
-//        Dialog dialog = new Dialog(getContext());
-//
-//        dialog.setContentView(layout);
-//
-//        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-//        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-//        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//
-//        dialog.getWindow().setAttributes(params);
-//
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//
-//        dialog.show();
-//
-//        return dialog;
-//    }
 
     private void saveData(String key, String val) {
         SharedPreferences.Editor editor = preferences.edit();

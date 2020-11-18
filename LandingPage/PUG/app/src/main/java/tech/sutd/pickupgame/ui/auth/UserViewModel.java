@@ -31,26 +31,22 @@ public class UserViewModel extends ViewModel {
 
     private SessionManager sessionManager;
     private UserRepository repository;
-    private DatabaseReference reff;
 
     private LiveData<List<User>> users;
 
     @Inject
-    public UserViewModel(@NonNull Application application, SessionManager sessionManager, DatabaseReference reff) {
+    public UserViewModel(@NonNull Application application, SessionManager sessionManager) {
         this.sessionManager = sessionManager;
         this.repository = new UserRepository(application);
         users = repository.getAllUsers();
-        this.reff = reff;
     }
 
     public void register(RegisterFragment fragment, Context context, NavController navController, User user) {
-        repository.update(user);
-        sessionManager.register(fragment, context, navController, reff, user);
+        sessionManager.register(fragment, context, navController, user);
     }
 
     public void login(LoginFragment fragment, Context context, User user) {
-        repository.update(user);
-        sessionManager.login(fragment, context, user);
+        sessionManager.login(fragment, this, context, user);
     }
 
     public void update(User user) {

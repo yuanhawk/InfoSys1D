@@ -1,6 +1,5 @@
 package tech.sutd.pickupgame.ui.auth.register;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,12 +16,9 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.File;
-
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
-import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
@@ -30,7 +26,7 @@ import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class RegisterFragment extends DaggerFragment implements View.OnClickListener {
+public class RegisterFragment extends DaggerFragment {
 
     private int clickState = ClickState.NONE;
 
@@ -39,18 +35,18 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
 
     private UserViewModel viewModel;
 
-    @Inject
-    FirebaseAuth fAuth;
-
-    @Inject
-    ViewModelProviderFactory providerFactory;
+    @Inject FirebaseAuth fAuth;
+    @Inject ViewModelProviderFactory providerFactory;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
-        binding.signIn.setOnClickListener(this);
-        binding.registerCV.setOnClickListener(this);
+        binding.signIn.setOnClickListener(v -> navController.popBackStack(R.id.loginFragment, false));
+        binding.registerCV.setOnClickListener(v -> {
+            if (clickState == ClickState.NONE)
+                registerUser();
+        });
 
         viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
         return binding.getRoot();
@@ -66,19 +62,6 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
     public void onPause() {
         super.onPause();
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.signIn:
-                navController.popBackStack(R.id.loginFragment, false);
-                break;
-            case R.id.registerCV:
-                if (clickState == ClickState.NONE)
-                   registerUser();
-                break;
-        }
     }
 
     private void registerUser() {
@@ -120,7 +103,7 @@ public class RegisterFragment extends DaggerFragment implements View.OnClickList
         }
 
         User user = new User.Builder(0)
-                .setUsername(name)
+                .setName(name)
                 .setEmail(email)
                 .setPasswd(passwd)
                 .build();

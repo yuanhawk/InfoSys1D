@@ -32,6 +32,9 @@ public interface NewDao {
     @Query("SELECT * FROM new_activity ORDER BY clock ASC")
     DataSource.Factory<Integer, NewActivity> getAllNewActivitiesByClock();
 
+    @Query("SELECT * FROM new_activity ORDER BY sport ASC")
+    DataSource.Factory<Integer, NewActivity> getAllNewActivitiesBySport();
+
     @Query("SELECT * FROM new_activity ORDER BY clock ASC LIMIT 2")
     DataSource.Factory<Integer, NewActivity> getNewActivitiesByClockLimit2();
 }
