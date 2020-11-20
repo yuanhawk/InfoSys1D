@@ -2,6 +2,7 @@ package tech.sutd.pickupgame.ui.main.main.newact;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
@@ -36,11 +38,16 @@ import javax.inject.Inject;
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
+import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentNewActBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.ui.main.BaseInterface;
+import tech.sutd.pickupgame.ui.main.SuccessListener;
+import tech.sutd.pickupgame.ui.main.SuccessListenerTwo;
 import tech.sutd.pickupgame.ui.main.main.adapter.FilterAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
@@ -56,14 +63,19 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     private Observer<PagedList<NewActivity>> observer;
 
+    private SuccessListenerTwo successListenerTwo;
+
     @Inject NewActivityAdapter<NewActivity> newAdapter;
     @Inject ViewModelProviderFactory providerFactory;
     @Inject RequestManager requestManager;
     @Inject FilterAdapter filterAdapter;
     @Inject Handler handler;
 
-    @Inject
-    OneTimeWorkRequest singleRequest;
+    @Inject Constraints constraints;
+
+    public SuccessListenerTwo getSuccessListenerTwo() {
+        return successListenerTwo;
+    }
 
     @Nullable
     @Override
@@ -95,23 +107,18 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
         super.onResume();
         newActViewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
 
-        WorkManager.getInstance(requireActivity().getApplicationContext()).enqueue(singleRequest);
+        OneTimeWorkRequest upcomingActRequest = new OneTimeWorkRequest.Builder(UpcomingActivitiesWorker.class)
+                .setConstraints(constraints)
+                .build();
 
-        WorkManager.getInstance(requireActivity().getApplicationContext()).getWorkInfoByIdLiveData(singleRequest.getId())
-                .observe(getViewLifecycleOwner(), workInfo -> {
-                    if (workInfo != null) {
-                        if (workInfo.getState().isFinished()) {
-                            Data data = workInfo.getOutputData();
+        OneTimeWorkRequest newActRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
+                .setConstraints(constraints)
+                .build();
 
-                            String output = data.getString(NewActivitiesWorker.KEY_TASK_OUTPUT);
-                            Log.d(TAG, "onChanged: " + output);
-                        }
-
-                        String status = workInfo.getState().name();
-                        Log.d(TAG, "onChanged: " + status);
-
-                    }
-                });
+        WorkManager.getInstance(requireActivity().getApplicationContext())
+                .beginWith(upcomingActRequest)
+                .then(newActRequest)
+                .enqueue();
     }
 
     @Override
@@ -130,7 +137,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);
-        newAdapter.setNotifications(getContext(), requestManager, 9999);
+        newAdapter.setNotifications(getContext(), requestManager, newActViewModel, null, this, 9999);
 
         new CustomSnapHelper().attachToRecyclerView(binding.newRc);
     }
@@ -174,6 +181,16 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
                 button.setOnClickListener(view -> dialog.dismiss());
                 break;
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            successListenerTwo = (SuccessListenerTwo) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
         }
     }
 }

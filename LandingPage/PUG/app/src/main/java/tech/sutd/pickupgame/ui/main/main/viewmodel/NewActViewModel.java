@@ -2,20 +2,19 @@ package tech.sutd.pickupgame.ui.main.main.viewmodel;
 
 import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -26,6 +25,9 @@ import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.ui.new_activity.NewRepository;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.ui.main.main.MainFragment;
+import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
+import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
 import tech.sutd.pickupgame.util.StringComparator;
 
 public class NewActViewModel extends ViewModel {
@@ -34,21 +36,21 @@ public class NewActViewModel extends ViewModel {
 
     private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
 
-    private PeriodicWorkRequest workRequest;
     private FirebaseFirestore fStore;
-    private OneTimeWorkRequest singleRequest;
+    private DatabaseReference reff;
+    private FirebaseAuth fAuth;
 
     @Inject
-    public NewActViewModel(@NonNull Application application, PeriodicWorkRequest workRequest,
-                           FirebaseFirestore fStore, OneTimeWorkRequest singleRequest) {
+    public NewActViewModel(@NonNull Application application, FirebaseFirestore fStore,
+                           DatabaseReference reff, FirebaseAuth fAuth) {
         this.repository = new NewRepository(application);
         allNewActivitiesByClock = repository.getAllNewActivitiesByClock();
         allNewActivitiesBySport = repository.getAllNewActivitiesBySport();
         newActivitiesByClock2 = repository.getNewActivitiesByClock2();
 
-        this.workRequest = workRequest;
         this.fStore = fStore;
-        this.singleRequest = singleRequest;
+        this.reff = reff;
+        this.fAuth = fAuth;
     }
 
     public void insert(NewActivity newActivity) {
@@ -106,6 +108,58 @@ public class NewActViewModel extends ViewModel {
                                     .build()
                             );
                         }
+                    }
+                });
+    }
+
+    public void push(MainFragment mainFragment, NewActFragment newActFragment, NewActivityAdapter adapter,
+                     String id, BookingActivity bookingActivity) {
+        reff.child("your_activity")
+                .child(Objects.requireNonNull(fAuth.getUid()))
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds: snapshot.getChildren()) {
+                            if (Objects.equals(ds.getKey(), id)) {
+                                if (mainFragment != null)
+                                    mainFragment.getSuccessListenerTwo().onSignUpSuccess();
+                                else if (newActFragment != null)
+                                    newActFragment.getSuccessListenerTwo().onSignUpSuccess();
+
+                                adapter.getDialog().dismiss();
+
+                                return;
+                            } else {
+
+                                reff.child("your_activity")
+                                        .child(Objects.requireNonNull(fAuth.getUid()))
+                                        .child(id)
+                                        .setValue(bookingActivity)
+                                        .addOnCompleteListener(task -> {
+                                            if (task.isSuccessful()) {
+
+                                                if (mainFragment != null)
+                                                    mainFragment.getSuccessListenerTwo().onSignUpSuccess();
+                                                else if (newActFragment != null)
+                                                    newActFragment.getSuccessListenerTwo().onSignUpSuccess();
+
+                                            } else {
+
+                                                if (mainFragment != null)
+                                                    mainFragment.getSuccessListenerTwo().onSignUpFailure();
+                                                else if (newActFragment != null)
+                                                    newActFragment.getSuccessListenerTwo().onSignUpFailure();
+
+                                            }
+                                            adapter.getDialog().dismiss();
+                                        });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
     }

@@ -96,29 +96,9 @@ public class AppModule {
 
     @Singleton
     @Provides
-    static PeriodicWorkRequest providePeriodicWorkRequest() {
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.UNMETERED)
+    static Constraints provideOneTimeWorkRequest() {
+        return new Constraints.Builder()
                 .setRequiresBatteryNotLow(true)
-                .build();
-
-        return new PeriodicWorkRequest.Builder(NewActivitiesWorker.class,
-                1, TimeUnit.HOURS,
-                15, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build();
-    }
-
-    @Singleton
-    @Provides
-    static OneTimeWorkRequest provideOneTimeWorkRequest() {
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.UNMETERED)
-                .setRequiresBatteryNotLow(true)
-                .build();
-
-        return new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
-                .setConstraints(constraints)
                 .build();
     }
 

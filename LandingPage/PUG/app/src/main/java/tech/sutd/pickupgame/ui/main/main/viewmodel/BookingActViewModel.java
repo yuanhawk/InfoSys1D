@@ -1,13 +1,7 @@
 package tech.sutd.pickupgame.ui.main.main.viewmodel;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.inject.Inject;
@@ -27,7 +21,7 @@ public class BookingActViewModel extends ViewModel {
     public void push(BookingFragment fragment, BookingActivity activity) {
         fStore.collection("activities")
                 .add(activity)
-                .addOnSuccessListener(documentReference -> fragment.getSuccessListener().onSuccess())
-                .addOnFailureListener(e -> fragment.getSuccessListener().onFailure());
+                .addOnSuccessListener(documentReference -> fragment.getSuccessListener().onBookingSuccess())
+                .addOnFailureListener(e -> fragment.getSuccessListener().onBookingFailure());
     }
 }

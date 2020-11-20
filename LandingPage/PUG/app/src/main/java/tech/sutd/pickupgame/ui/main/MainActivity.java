@@ -30,7 +30,9 @@ import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 
-public class MainActivity extends DaggerAppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, BaseInterface, SuccessListener {
+public class MainActivity extends DaggerAppCompatActivity
+        implements BottomNavigationView.OnNavigationItemSelectedListener, BaseInterface,
+        SuccessListener, SuccessListenerTwo {
 
     private int clickState = ClickState.NONE;
 
@@ -41,24 +43,24 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     private Menu menu;
 //    private AppBarConfiguration configuration;
 
-    private BaseInterface listener;
+    private BaseInterface baseInterface;
 
     @Inject FragmentManager fragmentManager;
     @Inject SessionManager sessionManager;
     @Inject Handler handler;
     @Inject SharedPreferences preferences;
 
-    public void setListener(BaseInterface listener) {
-        this.listener = listener;
+    public void setBaseInterface(BaseInterface baseInterface) {
+        this.baseInterface = baseInterface;
     }
 
     @Override
-    public void onSuccess() {
+    public void onBookingSuccess() {
         handler.post(() -> {
             runOnUiThread(() -> {
                 binding.progress.setVisibility(View.GONE);
 
-                listener.customAction();
+                baseInterface.customAction();
                 Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
 
                 checkBookingFragment();
@@ -68,7 +70,7 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     }
 
     @Override
-    public void onFailure() {
+    public void onBookingFailure() {
         handler.post(() -> {
             runOnUiThread(() -> {
                 binding.progress.setVisibility(View.GONE);
@@ -80,11 +82,23 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     }
 
     @Override
-    public void customAction() { // showProgressBar
+    public void customAction() { // setLoadingProgressBar
         handler.post(() -> {
             runOnUiThread(() -> binding.progress.setVisibility(View.VISIBLE));
             Thread.currentThread().interrupt();
         });
+    }
+
+    @Override
+    public void onSignUpSuccess() {
+        binding.progress.setVisibility(View.GONE);
+        Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSignUpFailure() {
+        binding.progress.setVisibility(View.GONE);
+        Toast.makeText(this, "Activity not saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -165,7 +179,7 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
         transaction.add(R.id.nav_host_fragment, bookingFragment, TAG)
                 .commit();
 
-        setListener(bookingFragment);
+        setBaseInterface(bookingFragment);
 
         clickState = ClickState.CLICKED;
 

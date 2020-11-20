@@ -1,5 +1,6 @@
 package tech.sutd.pickupgame.ui.main.main;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -30,6 +32,9 @@ import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentMainBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
+import tech.sutd.pickupgame.ui.main.BaseInterface;
+import tech.sutd.pickupgame.ui.main.SuccessListener;
+import tech.sutd.pickupgame.ui.main.SuccessListenerTwo;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
@@ -46,13 +51,25 @@ public class MainFragment extends DaggerFragment {
     private UpcomingActViewModel upcomingActViewModel;
     private NewActViewModel newActViewModel;
 
+    private BaseInterface listener;
+    private SuccessListener successListener;
+    private SuccessListenerTwo successListenerTwo;
+
     @Inject UpcomingActivityAdapter<UpcomingActivity> adapter;
     @Inject NewActivityAdapter<NewActivity> newAdapter;
     @Inject ViewModelProviderFactory providerFactory;
     @Inject RequestManager requestManager;
 
-    @Inject OneTimeWorkRequest singleRequest;
+    @Inject Constraints constraints;
     @Inject Handler handler;
+
+    public BaseInterface getListener() {
+        return listener;
+    }
+
+    public SuccessListenerTwo getSuccessListenerTwo() {
+        return successListenerTwo;
+    }
 
     @Nullable
     @Override
@@ -83,6 +100,10 @@ public class MainFragment extends DaggerFragment {
         super.onResume();
         newActViewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
 
+        OneTimeWorkRequest singleRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
+                .setConstraints(constraints)
+                .build();
+
         WorkManager.getInstance(requireActivity().getApplicationContext()).enqueue(singleRequest);
 
         WorkManager.getInstance(requireActivity().getApplicationContext()).getWorkInfoByIdLiveData(singleRequest.getId())
@@ -111,18 +132,7 @@ public class MainFragment extends DaggerFragment {
     }
 
     private void initViews() {
-        upcomingActViewModel.insert(new UpcomingActivity(0, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(1, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(2, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        upcomingActViewModel.pull();
 
         binding.upcomingRc.setAdapter(adapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -133,9 +143,21 @@ public class MainFragment extends DaggerFragment {
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);
-        newAdapter.setNotifications(getContext(),requestManager, 1);
+        newAdapter.setNotifications(getContext(),requestManager, newActViewModel, this, null, 1);
 
         binding.upcomingAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_upcomingActFragment));
         binding.newAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_newActFragment));
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (BaseInterface) context;
+            successListener = (SuccessListener) context;
+            successListenerTwo = (SuccessListenerTwo) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

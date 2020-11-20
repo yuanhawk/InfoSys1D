@@ -8,7 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +24,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentUpcomingActBinding;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
@@ -47,6 +53,8 @@ public class UpcomingActFragment extends DaggerFragment {
     @Inject ViewModelProviderFactory providerFactory;
     @Inject RequestManager requestManager;
 
+    @Inject Constraints constraints;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,6 +81,17 @@ public class UpcomingActFragment extends DaggerFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        OneTimeWorkRequest singleRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(requireActivity().getApplicationContext()).enqueue(singleRequest);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         binding.upcomingRc.setOnFlingListener(null);
@@ -92,19 +111,6 @@ public class UpcomingActFragment extends DaggerFragment {
     }
 
     private void initViews() {
-
-        upcomingActViewModel.insert(new UpcomingActivity(0, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(1, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(2, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        upcomingActViewModel.insert(new UpcomingActivity(3, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
 
         binding.upcomingRc.setAdapter(upcomingAdapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));

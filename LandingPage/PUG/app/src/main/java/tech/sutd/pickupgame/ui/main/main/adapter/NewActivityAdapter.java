@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,8 +30,13 @@ import java.util.Locale;
 
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
+import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
+import tech.sutd.pickupgame.ui.main.MainActivity;
+import tech.sutd.pickupgame.ui.main.main.MainFragment;
+import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.util.DateConverter;
 
 public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActivityAdapter.ViewHolder> {
@@ -38,7 +44,12 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
     private int numOfViews = 0;
 
     private RequestManager requestManager;
+    private NewActViewModel viewModel;
+    private MainFragment mainFragment;
+    private NewActFragment newFragment;
     private Context context;
+
+    private Dialog dialog;
 
     public NewActivityAdapter() {
         super(DIFF_CALLBACK);
@@ -95,7 +106,7 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
         }
 
         holder.binding.cardView.setOnClickListener(v -> {
-            Dialog dialog = setDialog(R.layout.expanded_itemlist_activities);
+            dialog = setDialog(R.layout.expanded_itemlist_activities);
 
             MaterialTextView sportTv = dialog.findViewById(R.id.sport);
             sportTv.setText(newActivity.getSport());
@@ -128,9 +139,39 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
             requestManager.load(newActivity.getNotesImg())
                     .into((ImageView) dialog.findViewById(R.id.notes_img));
 
-            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> dialog.dismiss());
+            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
+
+                if (mainFragment != null) {
+                    mainFragment.getListener().customAction();
+                    viewModel.push(mainFragment, null, this, newActivity.getId(),
+                            new BookingActivity.Builder()
+                                    .setSport(newActivity.getSport())
+                                    .setEpoch(newActivity.getClock())
+                                    .setEpochEnd(newActivity.getEndClock())
+                                    .setLocation(newActivity.getLocation())
+                                    .setParticipant(newActivity.getParticipant())
+                                    .setOrganizer(newActivity.getOrganizer())
+                                    .build()
+                    );
+                } else if (newFragment != null) {
+                    viewModel.push(null, newFragment, this, newActivity.getId(),
+                            new BookingActivity.Builder()
+                                    .setSport(newActivity.getSport())
+                                    .setEpoch(newActivity.getClock())
+                                    .setEpochEnd(newActivity.getEndClock())
+                                    .setLocation(newActivity.getLocation())
+                                    .setParticipant(newActivity.getParticipant())
+                                    .setOrganizer(newActivity.getOrganizer())
+                                    .build()
+                    );
+                }
+            });
         });
 
+    }
+
+    public Dialog getDialog() {
+        return dialog;
     }
 
     private Dialog setDialog(int layout) {
@@ -164,9 +205,14 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
         }
     };
 
-    public void setNotifications(Context context, RequestManager requestManager, int numOfViews) {
+    public void setNotifications(Context context, RequestManager requestManager,
+                                 NewActViewModel viewModel, MainFragment mainFragment,
+                                 NewActFragment newFragment, int numOfViews) {
         this.context = context;
         this.requestManager = requestManager;
+        this.viewModel = viewModel;
+        this.mainFragment = mainFragment;
+        this.newFragment = newFragment;
         this.numOfViews = numOfViews;
         notifyDataSetChanged();
     }
