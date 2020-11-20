@@ -4,7 +4,6 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 import tech.sutd.pickupgame.di.auth.AuthFragmentBuildersModule;
 import tech.sutd.pickupgame.di.auth.AuthScope;
-import tech.sutd.pickupgame.di.auth.AuthViewModelModule;
 import tech.sutd.pickupgame.di.main.MainActivityModule;
 import tech.sutd.pickupgame.di.main.MainActivityViewModelModule;
 import tech.sutd.pickupgame.di.main.MainFragmentBuildersModule;
@@ -18,7 +17,7 @@ public abstract class ActivityBuildersModule {
     @AuthScope
     @ContributesAndroidInjector(
             modules = {
-                    AuthFragmentBuildersModule.class, AuthViewModelModule.class
+                    AuthFragmentBuildersModule.class
             }
     )
     abstract AuthActivity contributeAuthActivity();

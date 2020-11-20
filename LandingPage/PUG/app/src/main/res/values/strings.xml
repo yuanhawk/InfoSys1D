@@ -32,7 +32,9 @@
     <string name="g">G</string>
     <string name="organise_activity">Organise Activity&#8230;</string>
     <string name="select_sport">Select Sport&#8230;</string>
-    <string name="time">Time</string>
+    <string name="start_time">Start Time</string>
+    <string name="hour">Hour</string>
+    <string name="min">Min</string>
     <string name="location">Location</string>
     <string name="participants">Participants</string>
     <string name="additional_notes">Additional Notes</string>
@@ -59,7 +61,12 @@
     <string name="filter_by">Filter By&#8230;</string>
     <string name="sport">Sport</string>
     <string name="near_me">Near Me</string>
-
+    <string name="change_profile_information">Change your profile information here</string>
+    <string name="change_profile_photo">Change Profile Photo</string>
+    <string name="change_name">Change Name</string>
+    <string name="end_time">End Time</string>
+    <string name="hour_end">End Hour</string>
+    <string name="min_end">End Min</string>
 
     <string-array name="sport_array">
         <item>Badminton</item>

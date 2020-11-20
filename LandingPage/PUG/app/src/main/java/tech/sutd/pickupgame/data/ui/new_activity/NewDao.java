@@ -7,6 +7,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public interface NewDao {
     @Update
     void update(NewActivity newActivity);
 
-    @Delete
-    void delete(NewActivity newActivity);
+    @Query("DELETE FROM new_activity WHERE clock < :clock")
+    void delete(String clock);
 
     @Query("DELETE FROM new_activity")
     void deleteAllNewActivities();

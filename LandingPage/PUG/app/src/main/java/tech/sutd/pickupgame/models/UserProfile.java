@@ -1,19 +1,10 @@
 package tech.sutd.pickupgame.models;
 
-import androidx.annotation.NonNull;
-import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-
-@Entity(primaryKeys = {"id"}, tableName = "users")
-public class User {
-
-    @NonNull
-    @SerializedName("id")
-    private String id;
+public class UserProfile {
 
     @SerializedName("name")
     private String name;
@@ -27,36 +18,25 @@ public class User {
     @SerializedName("passwd")
     private String passwd;
 
-    public User(@NonNull String id, String name, String age, String email, String passwd) {
-        this.id = id;
+    public UserProfile(String name, String age, String email, String passwd) {
         this.name = name;
         this.age = age;
         this.email = email;
         this.passwd = passwd;
     }
 
-    public User(final Builder builder) {
-        id = builder.id;
+    public UserProfile(final Builder builder) {
         name = builder.name;
         age = builder.age;
         email = builder.email;
         passwd = builder.passwd;
     }
 
-    public static User defaultUser() {
-        return new User("-1", "-1", "-1", "-1", "-1");
-    }
-
     public static class Builder {
-        private String id;
         private String name;
         private String age;
         private String email;
         private String passwd;
-
-        public Builder(String id) {
-            this.id = id;
-        }
 
         public Builder setName(final String name) {
             this.name = name;
@@ -78,19 +58,12 @@ public class User {
             return this;
         }
 
-        public User build() {
-            return new User(this);
+        public UserProfile build() {
+            return new UserProfile(this);
         }
     }
 
-    @NonNull
-    public String getId() {
-        return id;
-    }
-
-
-    public void setId(@NonNull String id) {
-        this.id = id;
+    public UserProfile() {
     }
 
     public String getName() {

@@ -1,34 +1,45 @@
 package tech.sutd.pickupgame;
 
-import android.content.SharedPreferences;
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
+
+import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
+import tech.sutd.pickupgame.di.worker.SimpleWorkerFactory;
 import tech.sutd.pickupgame.di.AppComponent;
 import tech.sutd.pickupgame.di.DaggerAppComponent;
-import tech.sutd.pickupgame.di.Provider;
 
 public class BaseApplication extends DaggerApplication {
 
-    public static BaseApplication instance;
+    private static BaseApplication instance;
+
+    @Inject SimpleWorkerFactory factory;
 
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
         AppComponent appComponent =  DaggerAppComponent.builder().application(this).build();
         appComponent.inject(this);
-        Provider.setAppComponent(appComponent);
         return appComponent;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        if (instance == null)
-            instance = this;
+        instance = this;
+        configureWorkManager();
+    }
+
+    private void configureWorkManager() {
+        Configuration config = new Configuration.Builder()
+                .setWorkerFactory(factory)
+                .build();
+
+        WorkManager.initialize(this, config);
     }
 
     public static BaseApplication getInstance() {
         return instance;
     }
-
 }

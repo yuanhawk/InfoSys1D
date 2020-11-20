@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -13,9 +17,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -23,6 +29,7 @@ import dagger.Module;
 import dagger.Provides;
 import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
 
 @Module
 public class AppModule {
@@ -30,8 +37,7 @@ public class AppModule {
     @Singleton
     @Provides
     static SharedPreferences provideSharedPreferences() {
-        return BaseApplication
-                .getInstance()
+        return BaseApplication.getInstance()
                 .getSharedPreferences("tech.sutd.pickupgame.sharedpref", Context.MODE_PRIVATE);
     }
 
@@ -41,6 +47,12 @@ public class AppModule {
         return FirebaseDatabase
                 .getInstance("https://pickupgame-a91c7.firebaseio.com/")
                 .getReference();
+    }
+
+    @Singleton
+    @Provides
+    static FirebaseFirestore provideFirebaseFirestore() {
+        return FirebaseFirestore.getInstance();
     }
 
     @Singleton
@@ -81,4 +93,33 @@ public class AppModule {
         }
         return md;
     }
+
+    @Singleton
+    @Provides
+    static PeriodicWorkRequest providePeriodicWorkRequest() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .setRequiresBatteryNotLow(true)
+                .build();
+
+        return new PeriodicWorkRequest.Builder(NewActivitiesWorker.class,
+                1, TimeUnit.HOURS,
+                15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build();
+    }
+
+    @Singleton
+    @Provides
+    static OneTimeWorkRequest provideOneTimeWorkRequest() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .setRequiresBatteryNotLow(true)
+                .build();
+
+        return new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
+                .setConstraints(constraints)
+                .build();
+    }
+
 }

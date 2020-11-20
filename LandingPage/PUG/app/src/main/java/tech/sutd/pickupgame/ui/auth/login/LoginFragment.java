@@ -26,6 +26,7 @@ import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
 import tech.sutd.pickupgame.models.User;
+import tech.sutd.pickupgame.models.UserProfile;
 import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
@@ -117,11 +118,10 @@ public class LoginFragment extends DaggerFragment {
             editor.apply();
         }
 
-        User user = new User.Builder(0)
+        UserProfile user = new UserProfile.Builder()
                 .setEmail(email)
                 .setPasswd(passwd)
                 .build();
-        binding.setUser(user);
 
         viewModel.login(this, getContext(), user);
     }

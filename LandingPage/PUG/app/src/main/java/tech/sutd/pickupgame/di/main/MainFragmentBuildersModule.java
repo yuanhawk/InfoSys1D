@@ -12,6 +12,7 @@ import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
 import tech.sutd.pickupgame.ui.main.main.upcomingact.UpcomingActFragment;
 import tech.sutd.pickupgame.ui.main.user.UserFragment;
+import tech.sutd.pickupgame.ui.main.user.editprofile.EditProfileFragment;
 
 @Module
 public abstract class MainFragmentBuildersModule {
@@ -38,4 +39,7 @@ public abstract class MainFragmentBuildersModule {
             modules = {NewActFragmentModule.class}
     )
     abstract NewActFragment contributeNewActFragment();
+
+    @ContributesAndroidInjector
+    abstract EditProfileFragment contributeEditProfileFragment();
 }

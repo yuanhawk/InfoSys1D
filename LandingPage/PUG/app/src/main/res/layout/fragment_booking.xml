@@ -53,16 +53,54 @@
                 android:textColorHint="@color/colorBlue"
                 android:spinnerMode="dropdown" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/time_spinner"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/style_spinner"
-                android:hint="@string/time"
-                android:fontFamily="@font/ralewaymedium"
-                android:textColorHint="@color/colorBlue"
-                android:spinnerMode="dropdown" />
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/firstLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/time_spinner_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/style_spinner"
+                        android:fontFamily="@font/ralewaymedium"
+                        android:hint="@string/start_time"
+                        android:spinnerMode="dropdown"
+                        android:textColorHint="@color/colorBlue"
+                        android:layout_marginEnd="10dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/secondLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/time_spinner_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/style_spinner"
+                        android:fontFamily="@font/ralewaymedium"
+                        android:hint="@string/end_time"
+                        android:spinnerMode="dropdown"
+                        android:textColorHint="@color/colorBlue" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/location_spinner"

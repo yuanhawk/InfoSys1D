@@ -1,15 +1,30 @@
 package tech.sutd.pickupgame.ui.main.main.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Calendar;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
+import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.ui.new_activity.NewRepository;
+import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 
 public class NewActViewModel extends ViewModel {
@@ -18,12 +33,21 @@ public class NewActViewModel extends ViewModel {
 
     private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
 
+    private PeriodicWorkRequest workRequest;
+    private FirebaseFirestore fStore;
+    private OneTimeWorkRequest singleRequest;
+
     @Inject
-    public NewActViewModel(@NonNull Application application) {
+    public NewActViewModel(@NonNull Application application, PeriodicWorkRequest workRequest,
+                           FirebaseFirestore fStore, OneTimeWorkRequest singleRequest) {
         this.repository = new NewRepository(application);
         allNewActivitiesByClock = repository.getAllNewActivitiesByClock();
         allNewActivitiesBySport = repository.getAllNewActivitiesBySport();
         newActivitiesByClock2 = repository.getNewActivitiesByClock2();
+
+        this.workRequest = workRequest;
+        this.fStore = fStore;
+        this.singleRequest = singleRequest;
     }
 
     public void insert(NewActivity newActivity) {
@@ -34,11 +58,11 @@ public class NewActViewModel extends ViewModel {
         repository.update(newActivity);
     }
 
-    public void delete(NewActivity newActivity) {
-        repository.delete(newActivity);
+    public void delete(String clock) {
+        repository.delete(clock);
     }
 
-    public void deleteAllUpcomingActivities() {
+    public void deleteAllNewActivities() {
         repository.deleteAllNewActivities();
     }
 
@@ -52,5 +76,38 @@ public class NewActViewModel extends ViewModel {
 
     public LiveData<PagedList<NewActivity>> getNewActivitiesByClock2() {
         return newActivitiesByClock2;
+    }
+
+    public void pull() {
+        fStore.collection("activities")
+                .whereGreaterThan("epoch", String.valueOf(Calendar.getInstance().getTimeInMillis()))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot ds : Objects.requireNonNull(task.getResult())) {
+                            BookingActivity activity = ds.toObject(BookingActivity.class);
+
+
+                            int image = 0;
+                            if (activity.getSport().equals("Badminton"))
+                                image = R.drawable.ic_badminton;
+                            if (activity.getSport().equals("Cycling"))
+                                image = R.drawable.ic_cycling;
+
+                            insert(new NewActivity.Builder(ds.getId())
+                                    .setSport(activity.getSport())
+                                    .setSportImg(image)
+                                    .setClock(activity.getEpoch())
+                                    .setClockImg(R.drawable.ic_clock)
+                                    .setEndClock(activity.getEpochEnd())
+                                    .setLocationImg(R.drawable.ic_location)
+                                    .setLocation(activity.getLoc())
+                                    .setOrganizerImg(R.drawable.ic_profile)
+                                    .setOrganizer(activity.getOrganizer())
+                                    .build()
+                            );
+                        }
+                    }
+                });
     }
 }

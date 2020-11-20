@@ -34,7 +34,15 @@
         android:id="@+id/userFragment"
         android:name="tech.sutd.pickupgame.ui.main.user.UserFragment"
         android:label="UserFragment"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
+    </fragment>
     <fragment
         android:id="@+id/upcomingActFragment"
         android:name="tech.sutd.pickupgame.ui.main.main.upcomingact.UpcomingActFragment"
@@ -45,4 +53,9 @@
         android:name="tech.sutd.pickupgame.ui.main.main.newact.NewActFragment"
         android:label="fragment_new_act"
         tools:layout="@layout/fragment_new_act" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="tech.sutd.pickupgame.ui.main.user.editprofile.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>

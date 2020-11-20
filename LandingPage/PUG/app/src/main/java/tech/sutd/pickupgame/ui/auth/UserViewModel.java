@@ -24,6 +24,7 @@ import io.reactivex.rxjava3.functions.Function;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.data.UserRepository;
 import tech.sutd.pickupgame.models.User;
+import tech.sutd.pickupgame.models.UserProfile;
 import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
 import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
 
@@ -41,16 +42,16 @@ public class UserViewModel extends ViewModel {
         users = repository.getAllUsers();
     }
 
-    public void register(RegisterFragment fragment, Context context, NavController navController, User user) {
+    public void register(RegisterFragment fragment, Context context, NavController navController, UserProfile user) {
         sessionManager.register(fragment, context, navController, user);
     }
 
-    public void login(LoginFragment fragment, Context context, User user) {
+    public void login(LoginFragment fragment, Context context, UserProfile user) {
         sessionManager.login(fragment, this, context, user);
     }
 
-    public void update(User user) {
-        repository.update(user);
+    public void insert(User user) {
+        repository.insert(user);
     }
 
     public void deleteAllUsers() {

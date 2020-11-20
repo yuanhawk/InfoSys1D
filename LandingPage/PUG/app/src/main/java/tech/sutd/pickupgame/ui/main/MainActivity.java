@@ -23,7 +23,6 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
-import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.constant.ClickState;
@@ -31,7 +30,7 @@ import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 
-public class MainActivity extends DaggerAppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, BaseInterface {
+public class MainActivity extends DaggerAppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, BaseInterface, SuccessListener {
 
     private int clickState = ClickState.NONE;
 
@@ -54,13 +53,8 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
     }
 
     @Override
-    public void customAction() { // showProgressBar
+    public void onSuccess() {
         handler.post(() -> {
-            runOnUiThread(() -> binding.progress.setVisibility(View.VISIBLE));
-            Thread.currentThread().interrupt();
-        });
-
-        handler.postDelayed(() -> {
             runOnUiThread(() -> {
                 binding.progress.setVisibility(View.GONE);
 
@@ -70,7 +64,27 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
                 checkBookingFragment();
             });
             Thread.currentThread().interrupt();
-        }, 5000);
+        });
+    }
+
+    @Override
+    public void onFailure() {
+        handler.post(() -> {
+            runOnUiThread(() -> {
+                binding.progress.setVisibility(View.GONE);
+
+                Toast.makeText(this, "Activity not saved", Toast.LENGTH_SHORT).show();
+            });
+            Thread.currentThread().interrupt();
+        });
+    }
+
+    @Override
+    public void customAction() { // showProgressBar
+        handler.post(() -> {
+            runOnUiThread(() -> binding.progress.setVisibility(View.VISIBLE));
+            Thread.currentThread().interrupt();
+        });
     }
 
     @Override
@@ -198,5 +212,4 @@ public class MainActivity extends DaggerAppCompatActivity implements BottomNavig
         startActivity(intent);
         finish();
     }
-
 }

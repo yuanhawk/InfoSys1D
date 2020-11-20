@@ -23,6 +23,7 @@ import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
 import tech.sutd.pickupgame.models.User;
+import tech.sutd.pickupgame.models.UserProfile;
 import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
@@ -102,13 +103,11 @@ public class RegisterFragment extends DaggerFragment {
             return;
         }
 
-        User user = new User.Builder(0)
+        UserProfile user = new UserProfile.Builder()
                 .setName(name)
                 .setEmail(email)
                 .setPasswd(passwd)
                 .build();
-
-        binding.setUser(user);
 
         viewModel.register(this, getContext(), navController, user);
     }

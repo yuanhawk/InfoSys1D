@@ -1,7 +1,6 @@
 package tech.sutd.pickupgame.di;
 
 import android.app.Application;
-import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
@@ -11,7 +10,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.SessionManager;
-import tech.sutd.pickupgame.data.service.NewActivitiesWorker;
+import tech.sutd.pickupgame.di.worker.SimpleWorkerFactory;
 
 @Singleton
 @Component(
@@ -20,6 +19,8 @@ import tech.sutd.pickupgame.data.service.NewActivitiesWorker;
                 ActivityBuildersModule.class,
                 AppModule.class,
                 ViewModelFactoryModule.class,
+                AppViewModelModule.class,
+                WorkerViewModelModule.class
         }
 )
 public interface AppComponent extends AndroidInjector<BaseApplication> {
@@ -28,8 +29,7 @@ public interface AppComponent extends AndroidInjector<BaseApplication> {
     void inject(BaseApplication instance);
 
     SessionManager sessionManager();
-
-    void inject(NewActivitiesWorker worker);
+    SimpleWorkerFactory factory();
 
     @Component.Builder
     interface Builder {

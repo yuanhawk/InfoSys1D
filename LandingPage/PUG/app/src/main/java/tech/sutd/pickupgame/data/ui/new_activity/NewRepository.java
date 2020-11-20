@@ -36,8 +36,8 @@ public class NewRepository {
         new NewRepository.UpdateNewActivityExecutor(newDao).execute(newActivity);
     }
 
-    public void delete(NewActivity newActivity) {
-        new NewRepository.DeleteNewActivityExecutor(newDao).execute(newActivity);
+    public void delete(String clock) {
+        new NewRepository.DeleteNewActivityExecutor(newDao).execute(clock);
     }
 
     public void deleteAllNewActivities() {
@@ -89,9 +89,9 @@ public class NewRepository {
             this.newDao = newDao;
         }
 
-        public void execute(NewActivity newActivity) {
+        public void execute(String clock) {
             AppExecutors.getInstance().getDiskIO().execute(() ->
-                    newDao.delete(newActivity));
+                    newDao.delete(clock));
         }
     }
 

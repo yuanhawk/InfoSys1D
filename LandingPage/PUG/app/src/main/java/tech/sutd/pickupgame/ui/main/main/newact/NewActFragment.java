@@ -2,42 +2,42 @@ package tech.sutd.pickupgame.ui.main.main.newact;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bumptech.glide.RequestManager;
 
+import java.util.Calendar;
+
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentNewActBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
-import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.ui.main.main.adapter.FilterAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
@@ -45,6 +45,8 @@ import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class NewActFragment extends BaseFragment implements View.OnClickListener {
+
+    private static final String TAG = "NewActFragment";
 
     private FragmentNewActBinding binding;
 
@@ -59,6 +61,9 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     @Inject RequestManager requestManager;
     @Inject FilterAdapter filterAdapter;
     @Inject Handler handler;
+
+    @Inject
+    OneTimeWorkRequest singleRequest;
 
     @Nullable
     @Override
@@ -86,6 +91,30 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        newActViewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+
+        WorkManager.getInstance(requireActivity().getApplicationContext()).enqueue(singleRequest);
+
+        WorkManager.getInstance(requireActivity().getApplicationContext()).getWorkInfoByIdLiveData(singleRequest.getId())
+                .observe(getViewLifecycleOwner(), workInfo -> {
+                    if (workInfo != null) {
+                        if (workInfo.getState().isFinished()) {
+                            Data data = workInfo.getOutputData();
+
+                            String output = data.getString(NewActivitiesWorker.KEY_TASK_OUTPUT);
+                            Log.d(TAG, "onChanged: " + output);
+                        }
+
+                        String status = workInfo.getState().name();
+                        Log.d(TAG, "onChanged: " + status);
+
+                    }
+                });
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         binding.newRc.setOnFlingListener(null);
@@ -98,32 +127,6 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void initViews() {
-        newActViewModel.insert(new NewActivity(0, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        newActViewModel.insert(new NewActivity(1, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        newActViewModel.insert(new NewActivity(2, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        newActViewModel.insert(new NewActivity(3, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-
-        newActViewModel.insert(new NewActivity(4, "Badminton", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
-        newActViewModel.insert(new NewActivity(5, "Badminton", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
-        newActViewModel.insert(new NewActivity(6, "Badminton", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
-        newActViewModel.insert(new NewActivity(7, "Badminton", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_badminton));
-
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);

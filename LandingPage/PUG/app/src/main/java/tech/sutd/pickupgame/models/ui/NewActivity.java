@@ -1,15 +1,20 @@
 package tech.sutd.pickupgame.models.ui;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "new_activity")
+import tech.sutd.pickupgame.models.User;
+
+@Entity(primaryKeys = {"id"}, tableName = "new_activity")
 public class NewActivity {
-    @PrimaryKey
+
+    @NonNull
     @SerializedName("id")
-    private int id;
+    private String id;
 
     @SerializedName("sport")
     private String sport;
@@ -38,7 +43,7 @@ public class NewActivity {
     @SerializedName("sport_img")
     private int sportImg;
 
-    public NewActivity(int id, String sport, int clockImg, String clock, String endClock, int locationImg, String location, int organizerImg, String organizer, int sportImg) {
+    public NewActivity(@NonNull String id, String sport, int clockImg, String clock, String endClock, int locationImg, String location, int organizerImg, String organizer, int sportImg) {
         this.id = id;
         this.sport = sport;
         this.clockImg = clockImg;
@@ -51,11 +56,91 @@ public class NewActivity {
         this.sportImg = sportImg;
     }
 
-    public int getId() {
+    public NewActivity(Builder builder) {
+        id = builder.id;
+        sport = builder.sport;
+        clockImg = builder.clockImg;
+        clock = builder.clock;
+        endClock = builder.endClock;
+        locationImg = builder.locationImg;
+        location = builder.location;
+        organizerImg = builder.organizerImg;
+        organizer = builder.organizer;
+        sportImg = builder.sportImg;
+    }
+
+    public static class Builder {
+        private String id;
+        private String sport;
+        private int clockImg;
+        private String clock;
+        private String endClock;
+        private int locationImg;
+        private String location;
+        private int organizerImg;
+        private String organizer;
+        private int sportImg;
+
+        public Builder(String id) {
+            this.id = id;
+        }
+
+        public Builder setSport(String sport) {
+            this.sport = sport;
+            return this;
+        }
+
+        public Builder setClockImg(int clockImg) {
+            this.clockImg = clockImg;
+            return this;
+        }
+
+        public Builder setClock(String clock) {
+            this.clock = clock;
+            return this;
+        }
+
+        public Builder setEndClock(String endClock) {
+            this.endClock = endClock;
+            return this;
+        }
+
+        public Builder setLocationImg(int locationImg) {
+            this.locationImg = locationImg;
+            return this;
+        }
+
+        public Builder setLocation(String location) {
+            this.location = location;
+            return this;
+        }
+
+        public Builder setOrganizerImg(int organizerImg) {
+            this.organizerImg = organizerImg;
+            return this;
+        }
+
+        public Builder setOrganizer(String organizer) {
+            this.organizer = organizer;
+            return this;
+        }
+
+        public Builder setSportImg(int sportImg) {
+            this.sportImg = sportImg;
+            return this;
+        }
+
+        public NewActivity build() {
+            return new NewActivity(this);
+        }
+    }
+
+    @NonNull
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 

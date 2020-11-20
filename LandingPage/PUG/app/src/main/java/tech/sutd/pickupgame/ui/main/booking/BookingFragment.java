@@ -4,14 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -21,7 +20,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -35,38 +33,55 @@ import java.util.Calendar;
 
 import javax.inject.Inject;
 
-import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentBookingBinding;
+import tech.sutd.pickupgame.models.User;
+import tech.sutd.pickupgame.models.ui.BookingActivity;
+import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
-import tech.sutd.pickupgame.ui.main.MainActivity;
+import tech.sutd.pickupgame.ui.main.SuccessListener;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.BookingActViewModel;
 import tech.sutd.pickupgame.util.DateConverter;
+import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class BookingFragment extends BaseFragment implements BaseInterface {
 
-    private int hour, min, numberPicked, year, month, day;
+    private int hour, min, hourEnd, minEnd, numberPicked, year, month, day;
+    private String date;
+
+    private User user;
+
+    private BookingActViewModel bookingActViewModel;
+    private UserViewModel userViewModel;
+
+    private Calendar calendar;
 
     private FragmentBookingBinding binding;
 
     private NavController navController;
 
-    private Calendar calendar;
-
     private BaseInterface listener;
+    private SuccessListener successListener;
 
     private Dialog dialog;
 
     @Inject SharedPreferences preferences;
+    @Inject ViewModelProviderFactory providerFactory;
 
     @Override
     public void customAction() { // getActivityCache
         binding.sportSpinner.setText(preferences.getString(getString(R.string.select_sport), ""));
         binding.dateSpinner.setText(preferences.getString(getString(R.string.date), ""));
-        binding.timeSpinner.setText(preferences.getString(getString(R.string.time), ""));
+        binding.timeSpinnerStart.setText(preferences.getString(getString(R.string.start_time), ""));
+        binding.timeSpinnerEnd.setText(preferences.getString(getString(R.string.end_time), ""));
         binding.locationSpinner.setText(preferences.getString(getString(R.string.select_location), ""));
         binding.participantSpinner.setText(preferences.getString(getString(R.string.select_num_participants), ""));
         binding.addNotesSpinner.setText(preferences.getString(getString(R.string.additional_notes), ""));
+    }
+
+    public SuccessListener getSuccessListener() {
+        return successListener;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -75,8 +90,10 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentBookingBinding.inflate(inflater, container, false);
 
-        customAction();
+        bookingActViewModel = new ViewModelProvider(this, providerFactory).get(BookingActViewModel.class);
+        userViewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
 
+        customAction();
         return binding.getRoot();
     }
 
@@ -84,6 +101,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+        subscribeObserver();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -106,6 +124,11 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             dialog.dismiss();
     }
 
+    private void subscribeObserver() {
+        userViewModel.getUsers().observe(getViewLifecycleOwner(), users -> user = users.get(0));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initConfirmBtn() {
         binding.confirmButton.setOnClickListener(v -> {
 
@@ -119,8 +142,12 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 return;
             }
 
-            if (TextUtils.isEmpty(binding.timeSpinner.getText())) {
-                binding.timeSpinner.setError(getString(R.string.required_fields));
+            if (TextUtils.isEmpty(binding.timeSpinnerStart.getText())) {
+                binding.timeSpinnerStart.setError(getString(R.string.required_fields));
+                return;
+            }
+            if (TextUtils.isEmpty(binding.timeSpinnerEnd.getText())) {
+                binding.timeSpinnerEnd.setError(getString(R.string.required_fields));
                 return;
             }
 
@@ -139,9 +166,29 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 return;
             }
 
+            listener.customAction();
+
+            bookingActViewModel.push(this, new BookingActivity.Builder()
+                    .setSport(preferences.getString(getString(R.string.select_sport), ""))
+                    .setEpoch(DateConverter.epochConverter(
+                            preferences.getString(getString(R.string.date), ""),
+                            preferences.getString(getString(R.string.hour), ""),
+                            preferences.getString(getString(R.string.min), "")))
+                    .setEpochEnd(DateConverter.epochConverter(
+                            preferences.getString(getString(R.string.date), ""),
+                            preferences.getString(getString(R.string.hour_end), ""),
+                            preferences.getString(getString(R.string.min_end), "")))
+                    .setLocation(preferences.getString(getString(R.string.select_location), ""))
+                    .setParticipant(preferences.getString(getString(R.string.select_num_participants), ""))
+                    .setNotes(preferences.getString(getString(R.string.additional_notes), ""))
+                    .setOrganizer(user.getName())
+                    .build()
+            );
+
             saveData(getString(R.string.select_sport), "");
             saveData(getString(R.string.date), "");
-            saveData(getString(R.string.time), "");
+            saveData(getString(R.string.start_time), "");
+            saveData(getString(R.string.end_time), "");
             saveData(getString(R.string.select_location), "");
             saveData(getString(R.string.select_num_participants), "");
             saveData(getString(R.string.additional_notes), "");
@@ -242,28 +289,61 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     }
 
     private void initTimePicker() {
-        binding.timeSpinner.setOnClickListener(v -> {
+        binding.timeSpinnerEnd.setOnClickListener(v -> {
             dialog = setDialog(R.layout.time_picker);
 
             TimePicker timePicker = dialog.findViewById(R.id.time_picker);
             Button button = dialog.findViewById(R.id.confirm_button);
 
+            calendar = Calendar.getInstance();
+
+            hourEnd = calendar.get(Calendar.HOUR_OF_DAY);
+            minEnd = calendar.get(Calendar.MINUTE);
+
+            timePicker.setOnTimeChangedListener((timeView, hourOfDay, minute) -> {
+                hourEnd = hourOfDay;
+                minEnd = minute;
+            });
+
             button.setOnClickListener(view -> {
-                calendar = Calendar.getInstance();
+                String timeFormat = DateConverter.timeConverter(hourEnd, minEnd);
+                binding.timeSpinnerEnd.setText(timeFormat);
 
-                hour = calendar.get(Calendar.HOUR_OF_DAY);
-                min = calendar.get(Calendar.MINUTE);
+                saveData(getString(R.string.end_time), timeFormat);
+                saveData(getString(R.string.hour_end), String.valueOf(hourEnd));
+                saveData(getString(R.string.min_end), String.valueOf(minEnd));
 
-                timePicker.setOnTimeChangedListener((timeView, hourOfDay, minute) -> {
-                    hour = hourOfDay;
-                    min = minute;
-                });
+                binding.timeSpinnerEnd.setError(null);
 
-                String timeFormat = DateConverter.timeConverter(binding, hour, min);
+                dialog.dismiss();
+            });
+        });
 
-                saveData(getString(R.string.time), timeFormat);
+        binding.timeSpinnerStart.setOnClickListener(v -> {
+            dialog = setDialog(R.layout.time_picker);
 
-                binding.timeSpinner.setError(null);
+            TimePicker timePicker = dialog.findViewById(R.id.time_picker);
+            Button button = dialog.findViewById(R.id.confirm_button);
+
+            calendar = Calendar.getInstance();
+
+            hour = calendar.get(Calendar.HOUR_OF_DAY);
+            min = calendar.get(Calendar.MINUTE);
+
+            timePicker.setOnTimeChangedListener((timeView, hourOfDay, minute) -> {
+                hour = hourOfDay;
+                min = minute;
+            });
+
+            button.setOnClickListener(view -> {
+                String timeFormat = DateConverter.timeConverter(hour, min);
+                binding.timeSpinnerStart.setText(timeFormat);
+
+                saveData(getString(R.string.start_time), timeFormat);
+                saveData(getString(R.string.hour), String.valueOf(hour));
+                saveData(getString(R.string.min), String.valueOf(min));
+
+                binding.timeSpinnerStart.setError(null);
 
                 dialog.dismiss();
             });
@@ -279,20 +359,20 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             DatePicker datePicker = dialog.findViewById(R.id.date_picker);
             Button button = dialog.findViewById(R.id.confirm_button);
 
+            calendar = Calendar.getInstance();
+
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH) + 1;
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            datePicker.init(year, month, day, (dateView, year, monthOfYear, dayOfMonth) -> {
+                this.year = year;
+                month = monthOfYear + 1;
+                day = dayOfMonth;
+            });
+
             button.setOnClickListener(view -> {
-                calendar = Calendar.getInstance();
-
-                year = calendar.get(Calendar.YEAR);
-                month = calendar.get(Calendar.MONTH) + 1;
-                day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                datePicker.init(year, month, day, (dateView, year, monthOfYear, dayOfMonth) -> {
-                    this.year = year;
-                    month = monthOfYear + 1;
-                    day = dayOfMonth;
-                });
-
-                String date = day + "/" + month + "/" + year;
+                date = DateConverter.formatDate(day, month, year);
                 binding.dateSpinner.setText(date);
 
                 saveData(getString(R.string.date), date);
@@ -359,6 +439,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
         super.onAttach(context);
         try {
             listener = (BaseInterface) context;
+            successListener = (SuccessListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

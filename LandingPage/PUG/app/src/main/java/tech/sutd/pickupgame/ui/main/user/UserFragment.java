@@ -51,6 +51,8 @@ public class UserFragment extends DaggerFragment {
         requestManager.load(R.drawable.ic_pug)
                 .into(binding.profileImage);
 
+        binding.editProfile.setOnClickListener(v -> navController.navigate(R.id.action_userFragment_to_editProfileFragment));
+
         binding.logout.setOnClickListener(v -> {
             MainActivity activity = (MainActivity) getActivity();
             if (activity != null)
