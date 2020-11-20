@@ -3,6 +3,8 @@ package tech.sutd.pickupgame;
 import androidx.work.Configuration;
 import androidx.work.WorkManager;
 
+import com.flurry.android.FlurryAgent;
+
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
@@ -29,6 +31,10 @@ public class BaseApplication extends DaggerApplication {
         super.onCreate();
         instance = this;
         configureWorkManager();
+
+        new FlurryAgent.Builder()
+                .withLogEnabled(true)
+                .build(this, "YJTZV87KKJ22ZQWDJGH4");
     }
 
     private void configureWorkManager() {

@@ -133,7 +133,7 @@ public class MainFragment extends DaggerFragment {
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);
-        newAdapter.setNotifications(requestManager, 1);
+        newAdapter.setNotifications(getContext(),requestManager, 1);
 
         binding.upcomingAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_upcomingActFragment));
         binding.newAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_newActFragment));

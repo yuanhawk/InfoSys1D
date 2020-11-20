@@ -28,6 +28,8 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
+import com.google.android.material.textview.MaterialTextView;
+
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -166,6 +168,21 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 return;
             }
 
+            String startTime = DateConverter.epochConverter(
+                    preferences.getString(getString(R.string.date), ""),
+                    preferences.getString(getString(R.string.hour), ""),
+                    preferences.getString(getString(R.string.min), ""));
+            String endTime = DateConverter.epochConverter(
+                    preferences.getString(getString(R.string.date), ""),
+                    preferences.getString(getString(R.string.hour_end), ""),
+                    preferences.getString(getString(R.string.min_end), ""));
+
+            if (Long.parseLong(startTime) >= Long.parseLong(endTime)) {
+                binding.timeSpinnerStart.setError(getString(R.string.time_error));
+                binding.timeSpinnerEnd.setError(getString(R.string.time_error));
+                return;
+            }
+
             listener.customAction();
 
             bookingActViewModel.push(this, new BookingActivity.Builder()
@@ -202,9 +219,8 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             dialog = setDialog(R.layout.addon_notes);
 
             EditText add_notes_et = dialog.findViewById(R.id.add_notes);
-            Button button = dialog.findViewById(R.id.confirm_button);
 
-            button.setOnClickListener(view -> {
+            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
                 String addNotes = String.valueOf(add_notes_et.getText()).trim();
                 binding.addNotesSpinner.setText(addNotes);
 
@@ -222,7 +238,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             dialog = setDialog(R.layout.number_picker);
 
             NumberPicker numberPicker = dialog.findViewById(R.id.number_picker);
-            Button button = dialog.findViewById(R.id.confirm_button);
 
             numberPicker.setMinValue(1);
             numberPicker.setMaxValue(20);
@@ -232,7 +247,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             numberPicked = 1;
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> numberPicked = newVal);
 
-            button.setOnClickListener(view -> {
+            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
                 String numOfParticipants = String.valueOf(numberPicked);
                 binding.participantSpinner.setText(numOfParticipants);
 
@@ -249,8 +264,11 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
         binding.locationSpinner.setOnClickListener(v -> {
             dialog = setDialog(R.layout.spinner);
 
+            MaterialTextView title = dialog.findViewById(R.id.title);
             EditText location_et = dialog.findViewById(R.id.search_category);
             ListView listView = dialog.findViewById(R.id.category_list);
+
+            title.setText(getString(R.string.select_location));
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
                     getContext(), R.layout.support_simple_spinner_dropdown_item, Arrays.asList(getResources().getStringArray(R.array.location_array))
@@ -293,7 +311,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             dialog = setDialog(R.layout.time_picker);
 
             TimePicker timePicker = dialog.findViewById(R.id.time_picker);
-            Button button = dialog.findViewById(R.id.confirm_button);
 
             calendar = Calendar.getInstance();
 
@@ -305,7 +322,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 minEnd = minute;
             });
 
-            button.setOnClickListener(view -> {
+            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
                 String timeFormat = DateConverter.timeConverter(hourEnd, minEnd);
                 binding.timeSpinnerEnd.setText(timeFormat);
 
@@ -323,7 +340,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             dialog = setDialog(R.layout.time_picker);
 
             TimePicker timePicker = dialog.findViewById(R.id.time_picker);
-            Button button = dialog.findViewById(R.id.confirm_button);
 
             calendar = Calendar.getInstance();
 
@@ -335,7 +351,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 min = minute;
             });
 
-            button.setOnClickListener(view -> {
+            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
                 String timeFormat = DateConverter.timeConverter(hour, min);
                 binding.timeSpinnerStart.setText(timeFormat);
 
@@ -357,7 +373,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
             dialog = setDialog(R.layout.date_picker);
 
             DatePicker datePicker = dialog.findViewById(R.id.date_picker);
-            Button button = dialog.findViewById(R.id.confirm_button);
 
             calendar = Calendar.getInstance();
 
@@ -371,7 +386,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 day = dayOfMonth;
             });
 
-            button.setOnClickListener(view -> {
+            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
                 date = DateConverter.formatDate(day, month, year);
                 binding.dateSpinner.setText(date);
 
@@ -388,8 +403,11 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
         binding.sportSpinner.setOnClickListener(v -> {
             Dialog dialog = setDialog(R.layout.spinner);
 
+            MaterialTextView title = dialog.findViewById(R.id.title);
             EditText sport_et = dialog.findViewById(R.id.search_category);
             ListView listView = dialog.findViewById(R.id.category_list);
+
+            title.setText(getString(R.string.select_sport));
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
                     getContext(), R.layout.support_simple_spinner_dropdown_item, Arrays.asList(getResources().getStringArray(R.array.sport_array))

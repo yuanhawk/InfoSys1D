@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- A CardView that contains a TextView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:padding="100dp"
+        card_view:cardBackgroundColor="@color/colorWhite"
+        card_view:cardCornerRadius="20dp"
+        card_view:cardElevation="0dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/sport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="20sp"
+            android:autoSizeMaxTextSize="30sp"
+            android:autoSizeStepGranularity="2sp"
+            android:fontFamily="@font/ralewaysemibold"
+            android:textColor="@color/colorRed"
+            tools:targetApi="o" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/clock_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="50dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="55dp"
+            android:textSize="14sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeStepGranularity="2sp"
+            android:fontFamily="@font/ralewaymedium"
+            android:textColor="@color/colorRed"
+            tools:targetApi="o" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/location_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="82dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="85dp"
+            android:textSize="14sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeStepGranularity="2sp"
+            android:fontFamily="@font/ralewaymedium"
+            android:textColor="@color/colorRed"
+            tools:targetApi="o" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/organizer_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="115dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/organizer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="119dp"
+            android:layout_marginBottom="15dp"
+            android:textSize="14sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeStepGranularity="2sp"
+            android:fontFamily="@font/ralewaymedium"
+            android:textColor="@color/colorRed"
+            tools:targetApi="o" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/participant_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="148dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/participant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="153dp"
+            android:layout_marginBottom="15dp"
+            android:textSize="14sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeStepGranularity="2sp"
+            android:fontFamily="@font/ralewaymedium"
+            android:textColor="@color/colorRed"
+            tools:targetApi="o" />
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/notes_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="181dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="186dp"
+            android:layout_marginBottom="15dp"
+            android:textSize="14sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeStepGranularity="2sp"
+            android:fontFamily="@font/ralewaymedium"
+            android:textColor="@color/colorRed"
+            tools:targetApi="o" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/colorRed"
+            android:fontFamily="@font/ralewaysemibold"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="@string/sign_up"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/sport_img"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:alpha=".3"
+            android:layout_gravity="center" />
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

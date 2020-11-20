@@ -26,6 +26,7 @@ import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.ui.new_activity.NewRepository;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.util.StringComparator;
 
 public class NewActViewModel extends ViewModel {
 
@@ -80,7 +81,7 @@ public class NewActViewModel extends ViewModel {
 
     public void pull() {
         fStore.collection("activities")
-                .whereGreaterThan("epoch", String.valueOf(Calendar.getInstance().getTimeInMillis()))
+                .whereGreaterThanOrEqualTo("epoch", String.valueOf(Calendar.getInstance().getTimeInMillis()))
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -88,15 +89,9 @@ public class NewActViewModel extends ViewModel {
                             BookingActivity activity = ds.toObject(BookingActivity.class);
 
 
-                            int image = 0;
-                            if (activity.getSport().equals("Badminton"))
-                                image = R.drawable.ic_badminton;
-                            if (activity.getSport().equals("Cycling"))
-                                image = R.drawable.ic_cycling;
-
                             insert(new NewActivity.Builder(ds.getId())
                                     .setSport(activity.getSport())
-                                    .setSportImg(image)
+                                    .setSportImg(StringComparator.caseImage(activity.getSport()))
                                     .setClock(activity.getEpoch())
                                     .setClockImg(R.drawable.ic_clock)
                                     .setEndClock(activity.getEpochEnd())
@@ -104,6 +99,10 @@ public class NewActViewModel extends ViewModel {
                                     .setLocation(activity.getLoc())
                                     .setOrganizerImg(R.drawable.ic_profile)
                                     .setOrganizer(activity.getOrganizer())
+                                    .setParticipantImg(R.drawable.ic_participants)
+                                    .setParticipant(activity.getPart())
+                                    .setNotesImg(R.drawable.ic_notes)
+                                    .setNotes(activity.getDesc())
                                     .build()
                             );
                         }

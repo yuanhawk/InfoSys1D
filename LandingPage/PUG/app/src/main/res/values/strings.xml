@@ -32,6 +32,7 @@
     <string name="g">G</string>
     <string name="organise_activity">Organise Activity&#8230;</string>
     <string name="select_sport">Select Sport&#8230;</string>
+    <string name="select_location">Select Location&#8230;</string>
     <string name="start_time">Start Time</string>
     <string name="hour">Hour</string>
     <string name="min">Min</string>
@@ -42,7 +43,6 @@
     <string name="badminton">Badminton</string>
     <string name="cycling">Cycling</string>
     <string name="search">Search&#8230;</string>
-    <string name="select_location">Select Location&#8230;</string>
 
     <string name="edit_profile">Edit Profile</string>
     <string name="notification_preferences">Notification Preferences</string>
@@ -67,6 +67,8 @@
     <string name="end_time">End Time</string>
     <string name="hour_end">End Hour</string>
     <string name="min_end">End Min</string>
+
+    <string name="time_error">Please set the Start and End Time correctly</string>
 
     <string-array name="sport_array">
         <item>Badminton</item>

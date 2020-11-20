@@ -130,7 +130,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);
-        newAdapter.setNotifications(requestManager, 9999);
+        newAdapter.setNotifications(getContext(), requestManager, 9999);
 
         new CustomSnapHelper().attachToRecyclerView(binding.newRc);
     }

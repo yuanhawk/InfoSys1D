@@ -8,11 +8,10 @@
     android:background="@android:color/white">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/sport_tv"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ralewaysemibold"
-        android:text="@string/select_sport"
         android:padding="15dp"
         android:paddingStart="20dp"
         android:textColor="@color/colorBlue"
