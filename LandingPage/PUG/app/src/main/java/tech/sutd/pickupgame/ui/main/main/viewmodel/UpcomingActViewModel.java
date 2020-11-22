@@ -29,12 +29,12 @@ import tech.sutd.pickupgame.util.StringComparator;
 
 public class UpcomingActViewModel extends ViewModel {
 
-    private UpcomingRepository repository;
+    private final UpcomingRepository repository;
 
-    private LiveData<PagedList<UpcomingActivity>> allUpcomingActivitiesByClock, upcomingActivitiesByClock2;
+    private final LiveData<PagedList<UpcomingActivity>> allUpcomingActivitiesByClock, upcomingActivitiesByClock2;
 
-    private DatabaseReference reff;
-    private FirebaseAuth fAuth;
+    private final DatabaseReference reff;
+    private final FirebaseAuth fAuth;
 
     @Inject
     public UpcomingActViewModel(@NonNull Application application, DatabaseReference reff, FirebaseAuth fAuth) {

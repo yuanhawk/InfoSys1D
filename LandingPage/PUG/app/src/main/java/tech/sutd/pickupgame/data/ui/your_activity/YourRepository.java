@@ -13,8 +13,8 @@ import tech.sutd.pickupgame.models.ui.YourActivity;
 
 public class YourRepository {
 
-    private YourDao yourDao;
-    private LiveData<List<YourActivity>> allYourActivities;
+    private final YourDao yourDao;
+    private final LiveData<List<YourActivity>> allYourActivities;
 
     public YourRepository(Application application) {
         YourDatabase database = YourDatabase.getInstance(application);

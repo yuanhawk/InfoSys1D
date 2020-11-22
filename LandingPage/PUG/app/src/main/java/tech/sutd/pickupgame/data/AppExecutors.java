@@ -13,7 +13,7 @@ public class AppExecutors {
 
     private static final Object LOCK = new Object();
 
-    private static int threadCt = Runtime.getRuntime().availableProcessors() + 1;
+    private static final int threadCt = Runtime.getRuntime().availableProcessors() + 1;
 
     public AppExecutors(Executor diskIO, Executor mainThread, Executor networkIO) {
         this.diskIO = diskIO;

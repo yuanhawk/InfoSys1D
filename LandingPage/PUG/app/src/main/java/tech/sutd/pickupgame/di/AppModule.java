@@ -6,10 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Constraints;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -21,7 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -29,7 +26,6 @@ import dagger.Module;
 import dagger.Provides;
 import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
-import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
 
 @Module
 public class AppModule {
@@ -68,12 +64,6 @@ public class AppModule {
     static RequestManager provideGlideInstance(Application application, RequestOptions requestOptions) {
         return Glide.with(application)
                 .setDefaultRequestOptions(requestOptions);
-    }
-
-    @Singleton
-    @Provides
-    static Drawable provideLoginDrawable(Application application) {
-        return ContextCompat.getDrawable(application, R.drawable.ic_pug);
     }
 
     @Singleton

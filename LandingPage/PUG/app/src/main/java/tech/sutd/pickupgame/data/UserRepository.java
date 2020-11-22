@@ -12,8 +12,8 @@ import tech.sutd.pickupgame.models.User;
 
 public class UserRepository {
 
-    private UserDao userDao;
-    private LiveData<List<User>> allUsers;
+    private final UserDao userDao;
+    private final LiveData<List<User>> allUsers;
 
     public UserRepository(Application application) {
         UserDatabase database = UserDatabase.getInstance(application);

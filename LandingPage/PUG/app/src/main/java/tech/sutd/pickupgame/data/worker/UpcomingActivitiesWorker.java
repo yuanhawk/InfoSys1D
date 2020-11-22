@@ -18,7 +18,7 @@ public class UpcomingActivitiesWorker extends Worker {
 
     public static final String KEY_TASK_OUTPUT = "key_task_output";
 
-    private UpcomingActViewModel viewModel;
+    private final UpcomingActViewModel viewModel;
 
     @Inject
     public UpcomingActivitiesWorker(@NonNull Context context, @NonNull WorkerParameters workerParams,

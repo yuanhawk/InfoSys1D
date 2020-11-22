@@ -23,6 +23,7 @@ import javax.inject.Inject;
 
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.ui.new_activity.NewRepository;
+import tech.sutd.pickupgame.di.helper.NewRoomHelper;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.ui.main.main.MainFragment;
@@ -32,18 +33,18 @@ import tech.sutd.pickupgame.util.StringComparator;
 
 public class NewActViewModel extends ViewModel {
 
-    private NewRepository repository;
+    @Inject NewRoomHelper repository;
 
-    private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
+    private final LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
 
-    private FirebaseFirestore fStore;
-    private DatabaseReference reff;
-    private FirebaseAuth fAuth;
+    private final FirebaseFirestore fStore;
+    private final DatabaseReference reff;
+    private final FirebaseAuth fAuth;
 
     @Inject
-    public NewActViewModel(@NonNull Application application, FirebaseFirestore fStore,
+    public NewActViewModel(FirebaseFirestore fStore, NewRoomHelper helper,
                            DatabaseReference reff, FirebaseAuth fAuth) {
-        this.repository = new NewRepository(application);
+        repository = helper;
         allNewActivitiesByClock = repository.getAllNewActivitiesByClock();
         allNewActivitiesBySport = repository.getAllNewActivitiesBySport();
         newActivitiesByClock2 = repository.getNewActivitiesByClock2();

@@ -19,7 +19,7 @@ public class NewActivitiesWorker extends Worker {
 
     public static final String KEY_TASK_OUTPUT = "key_task_output";
 
-    private NewActViewModel viewModel;
+    private final NewActViewModel viewModel;
 
     @Inject
     public NewActivitiesWorker(@NonNull Context context, @NonNull WorkerParameters workerParams,

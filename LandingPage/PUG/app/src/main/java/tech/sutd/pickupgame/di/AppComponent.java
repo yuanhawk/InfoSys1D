@@ -20,7 +20,8 @@ import tech.sutd.pickupgame.di.worker.SimpleWorkerFactory;
                 AppModule.class,
                 ViewModelFactoryModule.class,
                 AppViewModelModule.class,
-                WorkerViewModelModule.class
+                WorkerViewModelModule.class,
+                AppContextModule.class
         }
 )
 public interface AppComponent extends AndroidInjector<BaseApplication> {

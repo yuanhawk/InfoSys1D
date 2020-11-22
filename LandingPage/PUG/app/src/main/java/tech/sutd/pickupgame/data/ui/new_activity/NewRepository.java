@@ -6,16 +6,19 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
+import javax.inject.Inject;
+
 import tech.sutd.pickupgame.data.AppExecutors;
+import tech.sutd.pickupgame.di.helper.NewRoomHelper;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 
-public class NewRepository {
+public class NewRepository implements NewRoomHelper {
 
-    private NewDao newDao;
-    private LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
+    private final NewDao newDao;
+    private final LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
 
-    public NewRepository(Application application) {
-        NewDatabase database = NewDatabase.getInstance(application);
+    @Inject
+    public NewRepository(NewDatabase database) {
         newDao = database.newDao();
         allNewActivitiesByClock = new LivePagedListBuilder<>(
                 newDao.getAllNewActivitiesByClock(), 20
@@ -28,30 +31,37 @@ public class NewRepository {
         ).build();
     }
 
+    @Override
     public void insert(NewActivity newActivity) {
         new NewRepository.InsertNewActivityExecutor(newDao).execute(newActivity);
     }
 
+    @Override
     public void update(NewActivity newActivity) {
         new NewRepository.UpdateNewActivityExecutor(newDao).execute(newActivity);
     }
 
+    @Override
     public void delete(String clock) {
         new NewRepository.DeleteNewActivityExecutor(newDao).execute(clock);
     }
 
+    @Override
     public void deleteAllNewActivities() {
         new NewRepository.DeleteAllNewActivitiesExecutor(newDao).execute();
     }
 
+    @Override
     public LiveData<PagedList<NewActivity>> getAllNewActivitiesByClock() {
         return allNewActivitiesByClock;
     }
 
+    @Override
     public LiveData<PagedList<NewActivity>> getAllNewActivitiesBySport() {
         return allNewActivitiesBySport;
     }
 
+    @Override
     public LiveData<PagedList<NewActivity>> getNewActivitiesByClock2() {
         return newActivitiesByClock2;
     }

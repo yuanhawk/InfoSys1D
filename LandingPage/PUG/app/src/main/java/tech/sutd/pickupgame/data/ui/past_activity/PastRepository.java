@@ -11,8 +11,8 @@ import tech.sutd.pickupgame.models.ui.PastActivity;
 
 public class PastRepository {
 
-    private PastDao pastDao;
-    private LiveData<List<PastActivity>> allPastActivities;
+    private final PastDao pastDao;
+    private final LiveData<List<PastActivity>> allPastActivities;
 
     public PastRepository(Application application) {
         PastDatabase database = PastDatabase.getInstance(application);

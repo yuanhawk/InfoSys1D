@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.text.Editable;
 import android.text.TextUtils;
@@ -61,8 +62,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private FragmentBookingBinding binding;
 
-    private NavController navController;
-
     private BaseInterface listener;
     private SuccessListener successListener;
 
@@ -102,7 +101,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
         subscribeObserver();
     }
 

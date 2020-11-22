@@ -1,5 +1,9 @@
 package tech.sutd.pickupgame.di.main.new_fragment;
 
+import android.content.Context;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.bumptech.glide.RequestManager;
 
 import dagger.Module;

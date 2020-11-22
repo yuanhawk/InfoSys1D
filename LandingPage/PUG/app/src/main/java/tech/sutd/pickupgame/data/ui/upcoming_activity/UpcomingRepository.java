@@ -11,7 +11,7 @@ import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 
 public class UpcomingRepository {
 
-    private UpcomingDao upcomingDao;
+    private final UpcomingDao upcomingDao;
     private final LiveData<PagedList<UpcomingActivity>> allUpcomingActivitiesByClock, upcomingActivitiesByClockTwo;
 
     public UpcomingRepository(Application application) {
