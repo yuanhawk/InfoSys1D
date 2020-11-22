@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.PastActivity;
@@ -29,6 +31,11 @@ public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapte
     private RequestManager requestManager;
 
     private int numOfViews = 0;
+
+    @Inject
+    public PastActivityAdapter(RequestManager requestManager) {
+        this.requestManager = requestManager;
+    }
 
     @NonNull
     @Override
@@ -85,16 +92,15 @@ public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapte
         return pastActivities.size();
     }
 
-    public void setNotifications(List<PastActivity> pastActivities, RequestManager requestManager, int numOfViews) {
+    public void setNotifications(List<PastActivity> pastActivities, int numOfViews) {
         this.pastActivities = pastActivities;
-        this.requestManager = requestManager;
         this.numOfViews = numOfViews;
         notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemlistActivitiesBinding binding;
+        private final ItemlistActivitiesBinding binding;
 
         public ViewHolder(@NonNull ItemlistActivitiesBinding binding) {
             super(binding.getRoot());

@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 
 import com.bumptech.glide.RequestManager;
 
+import javax.inject.Inject;
+
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.ItemlistFilterBinding;
 
@@ -18,6 +20,11 @@ public class FilterAdapter extends BaseAdapter {
     private String[] desc = {"Date", "Sport", "Near Me"};
 
     private RequestManager requestManager;
+
+    @Inject
+    public FilterAdapter(RequestManager requestManager) {
+        this.requestManager = requestManager;
+    }
 
     @Override
     public int getCount() {
@@ -32,10 +39,6 @@ public class FilterAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
-    }
-
-    public void setRequestManager(RequestManager requestManager) {
-        this.requestManager = requestManager;
     }
 
     @Override

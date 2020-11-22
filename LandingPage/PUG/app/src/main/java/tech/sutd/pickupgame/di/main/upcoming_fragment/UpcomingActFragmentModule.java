@@ -1,5 +1,7 @@
 package tech.sutd.pickupgame.di.main.upcoming_fragment;
 
+import com.bumptech.glide.RequestManager;
+
 import dagger.Module;
 import dagger.Provides;
 import tech.sutd.pickupgame.models.ui.PastActivity;
@@ -14,13 +16,13 @@ public class UpcomingActFragmentModule {
 
     @UpcomingActFragmentScope
     @Provides
-    static YourActivityAdapter provideYourActivityAdapter() {
-        return new YourActivityAdapter();
+    static YourActivityAdapter provideYourActivityAdapter(RequestManager requestManager) {
+        return new YourActivityAdapter(requestManager);
     }
 
     @UpcomingActFragmentScope
     @Provides
-    static PastActivityAdapter providePastActivityAdapter() {
-        return new PastActivityAdapter();
+    static PastActivityAdapter providePastActivityAdapter(RequestManager requestManager) {
+        return new PastActivityAdapter(requestManager);
     }
 }

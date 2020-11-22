@@ -51,7 +51,6 @@ public class UpcomingActFragment extends DaggerFragment {
     @Inject YourActivityAdapter yourAdapter;
     @Inject PastActivityAdapter pastAdapter;
     @Inject ViewModelProviderFactory providerFactory;
-    @Inject RequestManager requestManager;
 
     @Inject Constraints constraints;
 
@@ -104,10 +103,10 @@ public class UpcomingActFragment extends DaggerFragment {
                 upcomingAdapter.submitList(upcomingActivities));
 
         yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), yourActivities ->
-                yourAdapter.setNotifications(yourActivities, requestManager, 9999));
+                yourAdapter.setNotifications(yourActivities, 9999));
 
         pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActivities ->
-                pastAdapter.setNotifications(pastActivities, requestManager, 9999));
+                pastAdapter.setNotifications(pastActivities, 9999));
     }
 
     private void initViews() {
@@ -115,7 +114,7 @@ public class UpcomingActFragment extends DaggerFragment {
         binding.upcomingRc.setAdapter(upcomingAdapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
-        upcomingAdapter.setNotifications(requestManager, 9999);
+        upcomingAdapter.setNotifications(9999);
 
         yourActViewModel.insert(new YourActivity(0, "Cycling", R.drawable.ic_clock,
                 String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),

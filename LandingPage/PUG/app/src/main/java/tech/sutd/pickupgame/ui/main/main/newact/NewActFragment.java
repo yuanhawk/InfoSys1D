@@ -53,8 +53,6 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class NewActFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String TAG = "NewActFragment";
-
     private FragmentNewActBinding binding;
 
     private NewActViewModel newActViewModel;
@@ -137,7 +135,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);
-        newAdapter.setNotifications(getContext(), requestManager, newActViewModel, null, this, 9999);
+        newAdapter.setNotifications(getContext(), null, this, 9999);
 
         new CustomSnapHelper().attachToRecyclerView(binding.newRc);
     }
@@ -155,7 +153,6 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
                 ListView filterList = dialog.findViewById(R.id.filter_list);
                 Button button = dialog.findViewById(R.id.confirm_button);
 
-                filterAdapter.setRequestManager(requestManager);
                 filterList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
                 filterList.setAdapter(filterAdapter);
 

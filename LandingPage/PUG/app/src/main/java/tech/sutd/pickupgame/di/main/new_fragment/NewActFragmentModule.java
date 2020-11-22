@@ -1,5 +1,7 @@
 package tech.sutd.pickupgame.di.main.new_fragment;
 
+import com.bumptech.glide.RequestManager;
+
 import dagger.Module;
 import dagger.Provides;
 import tech.sutd.pickupgame.ui.main.main.adapter.FilterAdapter;
@@ -9,7 +11,7 @@ public class NewActFragmentModule {
 
     @NewActFragmentScope
     @Provides
-    static FilterAdapter provideFilterAdapter() {
-        return new FilterAdapter();
+    static FilterAdapter provideFilterAdapter(RequestManager requestManager) {
+        return new FilterAdapter(requestManager);
     }
 }

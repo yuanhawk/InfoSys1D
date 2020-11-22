@@ -58,7 +58,6 @@ public class MainFragment extends DaggerFragment {
     @Inject UpcomingActivityAdapter<UpcomingActivity> adapter;
     @Inject NewActivityAdapter<NewActivity> newAdapter;
     @Inject ViewModelProviderFactory providerFactory;
-    @Inject RequestManager requestManager;
 
     @Inject Constraints constraints;
     @Inject Handler handler;
@@ -137,13 +136,13 @@ public class MainFragment extends DaggerFragment {
         binding.upcomingRc.setAdapter(adapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
-        adapter.setNotifications(requestManager, 1);
+        adapter.setNotifications(1);
 
 
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);
-        newAdapter.setNotifications(getContext(),requestManager, newActViewModel, this, null, 1);
+        newAdapter.setNotifications(getContext(), this, null, 1);
 
         binding.upcomingAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_upcomingActFragment));
         binding.newAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_newActFragment));

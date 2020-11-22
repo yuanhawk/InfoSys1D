@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentActivity;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,18 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.RequestManager;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import javax.inject.Inject;
 
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
-import tech.sutd.pickupgame.models.ui.YourActivity;
-import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
@@ -43,16 +34,19 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
 
     private int numOfViews = 0;
 
-    private RequestManager requestManager;
-    private NewActViewModel viewModel;
+    private final RequestManager requestManager;
+    private final NewActViewModel viewModel;
     private MainFragment mainFragment;
     private NewActFragment newFragment;
     private Context context;
 
     private Dialog dialog;
 
-    public NewActivityAdapter() {
+    @Inject
+    public NewActivityAdapter(RequestManager requestManager, NewActViewModel viewModel) {
         super(DIFF_CALLBACK);
+        this.requestManager = requestManager;
+        this.viewModel = viewModel;
     }
 
     @NonNull
@@ -106,7 +100,7 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
         }
 
         holder.binding.cardView.setOnClickListener(v -> {
-            dialog = setDialog(R.layout.expanded_itemlist_activities);
+            dialog = setDialog();
 
             MaterialTextView sportTv = dialog.findViewById(R.id.sport);
             sportTv.setText(newActivity.getSport());
@@ -174,10 +168,10 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
         return dialog;
     }
 
-    private Dialog setDialog(int layout) {
+    private Dialog setDialog() {
         Dialog dialog = new Dialog(context);
 
-        dialog.setContentView(layout);
+        dialog.setContentView(R.layout.expanded_itemlist_activities);
 
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -205,12 +199,9 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
         }
     };
 
-    public void setNotifications(Context context, RequestManager requestManager,
-                                 NewActViewModel viewModel, MainFragment mainFragment,
+    public void setNotifications(Context context, MainFragment mainFragment,
                                  NewActFragment newFragment, int numOfViews) {
         this.context = context;
-        this.requestManager = requestManager;
-        this.viewModel = viewModel;
         this.mainFragment = mainFragment;
         this.newFragment = newFragment;
         this.numOfViews = numOfViews;
@@ -219,7 +210,7 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemlistActivitiesBinding binding;
+        private final ItemlistActivitiesBinding binding;
 
         public ViewHolder(@NonNull ItemlistActivitiesBinding binding) {
             super(binding.getRoot());

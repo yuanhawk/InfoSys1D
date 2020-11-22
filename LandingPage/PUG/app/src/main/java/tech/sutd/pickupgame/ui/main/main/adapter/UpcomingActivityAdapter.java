@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
@@ -31,8 +33,10 @@ public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivit
 
     private int numOfViews = 0;
 
-    public UpcomingActivityAdapter() {
+    @Inject
+    public UpcomingActivityAdapter(RequestManager requestManager) {
         super(DIFF_CALLBACK);
+        this.requestManager = requestManager;
     }
 
     @NonNull
@@ -86,8 +90,7 @@ public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivit
         }
     }
 
-    public void setNotifications(RequestManager requestManager, int numOfViews) {
-        this.requestManager = requestManager;
+    public void setNotifications(int numOfViews) {
         this.numOfViews = numOfViews;
         notifyDataSetChanged();
     }
@@ -95,7 +98,7 @@ public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivit
     private static final DiffUtil.ItemCallback<UpcomingActivity> DIFF_CALLBACK =  new DiffUtil.ItemCallback<UpcomingActivity>() {
         @Override
         public boolean areItemsTheSame(@NonNull UpcomingActivity oldItem, @NonNull UpcomingActivity newItem) {
-            return oldItem.getId() == newItem.getId();
+            return oldItem.getId().equals(newItem.getId());
         }
 
         @SuppressLint("DiffUtilEquals")
