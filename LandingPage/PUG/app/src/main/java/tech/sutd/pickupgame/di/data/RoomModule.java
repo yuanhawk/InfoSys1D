@@ -14,7 +14,7 @@ import tech.sutd.pickupgame.data.ui.new_activity.NewRepository;
 import tech.sutd.pickupgame.di.helper.NewRoomHelper;
 
 @Module
-public class NewRoomModule {
+public class RoomModule {
 
     @Provides
     static NewRoomHelper provideNewRoomHelper(NewRepository repository) {
