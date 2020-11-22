@@ -65,7 +65,6 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     @Inject NewActivityAdapter<NewActivity> newAdapter;
     @Inject ViewModelProviderFactory providerFactory;
-    @Inject RequestManager requestManager;
     @Inject FilterAdapter filterAdapter;
     @Inject Handler handler;
 
