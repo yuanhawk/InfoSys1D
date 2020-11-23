@@ -28,7 +28,7 @@ import tech.sutd.pickupgame.models.UserProfile;
 import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class RegisterFragment extends BaseFragment {
+public class RegisterFragment extends BaseFragment implements View.OnClickListener {
 
     private int clickState = ClickState.NONE;
 
@@ -43,20 +43,23 @@ public class RegisterFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
-        binding.signIn.setOnClickListener(v -> getNavController().popBackStack(R.id.loginFragment, false));
-        binding.registerCV.setOnClickListener(v -> {
-            if (clickState == ClickState.NONE)
-                registerUser();
-        });
+        binding.signIn.setOnClickListener(this);
+        binding.registerCV.setOnClickListener(this);
 
         viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
         return binding.getRoot();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onClick(View v) {
+        int id = v.getId();
 
+        if (id == binding.signIn.getId())
+            getNavController().popBackStack(R.id.loginFragment, false);
+        else if (id == binding.registerCV.getId()) {
+            if (clickState == ClickState.NONE)
+                registerUser();
+        }
     }
 
     private void registerUser() {

@@ -118,44 +118,37 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
         new CustomSnapHelper().attachToRecyclerView(binding.newRc);
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.back:
-                getNavController().popBackStack(R.id.mainFragment, false);
-                break;
-            case R.id.filter:
-                Dialog dialog = setDialog(R.layout.filter);
+        int id = v.getId();
+        if (id == binding.back.getId()) {
+            getNavController().popBackStack(R.id.mainFragment, false);
+        } else if (id == binding.filter.getId()) {
+            Dialog dialog = setDialog(R.layout.filter);
 
-                ListView filterList = dialog.findViewById(R.id.filter_list);
-                Button button = dialog.findViewById(R.id.confirm_button);
+            ListView filterList = dialog.findViewById(R.id.filter_list);
+            Button button = dialog.findViewById(R.id.confirm_button);
 
-                filterList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-                filterList.setAdapter(filterAdapter);
+            filterList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+            filterList.setAdapter(filterAdapter);
 
-                filterList.setOnItemClickListener((parent, filterView, position, id) -> {
-                    int pos = (int) parent.getItemAtPosition(position);
+            filterList.setOnItemClickListener((parent, filterView, position, filterId) -> {
+                int posImg = (int) parent.getItemAtPosition(position);
 
-                    switch (pos) {
-                        case R.drawable.ic_calendar:
-                            if (newActViewModel.getAllNewActivitiesBySport().hasActiveObservers())
-                                newActViewModel.getAllNewActivitiesBySport().removeObserver(observer);
-                            newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
-                            break;
-                        case R.drawable.ic_star:
-                            if (newActViewModel.getAllNewActivitiesByClock().hasActiveObservers())
-                                newActViewModel.getAllNewActivitiesByClock().removeObserver(observer);
-                            newActViewModel.getAllNewActivitiesBySport().observe(getViewLifecycleOwner(), observer);
-                            break;
-                        case R.drawable.ic_location:
-                            Toast.makeText(getContext(), "Near Me Pressed", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                });
+                if (posImg == R.drawable.ic_calendar) {
+                    if (newActViewModel.getAllNewActivitiesBySport().hasActiveObservers())
+                        newActViewModel.getAllNewActivitiesBySport().removeObserver(observer);
+                    newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
+                } else if (posImg == R.drawable.ic_star) {
+                    if (newActViewModel.getAllNewActivitiesByClock().hasActiveObservers())
+                        newActViewModel.getAllNewActivitiesByClock().removeObserver(observer);
+                    newActViewModel.getAllNewActivitiesBySport().observe(getViewLifecycleOwner(), observer);
+                } else if (posImg == R.drawable.ic_location) {
+                    Toast.makeText(getContext(), "Near Me Pressed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                button.setOnClickListener(view -> dialog.dismiss());
-                break;
+            button.setOnClickListener(view -> dialog.dismiss());
         }
     }
 

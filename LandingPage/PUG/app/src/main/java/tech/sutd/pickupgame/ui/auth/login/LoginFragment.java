@@ -32,7 +32,7 @@ import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
     // TODO: Create a remember me btn
 
@@ -73,11 +73,19 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        binding.signUp.setOnClickListener(v -> getNavController().navigate(R.id.action_loginFragment_to_registerFragment));
-        binding.login.setOnClickListener(v -> {
+        binding.signUp.setOnClickListener(this);
+        binding.login.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == binding.signUp.getId())
+            getNavController().navigate(R.id.action_loginFragment_to_registerFragment);
+        else if (id == binding.login.getId()) {
             if (clickState == ClickState.NONE)
                 login();
-        });
+        }
     }
 
     private void login() {

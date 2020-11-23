@@ -44,7 +44,7 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class MainFragment extends BaseFragment {
+public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentMainBinding binding;
 
@@ -115,8 +115,17 @@ public class MainFragment extends BaseFragment {
         binding.newRc.setHasFixedSize(true);
         newAdapter.setNotifications(getContext(), this, null, 1);
 
-        binding.upcomingAct.setOnClickListener(v -> getNavController().navigate(R.id.action_mainFragment_to_upcomingActFragment));
-        binding.newAct.setOnClickListener(v -> getNavController().navigate(R.id.action_mainFragment_to_newActFragment));
+        binding.upcomingAct.setOnClickListener(this);
+        binding.newAct.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == binding.upcomingAct.getId())
+            getNavController().navigate(R.id.action_mainFragment_to_upcomingActFragment);
+        else if (id == binding.newAct.getId())
+            getNavController().navigate(R.id.action_mainFragment_to_newActFragment);
     }
 
     @Override

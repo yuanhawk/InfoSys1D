@@ -18,16 +18,15 @@ import com.bumptech.glide.RequestManager;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.databinding.FragmentUserBinding;
 import tech.sutd.pickupgame.ui.main.MainActivity;
 
-public class UserFragment extends DaggerFragment {
+public class UserFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentUserBinding binding;
-
-    private NavController navController;
 
     @Inject RequestManager requestManager;
     @Inject SessionManager sessionManager;
@@ -40,23 +39,25 @@ public class UserFragment extends DaggerFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         requestManager.load(R.drawable.ic_pug)
                 .into(binding.profileImage);
 
-        binding.editProfile.setOnClickListener(v -> navController.navigate(R.id.action_userFragment_to_editProfileFragment));
+        binding.editProfile.setOnClickListener(this);
+        binding.logout.setOnClickListener(this);
+    }
 
-        binding.logout.setOnClickListener(v -> {
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == binding.editProfile.getId())
+            getNavController().navigate(R.id.action_userFragment_to_editProfileFragment);
+        else if (id == binding.logout.getId()) {
             MainActivity activity = (MainActivity) getActivity();
             if (activity != null)
                 sessionManager.logout(activity);
-        });
+        }
     }
 }

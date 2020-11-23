@@ -30,16 +30,15 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentEditProfileBinding;
 
 import static android.app.Activity.RESULT_OK;
 
-public class EditProfileFragment extends DaggerFragment {
+public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentEditProfileBinding binding;
-
-    private NavController navController;
 
     private static final int READ_PERMISSION = 1;
     private static final int IMAGE_PICK_CODE = 2;
@@ -54,22 +53,26 @@ public class EditProfileFragment extends DaggerFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
-        binding.back.setOnClickListener(v -> navController.popBackStack(R.id.userFragment, false));
+        binding.back.setOnClickListener(this);
 
         if (ContextCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
             ActivityCompat.requestPermissions(requireActivity(),
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION);
         else
-            binding.profileImage.setOnClickListener(v -> loadImages());
+            binding.profileImage.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        if (id == binding.back.getId())
+            getNavController().popBackStack(R.id.userFragment, false);
+        else if (id == binding.profileImage.getId())
+            loadImages();
     }
 
     private void loadImages() {
