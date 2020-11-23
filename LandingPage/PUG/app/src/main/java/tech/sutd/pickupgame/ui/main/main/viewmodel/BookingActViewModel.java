@@ -11,7 +11,7 @@ import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 
 public class BookingActViewModel extends ViewModel {
 
-    private FirebaseFirestore fStore;
+    private final FirebaseFirestore fStore;
 
     @Inject
     public BookingActViewModel(FirebaseFirestore fStore) {

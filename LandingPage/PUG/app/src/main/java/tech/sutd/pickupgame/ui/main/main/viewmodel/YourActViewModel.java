@@ -16,8 +16,8 @@ import tech.sutd.pickupgame.models.ui.YourActivity;
 
 public class YourActViewModel extends ViewModel {
 
-    private YourRepository repository;
-    private LiveData<List<YourActivity>> yourActivities;
+    private final YourRepository repository;
+    private final LiveData<List<YourActivity>> yourActivities;
 
     @Inject
     public YourActViewModel(@NonNull Application application) {

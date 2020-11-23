@@ -42,7 +42,7 @@ public abstract class UserDatabase extends RoomDatabase {
     };
 
     private static class PopulateDbExecutor {
-        private UserDao userDao;
+        private final UserDao userDao;
 
         public PopulateDbExecutor(UserDatabase db) {
             userDao = db.userDao();

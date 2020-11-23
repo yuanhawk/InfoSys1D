@@ -17,8 +17,6 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class AuthActivity extends DaggerAppCompatActivity implements BaseInterface {
 
-    private ActivityAuthBinding binding;
-
     private UserViewModel viewModel;
 
     @Inject ViewModelProviderFactory providerFactory;
@@ -26,7 +24,6 @@ public class AuthActivity extends DaggerAppCompatActivity implements BaseInterfa
 
     @Override
     public void customAction() { // login from loginFragment
-        viewModel.deleteAllUsers();
         sessionManager.autoLogin(viewModel);
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -37,7 +34,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements BaseInterfa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAuthBinding.inflate(getLayoutInflater());
+        ActivityAuthBinding binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);

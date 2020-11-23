@@ -30,10 +30,10 @@ import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
 
 public class UserViewModel extends ViewModel {
 
-    private SessionManager sessionManager;
-    private UserRepository repository;
+    private final SessionManager sessionManager;
+    private final UserRepository repository;
 
-    private LiveData<List<User>> users;
+    private final LiveData<List<User>> users;
 
     @Inject
     public UserViewModel(@NonNull Application application, SessionManager sessionManager) {

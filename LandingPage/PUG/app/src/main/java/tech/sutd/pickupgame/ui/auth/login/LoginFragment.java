@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.BaseApplication;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
@@ -31,15 +32,13 @@ import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class LoginFragment extends DaggerFragment {
+public class LoginFragment extends BaseFragment {
 
     // TODO: Create a remember me btn
 
     private int clickState = ClickState.NONE;
 
     private FragmentLoginBinding binding;
-    private NavController navController;
-
     private UserViewModel viewModel;
 
     private BaseInterface listener;
@@ -65,22 +64,16 @@ public class LoginFragment extends DaggerFragment {
 
     private void subscribeObserver() {
         viewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
-            if (!users.get(0).getEmail().equalsIgnoreCase("-1")) {
+            if (users.size() > 0 && !users.get(0).getId().equalsIgnoreCase("0")) {
                 binding.userId.setText(users.get(0).getEmail());
             }
         });
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
-        binding.signUp.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_registerFragment));
+        binding.signUp.setOnClickListener(v -> getNavController().navigate(R.id.action_loginFragment_to_registerFragment));
         binding.login.setOnClickListener(v -> {
             if (clickState == ClickState.NONE)
                 login();

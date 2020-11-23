@@ -35,8 +35,6 @@ public class NewActViewModel extends ViewModel {
 
     @Inject NewRoomHelper repository;
 
-    private final LiveData<PagedList<NewActivity>> allNewActivitiesByClock, allNewActivitiesBySport, newActivitiesByClock2;
-
     private final FirebaseFirestore fStore;
     private final DatabaseReference reff;
     private final FirebaseAuth fAuth;
@@ -45,9 +43,6 @@ public class NewActViewModel extends ViewModel {
     public NewActViewModel(FirebaseFirestore fStore, NewRoomHelper helper,
                            DatabaseReference reff, FirebaseAuth fAuth) {
         repository = helper;
-        allNewActivitiesByClock = repository.getAllNewActivitiesByClock();
-        allNewActivitiesBySport = repository.getAllNewActivitiesBySport();
-        newActivitiesByClock2 = repository.getNewActivitiesByClock2();
 
         this.fStore = fStore;
         this.reff = reff;
@@ -71,15 +66,15 @@ public class NewActViewModel extends ViewModel {
     }
 
     public LiveData<PagedList<NewActivity>> getAllNewActivitiesByClock() {
-        return allNewActivitiesByClock;
+        return repository.getAllNewActivitiesByClock();
     }
 
     public LiveData<PagedList<NewActivity>> getAllNewActivitiesBySport() {
-        return allNewActivitiesBySport;
+        return repository.getAllNewActivitiesBySport();
     }
 
     public LiveData<PagedList<NewActivity>> getNewActivitiesByClock2() {
-        return newActivitiesByClock2;
+        return repository.getNewActivitiesByClock2();
     }
 
     public void pull() {

@@ -23,12 +23,15 @@ import android.view.ViewGroup;
 import com.bumptech.glide.RequestManager;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
+import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentMainBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
@@ -41,25 +44,20 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class MainFragment extends DaggerFragment {
-
-    private static final String TAG = "MainFragment";
+public class MainFragment extends BaseFragment {
 
     private FragmentMainBinding binding;
-    private NavController navController;
 
     private UpcomingActViewModel upcomingActViewModel;
     private NewActViewModel newActViewModel;
 
     private BaseInterface listener;
-    private SuccessListener successListener;
     private SuccessListenerTwo successListenerTwo;
 
     @Inject UpcomingActivityAdapter<UpcomingActivity> adapter;
     @Inject NewActivityAdapter<NewActivity> newAdapter;
     @Inject ViewModelProviderFactory providerFactory;
 
-    @Inject Constraints constraints;
     @Inject Handler handler;
 
     public BaseInterface getListener() {
@@ -82,12 +80,6 @@ public class MainFragment extends DaggerFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         initViews();
@@ -98,28 +90,6 @@ public class MainFragment extends DaggerFragment {
     public void onResume() {
         super.onResume();
         newActViewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
-
-        OneTimeWorkRequest singleRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
-                .setConstraints(constraints)
-                .build();
-
-        WorkManager.getInstance(requireActivity().getApplicationContext()).enqueue(singleRequest);
-
-        WorkManager.getInstance(requireActivity().getApplicationContext()).getWorkInfoByIdLiveData(singleRequest.getId())
-                .observe(getViewLifecycleOwner(), workInfo -> {
-                    if (workInfo != null) {
-                        if (workInfo.getState().isFinished()) {
-                            Data data = workInfo.getOutputData();
-
-                            String output = data.getString(NewActivitiesWorker.KEY_TASK_OUTPUT);
-                            Log.d(TAG, "onChanged: " + output);
-
-                        }
-
-                        String status = workInfo.getState().name();
-                        Log.d(TAG, "onChanged: " + status);
-                    }
-                });
     }
 
     private void subscribeObserver() {
@@ -138,14 +108,15 @@ public class MainFragment extends DaggerFragment {
         binding.upcomingRc.setHasFixedSize(true);
         adapter.setNotifications(1);
 
+        newActViewModel.pull();
 
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.newRc.setHasFixedSize(true);
         newAdapter.setNotifications(getContext(), this, null, 1);
 
-        binding.upcomingAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_upcomingActFragment));
-        binding.newAct.setOnClickListener(v -> navController.navigate(R.id.action_mainFragment_to_newActFragment));
+        binding.upcomingAct.setOnClickListener(v -> getNavController().navigate(R.id.action_mainFragment_to_upcomingActFragment));
+        binding.newAct.setOnClickListener(v -> getNavController().navigate(R.id.action_mainFragment_to_newActFragment));
     }
 
     @Override
@@ -153,7 +124,6 @@ public class MainFragment extends DaggerFragment {
         super.onAttach(context);
         try {
             listener = (BaseInterface) context;
-            successListener = (SuccessListener) context;
             successListenerTwo = (SuccessListenerTwo) context;
         } catch (ClassCastException e) {
             e.printStackTrace();

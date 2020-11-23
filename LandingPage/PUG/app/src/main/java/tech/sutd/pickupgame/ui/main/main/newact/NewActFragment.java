@@ -57,8 +57,6 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     private NewActViewModel newActViewModel;
 
-    private NavController navController;
-
     private Observer<PagedList<NewActivity>> observer;
 
     private SuccessListenerTwo successListenerTwo;
@@ -85,12 +83,6 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         initViews();
@@ -103,19 +95,6 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         newActViewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
-
-        OneTimeWorkRequest upcomingActRequest = new OneTimeWorkRequest.Builder(UpcomingActivitiesWorker.class)
-                .setConstraints(constraints)
-                .build();
-
-        OneTimeWorkRequest newActRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
-                .setConstraints(constraints)
-                .build();
-
-        WorkManager.getInstance(requireActivity().getApplicationContext())
-                .beginWith(upcomingActRequest)
-                .then(newActRequest)
-                .enqueue();
     }
 
     @Override
@@ -144,7 +123,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back:
-                navController.popBackStack(R.id.mainFragment, false);
+                getNavController().popBackStack(R.id.mainFragment, false);
                 break;
             case R.id.filter:
                 Dialog dialog = setDialog(R.layout.filter);

@@ -28,7 +28,7 @@ import tech.sutd.pickupgame.util.DateConverter;
 public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapter.ViewHolder> {
     private List<PastActivity> pastActivities = new ArrayList<>();
 
-    private RequestManager requestManager;
+    private final RequestManager requestManager;
 
     private int numOfViews = 0;
 

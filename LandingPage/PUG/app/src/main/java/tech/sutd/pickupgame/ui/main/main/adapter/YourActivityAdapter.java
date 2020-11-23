@@ -32,7 +32,7 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
 
     private List<YourActivity> yourActivities = new ArrayList<>();
 
-    private RequestManager requestManager;
+    private final RequestManager requestManager;
 
     private int numOfViews;
 

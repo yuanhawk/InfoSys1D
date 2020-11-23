@@ -44,11 +44,11 @@ public class User {
     }
 
     public static User defaultUser() {
-        return new User("-1", "-1", "-1", "-1", "-1");
+        return new User("0", "-1", "-1", "-1", "-1");
     }
 
     public static class Builder {
-        private String id;
+        private final String id;
         private String name;
         private String age;
         private String email;

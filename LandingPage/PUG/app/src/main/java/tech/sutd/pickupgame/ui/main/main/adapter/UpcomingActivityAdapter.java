@@ -29,7 +29,7 @@ import tech.sutd.pickupgame.util.DateConverter;
 
 public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivity, UpcomingActivityAdapter.ViewHolder> {
 
-    private RequestManager requestManager;
+    private final RequestManager requestManager;
 
     private int numOfViews = 0;
 

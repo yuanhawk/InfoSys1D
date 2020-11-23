@@ -29,14 +29,12 @@ import tech.sutd.pickupgame.ui.main.MainActivity;
 @Singleton
 public class SessionManager {
 
-    private FirebaseAuth fAuth;
-    private MessageDigest md;
-    private DatabaseReference reff;
+    private final FirebaseAuth fAuth;
+    private final DatabaseReference reff;
 
     @Inject
-    public SessionManager(FirebaseAuth fAuth, MessageDigest md, DatabaseReference reff) {
+    public SessionManager(FirebaseAuth fAuth, DatabaseReference reff) {
         this.fAuth = fAuth;
-        this.md = md;
         this.reff = reff;
     }
 
@@ -122,6 +120,7 @@ public class SessionManager {
 
     public void logout(MainActivity activity) {
         fAuth.signOut();
+
         activity.logout();
     }
 }

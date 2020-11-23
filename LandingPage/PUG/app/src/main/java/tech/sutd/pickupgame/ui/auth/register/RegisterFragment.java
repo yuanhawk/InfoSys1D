@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
@@ -27,12 +28,11 @@ import tech.sutd.pickupgame.models.UserProfile;
 import tech.sutd.pickupgame.ui.auth.UserViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class RegisterFragment extends DaggerFragment {
+public class RegisterFragment extends BaseFragment {
 
     private int clickState = ClickState.NONE;
 
     private FragmentRegisterBinding binding;
-    private NavController navController;
 
     private UserViewModel viewModel;
 
@@ -43,7 +43,7 @@ public class RegisterFragment extends DaggerFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
-        binding.signIn.setOnClickListener(v -> navController.popBackStack(R.id.loginFragment, false));
+        binding.signIn.setOnClickListener(v -> getNavController().popBackStack(R.id.loginFragment, false));
         binding.registerCV.setOnClickListener(v -> {
             if (clickState == ClickState.NONE)
                 registerUser();
@@ -51,12 +51,6 @@ public class RegisterFragment extends DaggerFragment {
 
         viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
         return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
     }
 
     @Override
@@ -109,7 +103,7 @@ public class RegisterFragment extends DaggerFragment {
                 .setPasswd(passwd)
                 .build();
 
-        viewModel.register(this, getContext(), navController, user);
+        viewModel.register(this, getContext(), getNavController(), user);
     }
 
     public void registerFailed() {

@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +28,8 @@ import dagger.android.support.DaggerAppCompatActivity;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.constant.ClickState;
+import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
+import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
 import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
@@ -41,7 +45,6 @@ public class MainActivity extends DaggerAppCompatActivity
     private ActivityMainBinding binding;
     private NavController navController;
     private Menu menu;
-//    private AppBarConfiguration configuration;
 
     private BaseInterface baseInterface;
 
@@ -106,6 +109,17 @@ public class MainActivity extends DaggerAppCompatActivity
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
+        OneTimeWorkRequest upcomingRequest = new OneTimeWorkRequest.Builder(UpcomingActivitiesWorker.class)
+                .build();
+
+        OneTimeWorkRequest newRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
+                .build();
+
+        WorkManager.getInstance(getApplicationContext())
+                .beginWith(upcomingRequest)
+                .then(newRequest)
+                .enqueue();
+
         setContentView(binding.getRoot());
     }
 
@@ -138,37 +152,30 @@ public class MainActivity extends DaggerAppCompatActivity
 
     private void init() {
         navController = ((NavHostFragment) Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment))).getNavController();
-//        configuration = new AppBarConfiguration.Builder(R.id.mainFragment, R.id.userFragment)
-//                .build();
-//        NavigationUI.setupActionBarWithNavController(this, navController);
-//        NavigationUI.setupWithNavController(bottomNavView, navController);
         binding.bottomNavView.setOnNavigationItemSelectedListener(this);
         menu = binding.bottomNavView.getMenu();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.mainFragment:
-                navController.popBackStack(R.id.mainFragment, false);
-                break;
-            case R.id.bookingFragment:
-                Fragment fragment = fragmentManager.findFragmentByTag(TAG);
-                if (fragment == null && clickState == ClickState.NONE) {
-                    addBookingFragment();
-                } else {
-                    if (fragment != null) {
-                        fragmentManager.beginTransaction().remove(fragment).commit();
-                        clickState = ClickState.NONE;
+        int id = item.getItemId();
+        if (id == R.id.mainFragment) {
+            navController.popBackStack(R.id.mainFragment, false);
+        } else if (id == R.id.bookingFragment) {
+            Fragment fragment = fragmentManager.findFragmentByTag(TAG);
+            if (fragment == null && clickState == ClickState.NONE) {
+                addBookingFragment();
+            } else {
+                if (fragment != null) {
+                    fragmentManager.beginTransaction().remove(fragment).commit();
+                    clickState = ClickState.NONE;
 
-                        setIcon(R.drawable.ic_add);
-                    }
+                    setIcon(R.drawable.ic_add);
                 }
-                break;
-            case R.id.userFragment:
-                navController.popBackStack(R.id.userFragment, true);
-                navController.navigate(R.id.userFragment);
-                break;
+            }
+        } else if (id == R.id.userFragment) {
+            navController.popBackStack(R.id.userFragment, true);
+            navController.navigate(R.id.userFragment);
         }
         return true;
     }

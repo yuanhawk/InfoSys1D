@@ -10,12 +10,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import dagger.android.support.DaggerFragment;
 
 public class BaseFragment extends DaggerFragment {
+
+    private NavController navController;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,12 +29,22 @@ public class BaseFragment extends DaggerFragment {
             disableAutoFill();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void disableAutoFill() {
 
         Window window = getActivity().getWindow();
         if (window != null)
             window.getDecorView().setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
+    }
+
+    public NavController getNavController() {
+        return navController;
     }
 
     public Dialog setDialog(int layout) {

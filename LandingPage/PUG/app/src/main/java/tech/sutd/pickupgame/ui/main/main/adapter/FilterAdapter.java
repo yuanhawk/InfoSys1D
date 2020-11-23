@@ -16,10 +16,10 @@ import tech.sutd.pickupgame.databinding.ItemlistFilterBinding;
 
 public class FilterAdapter extends BaseAdapter {
 
-    private int[] images = {R.drawable.ic_calendar, R.drawable.ic_star, R.drawable.ic_location};
-    private String[] desc = {"Date", "Sport", "Near Me"};
+    private final int[] images = {R.drawable.ic_calendar, R.drawable.ic_star, R.drawable.ic_location};
+    private final String[] desc = {"Date", "Sport", "Near Me"};
 
-    private RequestManager requestManager;
+    private final RequestManager requestManager;
 
     @Inject
     public FilterAdapter(RequestManager requestManager) {

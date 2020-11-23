@@ -18,7 +18,7 @@ public class PastActViewModel extends ViewModel {
 
     private PastRepository repository;
 
-    private LiveData<List<PastActivity>> pastActivities;
+    private final LiveData<List<PastActivity>> pastActivities;
 
     @Inject
     public PastActViewModel(@NonNull Application application) {

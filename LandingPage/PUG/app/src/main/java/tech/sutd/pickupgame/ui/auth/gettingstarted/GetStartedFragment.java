@@ -18,13 +18,13 @@ import com.bumptech.glide.RequestManager;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.databinding.FragmentGetStartedBinding;
 
-public class GetStartedFragment extends DaggerFragment implements View.OnClickListener {
+public class GetStartedFragment extends BaseFragment implements View.OnClickListener {
 
     private FragmentGetStartedBinding binding;
-    private NavController navController;
 
     @Nullable
     @Override
@@ -37,13 +37,12 @@ public class GetStartedFragment extends DaggerFragment implements View.OnClickLi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
         binding.getStarted.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
-        navController.navigate(R.id.action_getStartedFragment_to_loginFragment);
+        getNavController().navigate(R.id.action_getStartedFragment_to_loginFragment);
     }
 }
