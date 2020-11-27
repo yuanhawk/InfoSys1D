@@ -48,6 +48,10 @@
     <string name="activities_organised">Activities Organised</string>
     <string name="different_activities_tried">Different Activities Tried</string>
     <string name="logout2">Logout</string>
+    <string name="edit_profile_subtext">Change your profile information here</string>
+    <string name="change_profile_photo">Change Profile Photo</string>
+    <string name="change_username">Change Username</string>
+    <string name="change_age">Change Age</string>
 
     <!--
     This string is used for square devices and overridden by hello_world in
