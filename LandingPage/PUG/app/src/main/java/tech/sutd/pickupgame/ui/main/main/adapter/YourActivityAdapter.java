@@ -1,31 +1,21 @@
 package tech.sutd.pickupgame.ui.main.main.adapter;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.paging.PagedListAdapter;
-import androidx.recyclerview.widget.AsyncDifferConfig;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
-import tech.sutd.pickupgame.data.AuthResource;
+import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
-import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
 import tech.sutd.pickupgame.util.DateConverter;
 
@@ -33,9 +23,7 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
 
     private final RequestManager requestManager;
 
-    private int numOfViews = 10;
-
-    private AuthResource<List<YourActivity>> source;
+    private Resource<List<YourActivity>> source;
 
     @Inject
     public YourActivityAdapter(RequestManager requestManager) {
@@ -57,6 +45,7 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
 
         YourActivity yourActivity = source.data.get(position);
 
+        int numOfViews = 10;
         if (position > numOfViews) {
             holder.binding.cardView.setVisibility(View.GONE);
             return;
@@ -98,17 +87,17 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
     @Override
     public int getItemCount() {
         if (source == null || source.data == null)
-            return new ArrayList<>().size();
+            return 0;
         return source.data.size();
     }
 
     public void setEmptySource() {
-        this.source = AuthResource.loading(new ArrayList<>());
+        source = Resource.loading(new ArrayList<>());
         notifyDataSetChanged();
     }
 
     public void setSource(List<YourActivity> data) {
-        this.source = AuthResource.success(data);
+        source = Resource.success(data);
         notifyDataSetChanged();
     }
 

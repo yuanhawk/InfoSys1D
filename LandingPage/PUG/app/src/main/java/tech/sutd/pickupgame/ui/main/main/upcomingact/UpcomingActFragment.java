@@ -104,14 +104,15 @@ public class UpcomingActFragment extends DaggerFragment {
         upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActivities ->
                 upcomingAdapter.submitList(upcomingActivities));
 
-        yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), listAuthResource -> {
-            if (listAuthResource != null) {
-                switch (listAuthResource.status) {
+        yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), listResource -> {
+            if (listResource != null) {
+                switch (listResource.status) {
                     case LOADING:
+                        Toast.makeText(getContext(), "Loading", Toast.LENGTH_SHORT).show();
                         yourAdapter.setEmptySource();
                         break;
                     case SUCCESS:
-                        yourAdapter.setSource(listAuthResource.data);
+                        yourAdapter.setSource(listResource.data);
                         break;
                     case ERROR:
                         Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
