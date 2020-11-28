@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import tech.sutd.pickupgame.data.AuthResource;
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
@@ -30,11 +31,11 @@ import tech.sutd.pickupgame.util.DateConverter;
 
 public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapter.ViewHolder> {
 
-    private List<YourActivity> yourActivities = new ArrayList<>();
-
     private final RequestManager requestManager;
 
-    private int numOfViews;
+    private int numOfViews = 10;
+
+    private AuthResource<List<YourActivity>> source;
 
     @Inject
     public YourActivityAdapter(RequestManager requestManager) {
@@ -51,7 +52,10 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        YourActivity yourActivity = yourActivities.get(position);
+        if (source.data == null || source.data.isEmpty())
+            return;
+
+        YourActivity yourActivity = source.data.get(position);
 
         if (position > numOfViews) {
             holder.binding.cardView.setVisibility(View.GONE);
@@ -93,18 +97,24 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
 
     @Override
     public int getItemCount() {
-        return yourActivities.size();
+        if (source == null || source.data == null)
+            return new ArrayList<>().size();
+        return source.data.size();
     }
 
-    public void setNotifications(List<YourActivity> yourActivities, int numOfViews) {
-        this.yourActivities = yourActivities;
-        this.numOfViews = numOfViews;
+    public void setEmptySource() {
+        this.source = AuthResource.loading(new ArrayList<>());
+        notifyDataSetChanged();
+    }
+
+    public void setSource(List<YourActivity> data) {
+        this.source = AuthResource.success(data);
         notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemlistActivitiesBinding binding;
+        private final ItemlistActivitiesBinding binding;
 
         public ViewHolder(@NonNull ItemlistActivitiesBinding binding) {
             super(binding.getRoot());

@@ -13,7 +13,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.MessageDigest;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -21,7 +20,7 @@ import javax.inject.Singleton;
 
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.models.UserProfile;
-import tech.sutd.pickupgame.ui.auth.UserViewModel;
+import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
 import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
 import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
 import tech.sutd.pickupgame.ui.main.MainActivity;

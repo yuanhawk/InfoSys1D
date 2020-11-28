@@ -7,8 +7,7 @@ import javax.inject.Singleton;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
-import tech.sutd.pickupgame.di.auth.AuthScope;
-import tech.sutd.pickupgame.ui.auth.UserViewModel;
+import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
 
 @Module
 public abstract class AppViewModelModule {

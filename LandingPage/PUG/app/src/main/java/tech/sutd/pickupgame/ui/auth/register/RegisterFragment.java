@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,14 +16,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.constant.ClickState;
 import tech.sutd.pickupgame.databinding.FragmentRegisterBinding;
-import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.models.UserProfile;
-import tech.sutd.pickupgame.ui.auth.UserViewModel;
+import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class RegisterFragment extends BaseFragment implements View.OnClickListener {
@@ -105,6 +101,8 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
                 .setEmail(email)
                 .setPasswd(passwd)
                 .build();
+
+        binding.setUser(user);
 
         viewModel.register(this, getContext(), getNavController(), user);
     }

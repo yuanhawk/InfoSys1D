@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.RequestManager;
 
@@ -103,8 +104,23 @@ public class UpcomingActFragment extends DaggerFragment {
         upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActivities ->
                 upcomingAdapter.submitList(upcomingActivities));
 
-        yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), yourActivities ->
-                yourAdapter.setNotifications(yourActivities, 9999));
+        yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), listAuthResource -> {
+            if (listAuthResource != null) {
+                switch (listAuthResource.status) {
+                    case LOADING:
+                        yourAdapter.setEmptySource();
+                        break;
+                    case SUCCESS:
+                        yourAdapter.setSource(listAuthResource.data);
+                        break;
+                    case ERROR:
+                        Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
         pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActivities ->
                 pastAdapter.setNotifications(pastActivities, 9999));

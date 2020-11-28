@@ -1,7 +1,5 @@
 package tech.sutd.pickupgame.data.ui.new_activity;
 
-import android.app.Application;
-
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
@@ -9,7 +7,7 @@ import androidx.paging.PagedList;
 import javax.inject.Inject;
 
 import tech.sutd.pickupgame.data.AppExecutors;
-import tech.sutd.pickupgame.di.helper.NewRoomHelper;
+import tech.sutd.pickupgame.data.ui.helper.NewRoomHelper;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 
 public class NewRepository implements NewRoomHelper {

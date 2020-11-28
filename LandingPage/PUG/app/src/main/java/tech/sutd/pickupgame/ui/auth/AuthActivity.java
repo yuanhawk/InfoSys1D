@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.databinding.ActivityAuthBinding;
-import tech.sutd.pickupgame.models.User;
+import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;

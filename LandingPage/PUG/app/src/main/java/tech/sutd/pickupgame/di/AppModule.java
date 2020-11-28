@@ -3,10 +3,7 @@ package tech.sutd.pickupgame.di;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Constraints;
 
 import com.bumptech.glide.Glide;
@@ -26,6 +23,8 @@ import dagger.Module;
 import dagger.Provides;
 import tech.sutd.pickupgame.BaseApplication;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.data.SchedulerProvider;
+import tech.sutd.pickupgame.data.AppSchedulerProvider;
 
 @Module
 public class AppModule {
@@ -90,6 +89,12 @@ public class AppModule {
         return new Constraints.Builder()
                 .setRequiresBatteryNotLow(true)
                 .build();
+    }
+
+    @Singleton
+    @Provides
+    SchedulerProvider provideSchedulerProvider() {
+        return new AppSchedulerProvider();
     }
 
 }

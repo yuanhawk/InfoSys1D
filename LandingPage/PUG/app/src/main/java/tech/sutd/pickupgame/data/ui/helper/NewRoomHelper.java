@@ -1,4 +1,4 @@
-package tech.sutd.pickupgame.di.helper;
+package tech.sutd.pickupgame.data.ui.helper;
 
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;

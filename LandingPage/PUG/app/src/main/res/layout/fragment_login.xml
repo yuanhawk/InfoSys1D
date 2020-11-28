@@ -5,7 +5,7 @@
     <data>
         <variable
             name="user"
-            type="tech.sutd.pickupgame.models.User" />
+            type="tech.sutd.pickupgame.models.UserProfile" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

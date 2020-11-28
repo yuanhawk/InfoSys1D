@@ -1,8 +1,5 @@
 package tech.sutd.pickupgame.ui.main.main.viewmodel;
 
-import android.app.Application;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -22,8 +19,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import tech.sutd.pickupgame.R;
-import tech.sutd.pickupgame.data.ui.new_activity.NewRepository;
-import tech.sutd.pickupgame.di.helper.NewRoomHelper;
+import tech.sutd.pickupgame.data.ui.helper.NewRoomHelper;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.ui.main.main.MainFragment;

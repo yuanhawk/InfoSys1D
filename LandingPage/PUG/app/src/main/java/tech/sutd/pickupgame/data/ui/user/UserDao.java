@@ -1,4 +1,4 @@
-package tech.sutd.pickupgame.data;
+package tech.sutd.pickupgame.data.ui.user;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;

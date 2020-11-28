@@ -1,13 +1,12 @@
-package tech.sutd.pickupgame.data;
+package tech.sutd.pickupgame.data.ui.user;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 
 import java.util.List;
 
+import tech.sutd.pickupgame.data.AppExecutors;
 import tech.sutd.pickupgame.models.User;
 
 public class UserRepository {
