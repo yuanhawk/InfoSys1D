@@ -24,7 +24,7 @@ public class YourRoom implements YourRoomHelper {
     }
 
     @Override
-    public Completable deleteAll() {
+    public Completable deleteAllYourActivity() {
         return database.yourDao().deleteAll();
     }
 

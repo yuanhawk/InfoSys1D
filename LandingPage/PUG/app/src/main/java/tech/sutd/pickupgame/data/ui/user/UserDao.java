@@ -11,22 +11,19 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
 import tech.sutd.pickupgame.models.User;
 
 @Dao
 public interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(User user);
-
-    @Update
-    void update(User user);
-
-    @Delete
-    void delete(User user);
+    Completable insertUser(User user);
 
     @Query("DELETE FROM users")
-    void deleteAllUsers();
+    Completable deleteAll();
 
     @Query("SELECT * FROM users")
     LiveData<List<User>> getUsers();

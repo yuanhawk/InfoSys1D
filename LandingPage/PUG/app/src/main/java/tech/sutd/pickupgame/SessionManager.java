@@ -1,9 +1,13 @@
 package tech.sutd.pickupgame;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,11 +17,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import tech.sutd.pickupgame.data.ui.user.AuthResource;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.models.UserProfile;
 import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
@@ -122,4 +129,5 @@ public class SessionManager {
 
         activity.logout();
     }
+
 }
