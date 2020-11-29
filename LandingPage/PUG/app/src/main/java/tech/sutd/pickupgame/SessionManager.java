@@ -86,8 +86,7 @@ public class SessionManager {
                 )
         );
         final LiveData<AuthResource<FirebaseAuth>> userAuthSource = LiveDataReactiveStreams.fromPublisher(
-                userSource
-                        .toFlowable()
+                userSource.toFlowable()
                         .onErrorReturn(throwable -> AuthResource.error("Could not authenticate"))
                         .subscribeOn(provider.io())
                         .observeOn(provider.ui())

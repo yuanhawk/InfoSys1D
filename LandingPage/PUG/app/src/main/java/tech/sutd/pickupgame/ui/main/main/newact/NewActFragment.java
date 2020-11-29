@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
 import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentNewActBinding;
@@ -57,7 +58,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     private NewActViewModel newActViewModel;
 
-    private Observer<PagedList<NewActivity>> observer;
+    private Observer<Resource<PagedList<NewActivity>>> observer;
 
     private SuccessListenerTwo successListenerTwo;
 
@@ -104,7 +105,11 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void subscribeObserver() {
-        observer = newActivities -> newAdapter.submitList(newActivities);
+        observer = pagedListResource -> {
+            if (pagedListResource.status == Resource.Status.SUCCESS) {
+                newAdapter.submitList(pagedListResource.data);
+            }
+        };
 
         newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
     }

@@ -1,31 +1,29 @@
 package tech.sutd.pickupgame.ui.main.main.upcomingact;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Constraints;
-import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.bumptech.glide.RequestManager;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentUpcomingActBinding;
 import tech.sutd.pickupgame.models.ui.PastActivity;
@@ -82,17 +80,6 @@ public class UpcomingActFragment extends DaggerFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        OneTimeWorkRequest singleRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
-                .setConstraints(constraints)
-                .build();
-
-        WorkManager.getInstance(requireActivity().getApplicationContext()).enqueue(singleRequest);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         binding.upcomingRc.setOnFlingListener(null);
@@ -101,30 +88,25 @@ public class UpcomingActFragment extends DaggerFragment {
     }
 
     private void subscribeObserver() {
-        upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActivities ->
-                upcomingAdapter.submitList(upcomingActivities));
+        upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), pagedListResource -> {
+            if (pagedListResource.status == Resource.Status.SUCCESS) {
+                upcomingAdapter.submitList(pagedListResource.data);
+            }
+        });
 
-        yourActViewModel.getYourActivities().observe(getViewLifecycleOwner(), listResource -> {
+        yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), listResource -> {
             if (listResource != null) {
-                switch (listResource.status) {
-                    case LOADING:
-                        Toast.makeText(getContext(), "Loading", Toast.LENGTH_SHORT).show();
-                        yourAdapter.setEmptySource();
-                        break;
-                    case SUCCESS:
-                        yourAdapter.setSource(listResource.data);
-                        break;
-                    case ERROR:
-                        Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        break;
+                if (listResource.status == Resource.Status.SUCCESS) {
+                    yourAdapter.setSource(listResource.data);
                 }
             }
         });
 
-        pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActivities ->
-                pastAdapter.setNotifications(pastActivities, 9999));
+        pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), listResource -> {
+            if (listResource.status == Resource.Status.SUCCESS) {
+                pastAdapter.setSource(listResource.data);
+            }
+        });
     }
 
     private void initViews() {

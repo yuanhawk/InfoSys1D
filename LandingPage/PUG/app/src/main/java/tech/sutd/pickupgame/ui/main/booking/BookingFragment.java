@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
@@ -34,6 +35,7 @@ import javax.inject.Inject;
 
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.databinding.FragmentBookingBinding;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
@@ -59,7 +61,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     private FragmentBookingBinding binding;
 
     private BaseInterface listener;
-    private SuccessListener successListener;
 
     private Dialog dialog;
 
@@ -75,10 +76,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
         binding.locationSpinner.setText(preferences.getString(getString(R.string.select_location), ""));
         binding.participantSpinner.setText(preferences.getString(getString(R.string.select_num_participants), ""));
         binding.addNotesSpinner.setText(preferences.getString(getString(R.string.additional_notes), ""));
-    }
-
-    public SuccessListener getSuccessListener() {
-        return successListener;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -122,6 +119,18 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private void subscribeObserver() {
         userViewModel.getUsers().observe(getViewLifecycleOwner(), users -> user = users.get(0));
+
+        bookingActViewModel.observeBooking().observe(getViewLifecycleOwner(), bookingActivityResource -> {
+            if (bookingActivityResource.status == Resource.Status.SUCCESS) {
+                saveData(getString(R.string.select_sport), "");
+                saveData(getString(R.string.date), "");
+                saveData(getString(R.string.start_time), "");
+                saveData(getString(R.string.end_time), "");
+                saveData(getString(R.string.select_location), "");
+                saveData(getString(R.string.select_num_participants), "");
+                saveData(getString(R.string.additional_notes), "");
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -177,9 +186,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                 return;
             }
 
-            listener.customAction();
-
-            bookingActViewModel.push(this, new BookingActivity.Builder()
+            bookingActViewModel.push(new BookingActivity.Builder()
                     .setSport(preferences.getString(getString(R.string.select_sport), ""))
                     .setEpoch(DateConverter.epochConverter(
                             preferences.getString(getString(R.string.date), ""),
@@ -196,15 +203,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
                     .build()
             );
 
-            saveData(getString(R.string.select_sport), "");
-            saveData(getString(R.string.date), "");
-            saveData(getString(R.string.start_time), "");
-            saveData(getString(R.string.end_time), "");
-            saveData(getString(R.string.select_location), "");
-            saveData(getString(R.string.select_num_participants), "");
-            saveData(getString(R.string.additional_notes), "");
-
-            listener.customAction(); // set ProgressBar on
         });
     }
 
@@ -451,7 +449,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
         super.onAttach(context);
         try {
             listener = (BaseInterface) context;
-            successListener = (SuccessListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

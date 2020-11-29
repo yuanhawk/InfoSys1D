@@ -4,45 +4,61 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import tech.sutd.pickupgame.data.ui.past_activity.PastRepository;
+import tech.sutd.pickupgame.data.DataManager;
+import tech.sutd.pickupgame.data.Resource;
+import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.models.ui.PastActivity;
-import tech.sutd.pickupgame.models.ui.UpcomingActivity;
+import tech.sutd.pickupgame.ui.BaseViewModel;
 
-public class PastActViewModel extends ViewModel {
+public class PastActViewModel extends BaseViewModel {
 
-    private PastRepository repository;
+    private final MediatorLiveData<Resource<List<PastActivity>>> source = new MediatorLiveData<>();
 
-    private final LiveData<List<PastActivity>> pastActivities;
+    @Override
+    public void setError(Throwable e) {
+
+    }
 
     @Inject
-    public PastActViewModel(@NonNull Application application) {
-        this.repository = new PastRepository(application);
-        pastActivities = repository.getAllPastActivities();
+    public PastActViewModel(SchedulerProvider provider, DataManager dataManager) {
+        super(provider, dataManager);
     }
 
     public void insert(PastActivity pastActivity) {
-        repository.insert(pastActivity);
+        getCompositeDisposable().add(getDataManager().insertPastActivity(pastActivity)
+                .doOnSubscribe(disposable -> doOnLoading())
+                .subscribeOn(getProvider().io())
+                .doOnError(this::setError)
+                .subscribe());
     }
 
-    public void update(PastActivity pastActivity) {
-        repository.update(pastActivity);
+
+    public LiveData<Resource<List<PastActivity>>> getPastActivities() {
+        source.setValue(Resource.loading(null));
+
+        final LiveData<Resource<List<PastActivity>>> activitySource = LiveDataReactiveStreams.fromPublisher(
+                getDataManager().getAllPastActivities()
+                .onBackpressureBuffer()
+                .map(Resource::success)
+                .subscribeOn(getProvider().io())
+        );
+
+        source.addSource(activitySource, listResource -> {
+            source.setValue(listResource);
+            source.removeSource(activitySource);
+        });
+        return source;
     }
 
-    public void delete(PastActivity pastActivity) {
-        repository.delete(pastActivity);
-    }
-
-    public void deleteAllUpcomingActivities() {
-        repository.deleteAllPastActivities();
-    }
-
-    public LiveData<List<PastActivity>> getPastActivities() {
-        return pastActivities;
+    private void doOnLoading() {
+        source.postValue(Resource.loading(null));
     }
 }

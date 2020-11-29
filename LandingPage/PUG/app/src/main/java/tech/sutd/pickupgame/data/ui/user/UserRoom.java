@@ -7,8 +7,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
 import tech.sutd.pickupgame.data.ui.helper.UserRoomHelper;
 import tech.sutd.pickupgame.models.User;
 
@@ -27,13 +25,13 @@ public class UserRoom implements UserRoomHelper {
     }
 
     @Override
-    public Completable deleteAll() {
-        return userDatabase.userDao().deleteAll();
+    public Completable deleteAllUsers() {
+        return userDatabase.userDao().deleteAllUsers();
     }
 
     @Override
-    public LiveData<List<User>> getUsers() {
-        return userDatabase.userDao().getUsers();
+    public LiveData<List<User>> getAllUsers() {
+        return userDatabase.userDao().getAllUsers();
     }
 
 }

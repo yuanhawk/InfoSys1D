@@ -13,7 +13,7 @@ public interface UserRoomHelper {
 
     Completable insertUser(User user);
 
-    Completable deleteAll();
+    Completable deleteAllUsers();
 
-    LiveData<List<User>> getUsers();
+    LiveData<List<User>> getAllUsers();
 }

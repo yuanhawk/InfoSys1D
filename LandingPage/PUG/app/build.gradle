@@ -129,4 +129,7 @@ dependencies {
 
     // alternatively - without Android dependencies for testing
     testImplementation "androidx.paging:paging-common:$paging_version"
+
+    // optional - RxJava support
+    implementation "androidx.paging:paging-rxjava2:$paging_version" // For Kotlin use paging-rxjava2-ktx
 }

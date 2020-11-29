@@ -11,8 +11,8 @@ public interface YourRoomHelper {
 
     Completable insertYourActivity(YourActivity yourActivities);
 
-    Completable deleteAllYourActivity();
+    Completable deleteAllYourActivities();
 
-    Flowable<List<YourActivity>> getAllActivities();
+    Flowable<List<YourActivity>> getAllYourActivities();
 
 }

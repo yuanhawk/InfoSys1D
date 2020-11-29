@@ -20,17 +20,19 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.PastActivity;
+import tech.sutd.pickupgame.models.ui.YourActivity;
 import tech.sutd.pickupgame.util.DateConverter;
 
 public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapter.ViewHolder> {
-    private List<PastActivity> pastActivities = new ArrayList<>();
+//    private List<PastActivity> pastActivities = new ArrayList<>();
+
+    private Resource<List<PastActivity>> source;
 
     private final RequestManager requestManager;
-
-    private int numOfViews = 0;
 
     @Inject
     public PastActivityAdapter(RequestManager requestManager) {
@@ -47,8 +49,12 @@ public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PastActivity pastActivity = pastActivities.get(position);
+        if (source.data == null || source.data.isEmpty())
+            return;
 
+        PastActivity pastActivity = source.data.get(position);
+
+        int numOfViews = 10;
         if (position > numOfViews) {
             holder.binding.cardView.setVisibility(View.GONE);
             return;
@@ -89,12 +95,19 @@ public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapte
 
     @Override
     public int getItemCount() {
-        return pastActivities.size();
+        if (source == null || source.data == null)
+            return 0;
+        return source.data.size();
     }
 
-    public void setNotifications(List<PastActivity> pastActivities, int numOfViews) {
-        this.pastActivities = pastActivities;
-        this.numOfViews = numOfViews;
+//    public void setNotifications(List<PastActivity> pastActivities, int numOfViews) {
+//        this.pastActivities = pastActivities;
+//        this.numOfViews = numOfViews;
+//        notifyDataSetChanged();
+//    }
+
+    public void setSource(List<PastActivity> data) {
+        source = Resource.success(data);
         notifyDataSetChanged();
     }
 

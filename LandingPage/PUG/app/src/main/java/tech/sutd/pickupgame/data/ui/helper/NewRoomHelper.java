@@ -8,16 +8,16 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 
 public interface NewRoomHelper {
 
-    void insert(NewActivity newActivity);
-    void update(NewActivity newActivity);
-    void delete(String clock);
-    void deleteAllNewActivities();
-    LiveData<PagedList<NewActivity>> getAllNewActivitiesByClock();
-    LiveData<PagedList<NewActivity>> getAllNewActivitiesBySport();
-    LiveData<PagedList<NewActivity>> getNewActivitiesByClock2();
+    Completable insertNewActivity(NewActivity newActivity);
+    Completable deleteNewActivityByClock(String clock);
+    Flowable<PagedList<NewActivity>> getAllNewActivitiesByClock();
+    Flowable<PagedList<NewActivity>> getAllNewActivitiesBySport();
+    Flowable<PagedList<NewActivity>> getNewActivitiesByClock2();
 
 }

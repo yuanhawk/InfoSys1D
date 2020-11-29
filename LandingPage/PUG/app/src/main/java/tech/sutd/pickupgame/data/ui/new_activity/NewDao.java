@@ -12,6 +12,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 
@@ -19,16 +20,10 @@ import tech.sutd.pickupgame.models.ui.PastActivity;
 public interface NewDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(NewActivity newActivity);
-
-    @Update
-    void update(NewActivity newActivity);
+    Completable insertNewActivity(NewActivity newActivity);
 
     @Query("DELETE FROM new_activity WHERE clock < :clock")
-    void delete(String clock);
-
-    @Query("DELETE FROM new_activity")
-    void deleteAllNewActivities();
+    Completable deleteNewActivityByClock(String clock);
 
     @Query("SELECT * FROM new_activity ORDER BY clock ASC")
     DataSource.Factory<Integer, NewActivity> getAllNewActivitiesByClock();

@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,9 +24,11 @@ import com.google.android.material.textview.MaterialTextView;
 import javax.inject.Inject;
 
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.databinding.ItemlistActivitiesBinding;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;

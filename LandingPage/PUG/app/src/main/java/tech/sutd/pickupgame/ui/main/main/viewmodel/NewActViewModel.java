@@ -1,15 +1,12 @@
 package tech.sutd.pickupgame.ui.main.main.viewmodel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.LiveDataReactiveStreams;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.paging.PagedList;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -19,26 +16,35 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import tech.sutd.pickupgame.R;
-import tech.sutd.pickupgame.data.ui.helper.NewRoomHelper;
+import tech.sutd.pickupgame.data.DataManager;
+import tech.sutd.pickupgame.data.Resource;
+import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.ui.BaseViewModel;
 import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
 import tech.sutd.pickupgame.util.StringComparator;
 
-public class NewActViewModel extends ViewModel {
-
-    @Inject NewRoomHelper repository;
+public class NewActViewModel extends BaseViewModel {
 
     private final FirebaseFirestore fStore;
     private final DatabaseReference reff;
     private final FirebaseAuth fAuth;
 
+    private final MediatorLiveData<Resource<PagedList<NewActivity>>> source = new MediatorLiveData<>();
+    private final MediatorLiveData<Resource<BookingActivity>> pushSource = new MediatorLiveData<>();
+
+    @Override
+    public void setError(Throwable e) {
+
+    }
+
     @Inject
-    public NewActViewModel(FirebaseFirestore fStore, NewRoomHelper helper,
+    public NewActViewModel(SchedulerProvider provider, DataManager dataManager, FirebaseFirestore fStore,
                            DatabaseReference reff, FirebaseAuth fAuth) {
-        repository = helper;
+        super(provider, dataManager);
 
         this.fStore = fStore;
         this.reff = reff;
@@ -46,31 +52,71 @@ public class NewActViewModel extends ViewModel {
     }
 
     public void insert(NewActivity newActivity) {
-        repository.insert(newActivity);
-    }
-
-    public void update(NewActivity newActivity) {
-        repository.update(newActivity);
+        getCompositeDisposable().add(getDataManager().insertNewActivity(newActivity)
+                .doOnSubscribe(disposable -> doOnLoading())
+                .subscribeOn(getProvider().io())
+                .doOnError(this::setError)
+                .subscribe());
     }
 
     public void delete(String clock) {
-        repository.delete(clock);
+        getCompositeDisposable().add(getDataManager().deleteNewActivityByClock(clock)
+                .doOnSubscribe(disposable -> doOnLoading())
+                .subscribeOn(getProvider().io())
+                .doOnError(this::setError)
+                .subscribe());
     }
 
-    public void deleteAllNewActivities() {
-        repository.deleteAllNewActivities();
+    public LiveData<Resource<PagedList<NewActivity>>> getAllNewActivitiesByClock() {
+        source.setValue(Resource.loading(null));
+
+        final LiveData<Resource<PagedList<NewActivity>>> newSource = LiveDataReactiveStreams.fromPublisher(
+                getDataManager().getAllNewActivitiesByClock()
+                .onBackpressureDrop()
+                .map(Resource::success)
+                .subscribeOn(getProvider().io())
+        );
+
+        source.addSource(newSource, pagedListResource -> {
+            source.setValue(pagedListResource);
+            source.removeSource(newSource);
+        });
+        return source;
     }
 
-    public LiveData<PagedList<NewActivity>> getAllNewActivitiesByClock() {
-        return repository.getAllNewActivitiesByClock();
+    public LiveData<Resource<PagedList<NewActivity>>> getAllNewActivitiesBySport() {
+        source.setValue(Resource.loading(null));
+
+        final LiveData<Resource<PagedList<NewActivity>>> newSource = LiveDataReactiveStreams.fromPublisher(
+                getDataManager().getAllNewActivitiesBySport()
+                .onBackpressureDrop()
+                .map(Resource::success)
+                .subscribeOn(getProvider().io())
+        );
+
+        source.addSource(newSource, pagedListResource -> {
+            source.setValue(pagedListResource);
+            source.removeSource(newSource);
+        });
+        return source;
     }
 
-    public LiveData<PagedList<NewActivity>> getAllNewActivitiesBySport() {
-        return repository.getAllNewActivitiesBySport();
-    }
+    public LiveData<Resource<PagedList<NewActivity>>> getNewActivitiesByClock2() {
+        source.setValue(Resource.loading(null));
 
-    public LiveData<PagedList<NewActivity>> getNewActivitiesByClock2() {
-        return repository.getNewActivitiesByClock2();
+        final LiveData<Resource<PagedList<NewActivity>>> newSource = LiveDataReactiveStreams.fromPublisher(
+                getDataManager().getNewActivitiesByClock2()
+                .onBackpressureBuffer()
+                .map(Resource::success)
+                .subscribeOn(getProvider().io())
+        );
+
+        source.addSource(newSource, pagedListResource -> {
+            source.setValue(pagedListResource);
+            source.removeSource(newSource);
+        });
+
+        return source;
     }
 
     public void pull() {
@@ -106,53 +152,32 @@ public class NewActViewModel extends ViewModel {
 
     public void push(MainFragment mainFragment, NewActFragment newActFragment, NewActivityAdapter adapter,
                      String id, BookingActivity bookingActivity) {
+
         reff.child("your_activity")
                 .child(Objects.requireNonNull(fAuth.getUid()))
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot ds: snapshot.getChildren()) {
-                            if (Objects.equals(ds.getKey(), id)) {
-                                if (mainFragment != null)
-                                    mainFragment.getSuccessListenerTwo().onSignUpSuccess();
-                                else if (newActFragment != null)
-                                    newActFragment.getSuccessListenerTwo().onSignUpSuccess();
+                .child(id)
+                .setValue(bookingActivity)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
 
-                                adapter.getDialog().dismiss();
+                        if (mainFragment != null)
+                            mainFragment.getSuccessListenerTwo().onSignUpSuccess();
+                        else if (newActFragment != null)
+                            newActFragment.getSuccessListenerTwo().onSignUpSuccess();
 
-                                return;
-                            } else {
+                    } else {
 
-                                reff.child("your_activity")
-                                        .child(Objects.requireNonNull(fAuth.getUid()))
-                                        .child(id)
-                                        .setValue(bookingActivity)
-                                        .addOnCompleteListener(task -> {
-                                            if (task.isSuccessful()) {
-
-                                                if (mainFragment != null)
-                                                    mainFragment.getSuccessListenerTwo().onSignUpSuccess();
-                                                else if (newActFragment != null)
-                                                    newActFragment.getSuccessListenerTwo().onSignUpSuccess();
-
-                                            } else {
-
-                                                if (mainFragment != null)
-                                                    mainFragment.getSuccessListenerTwo().onSignUpFailure();
-                                                else if (newActFragment != null)
-                                                    newActFragment.getSuccessListenerTwo().onSignUpFailure();
-
-                                            }
-                                            adapter.getDialog().dismiss();
-                                        });
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        if (mainFragment != null)
+                            mainFragment.getSuccessListenerTwo().onSignUpFailure();
+                        else if (newActFragment != null)
+                            newActFragment.getSuccessListenerTwo().onSignUpFailure();
 
                     }
+                    adapter.getDialog().dismiss();
                 });
+    }
+
+    private void doOnLoading() {
+        source.postValue(Resource.loading(null));
     }
 }

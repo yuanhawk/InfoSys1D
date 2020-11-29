@@ -18,7 +18,7 @@ import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class AuthActivity extends DaggerAppCompatActivity implements BaseInterface {
+public class AuthActivity extends DaggerAppCompatActivity {
 
     private ActivityAuthBinding binding;
     private UserViewModel viewModel;
@@ -26,8 +26,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements BaseInterfa
     @Inject SessionManager sessionManager;
     @Inject ViewModelProviderFactory providerFactory;
 
-    @Override
-    public void customAction() { // login from loginFragment
+    public void login() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -53,7 +52,7 @@ public class AuthActivity extends DaggerAppCompatActivity implements BaseInterfa
                 case AUTHENTICATED:
                     if (firebaseAuthAuthResource.data != null)
                         viewModel.insertUserDb(firebaseAuthAuthResource.data);
-                    customAction();
+                    login();
                     break;
                 case ERROR:
                     showProgressBar(false);

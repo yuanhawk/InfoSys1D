@@ -49,32 +49,21 @@ public class YourActViewModel extends BaseViewModel {
         source.postValue(Resource.loading(null));
     }
 
-    public LiveData<Resource<List<YourActivity>>> getYourActivities() {
+    public LiveData<Resource<List<YourActivity>>> getAllYourActivitiesByClockLimit10() {
         source.setValue(Resource.loading(null));
 
         final LiveData<Resource<List<YourActivity>>> activitySource = LiveDataReactiveStreams.fromPublisher(
 
-                getDataManager().getAllActivities()
+                getDataManager().getAllYourActivities()
 
                 .onBackpressureBuffer()
-                .onErrorReturn(throwable -> {
-                    YourActivity activity = new YourActivity();
-                    activity.setId(-1);
-                    List<YourActivity> yourActivities = new ArrayList<>();
-                    yourActivities.add(activity);
-                    return yourActivities;
-                })
-                .map((Function<List<YourActivity>, Resource<List<YourActivity>>>) yourActivities -> {
-                    if (yourActivities.size() > 0 && yourActivities.get(0).getId() == -1)
-                        return Resource.error("No Data");
-                    return Resource.success(yourActivities);
-                })
+                .map((Function<List<YourActivity>, Resource<List<YourActivity>>>) Resource::success)
                 .subscribeOn(getProvider().io())
         );
 
         source.addSource(activitySource, listResource -> {
             source.setValue(listResource);
-            source.removeSource(source);
+            source.removeSource(activitySource);
         });
         return source;
     }

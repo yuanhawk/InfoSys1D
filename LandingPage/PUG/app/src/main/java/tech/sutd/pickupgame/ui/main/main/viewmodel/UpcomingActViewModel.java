@@ -1,11 +1,11 @@
 package tech.sutd.pickupgame.ui.main.main.viewmodel;
 
-import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.LiveDataReactiveStreams;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.paging.PagedList;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,60 +13,94 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Calendar;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
+import tech.sutd.pickupgame.BuildConfig;
 import tech.sutd.pickupgame.R;
-import tech.sutd.pickupgame.data.ui.upcoming_activity.UpcomingRepository;
+import tech.sutd.pickupgame.data.DataManager;
+import tech.sutd.pickupgame.data.Resource;
+import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
-import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
+import tech.sutd.pickupgame.ui.BaseViewModel;
 import tech.sutd.pickupgame.util.StringComparator;
 
-public class UpcomingActViewModel extends ViewModel {
-
-    private final UpcomingRepository repository;
-
-    private final LiveData<PagedList<UpcomingActivity>> allUpcomingActivitiesByClock, upcomingActivitiesByClock2;
+public class UpcomingActViewModel extends BaseViewModel {
 
     private final DatabaseReference reff;
     private final FirebaseAuth fAuth;
 
+    private final MediatorLiveData<Resource<PagedList<UpcomingActivity>>> source = new MediatorLiveData<>();
+
+    @Override
+    public void setError(Throwable e) {
+        if (BuildConfig.DEBUG) {
+            Log.e("TAG", "setError: ", e);
+            e.printStackTrace();
+        }
+        source.setValue(Resource.error(e.getMessage()));
+    }
+
     @Inject
-    public UpcomingActViewModel(@NonNull Application application, DatabaseReference reff, FirebaseAuth fAuth) {
-        this.repository = new UpcomingRepository(application);
-        allUpcomingActivitiesByClock = repository.getAllUpcomingActivitiesByClock();
-        upcomingActivitiesByClock2 = repository.getUpcomingActivitiesByClockTwo();
+    public UpcomingActViewModel(SchedulerProvider provider, DataManager dataManager, DatabaseReference reff, FirebaseAuth fAuth) {
+        super(provider, dataManager);
         this.reff = reff;
         this.fAuth = fAuth;
     }
 
     public void insert(UpcomingActivity upcomingActivity) {
-        repository.insert(upcomingActivity);
+        getCompositeDisposable().add(getDataManager().insertUpcomingActivity(upcomingActivity)
+                .doOnSubscribe(disposable -> doOnLoading())
+                .subscribeOn(getProvider().io())
+                .doOnError(this::setError)
+                .subscribe());
     }
 
-    public void update(UpcomingActivity upcomingActivity) {
-        repository.update(upcomingActivity);
+    public void delete(String clock) {
+        getCompositeDisposable().add(getDataManager().deleteUpcomingActivities(clock)
+                .doOnSubscribe(disposable -> doOnLoading())
+                .subscribeOn(getProvider().io())
+                .doOnError(this::setError)
+                .subscribe());
     }
 
-    public void delete(UpcomingActivity upcomingActivity) {
-        repository.delete(upcomingActivity);
+    public LiveData<Resource<PagedList<UpcomingActivity>>> getAllUpcomingActivitiesByClock() {
+        source.setValue(Resource.loading(null));
+
+        final LiveData<Resource<PagedList<UpcomingActivity>>> upcomingSource = LiveDataReactiveStreams.fromPublisher(
+                getDataManager().getAllUpcomingActivitiesByClock()
+                .onBackpressureDrop()
+                .map(Resource::success)
+                .subscribeOn(getProvider().io())
+        );
+
+        source.addSource(upcomingSource, pagedListResource -> {
+            source.setValue(pagedListResource);
+            source.removeSource(upcomingSource);
+        });
+
+        return source;
     }
 
-    public void deleteAllUpcomingActivities() {
-        repository.deleteAllUpcomingActivities();
-    }
+    public LiveData<Resource<PagedList<UpcomingActivity>>> getUpcomingActivitiesByClock2() {
+        source.setValue(Resource.loading(null));
 
-    public LiveData<PagedList<UpcomingActivity>> getAllUpcomingActivitiesByClock() {
-        return allUpcomingActivitiesByClock;
-    }
+        final LiveData<Resource<PagedList<UpcomingActivity>>> upcomingSource = LiveDataReactiveStreams.fromPublisher(
+                getDataManager().getUpcomingActivitiesByClockLimit2()
+                .onBackpressureBuffer()
+                .map(Resource::success)
+                .subscribeOn(getProvider().io())
+        );
 
-    public LiveData<PagedList<UpcomingActivity>> getUpcomingActivitiesByClock2() {
-        return upcomingActivitiesByClock2;
+        source.addSource(upcomingSource, pagedListResource -> {
+            source.setValue(pagedListResource);
+            source.removeSource(upcomingSource);
+        });
+        return source;
     }
 
     public void pull() {
@@ -105,5 +139,9 @@ public class UpcomingActViewModel extends ViewModel {
                     }
                 });
 
+    }
+
+    private void doOnLoading() {
+        source.postValue(Resource.loading(null));
     }
 }

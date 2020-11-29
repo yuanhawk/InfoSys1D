@@ -91,11 +91,6 @@ public class YourActivityAdapter extends RecyclerView.Adapter<YourActivityAdapte
         return source.data.size();
     }
 
-    public void setEmptySource() {
-        source = Resource.loading(new ArrayList<>());
-        notifyDataSetChanged();
-    }
-
     public void setSource(List<YourActivity> data) {
         source = Resource.success(data);
         notifyDataSetChanged();

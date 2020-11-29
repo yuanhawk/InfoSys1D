@@ -7,6 +7,8 @@ import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.util.Calendar;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -31,6 +33,7 @@ public class UpcomingActivitiesWorker extends Worker {
     @Override
     public Result doWork() {
         viewModel.pull();
+        viewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
         return Result.success();
     }
 

@@ -11,6 +11,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
 
@@ -18,16 +19,10 @@ import tech.sutd.pickupgame.models.ui.YourActivity;
 public interface UpcomingDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(UpcomingActivity upcomingActivity);
+    Completable insertUpcomingActivity(UpcomingActivity upcomingActivity);
 
-    @Update
-    void update(UpcomingActivity upcomingActivity);
-
-    @Delete
-    void delete(UpcomingActivity upcomingActivity);
-
-    @Query("DELETE FROM upcoming_activity")
-    void deleteAllUpcomingActivities();
+    @Query("DELETE FROM upcoming_activity WHERE clock < :clock")
+    Completable deleteUpcomingActivity(String clock);
 
     @Query("SELECT * FROM upcoming_activity ORDER BY clock ASC")
     DataSource.Factory<Integer, UpcomingActivity> getAllUpcomingActivitiesByClock();

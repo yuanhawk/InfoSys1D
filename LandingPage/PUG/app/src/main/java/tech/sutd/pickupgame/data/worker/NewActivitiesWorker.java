@@ -32,6 +32,7 @@ public class NewActivitiesWorker extends Worker {
     @Override
     public Result doWork() {
         viewModel.pull();
+        viewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
         return Result.success();
     }
 

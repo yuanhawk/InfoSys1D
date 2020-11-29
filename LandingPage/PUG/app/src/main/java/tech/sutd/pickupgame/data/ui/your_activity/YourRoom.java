@@ -24,13 +24,13 @@ public class YourRoom implements YourRoomHelper {
     }
 
     @Override
-    public Completable deleteAllYourActivity() {
-        return database.yourDao().deleteAll();
+    public Completable deleteAllYourActivities() {
+        return database.yourDao().deleteAllYourActivities();
     }
 
     @Override
-    public Flowable<List<YourActivity>> getAllActivities() {
-        return database.yourDao().getAllActivities();
+    public Flowable<List<YourActivity>> getAllYourActivities() {
+        return database.yourDao().getAllYourActivities();
     }
 
 }

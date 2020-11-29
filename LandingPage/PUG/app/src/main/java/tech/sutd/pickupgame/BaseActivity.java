@@ -1,4 +1,4 @@
-package tech.sutd.pickupgame.ui.main;
+package tech.sutd.pickupgame;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +25,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         subscribeObserver();
     }
 
-    private void subscribeObserver() {
+    public void subscribeObserver() {
         sessionManager.observeAuthState().observe(this, firebaseAuthAuthResource -> {
             if (firebaseAuthAuthResource.status == AuthResource.AuthStatus.NOT_AUTHENTICATED)
                 navLoginScreen();

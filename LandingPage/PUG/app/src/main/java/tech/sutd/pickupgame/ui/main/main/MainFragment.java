@@ -6,37 +6,24 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.RequestManager;
-
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
-import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
-import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
+import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.databinding.FragmentMainBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
-import tech.sutd.pickupgame.ui.main.SuccessListener;
 import tech.sutd.pickupgame.ui.main.SuccessListenerTwo;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
@@ -86,18 +73,18 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         subscribeObserver();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        newActViewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
-    }
-
     private void subscribeObserver() {
-        upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), upcomingActivities ->
-            adapter.submitList(upcomingActivities));
+        upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), pagedListResource -> {
+            if (pagedListResource.status == Resource.Status.SUCCESS) {
+                adapter.submitList(pagedListResource.data);
+            }
+        });
 
-        newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), newActivities ->
-            newAdapter.submitList(newActivities));
+        newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), pagedListResource -> {
+            if (pagedListResource.status == Resource.Status.SUCCESS) {
+                newAdapter.submitList(pagedListResource.data);
+            }
+        });
     }
 
     private void initViews() {

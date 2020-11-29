@@ -10,23 +10,19 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 
 @Dao
 public interface PastDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(PastActivity pastActivity);
-
-    @Update
-    void update(PastActivity pastActivity);
-
-    @Delete
-    void delete(PastActivity pastActivity);
+    Completable insert(PastActivity pastActivity);
 
     @Query("DELETE FROM past_activity")
-    void deleteAllPastActivities();
+    Completable deleteAllPastActivities();
 
     @Query("SELECT * FROM past_activity ORDER BY clock DESC LIMIT 10")
-    LiveData<List<PastActivity>> getPastActivities();
+    Flowable<List<PastActivity>> getAllPastActivities();
 }

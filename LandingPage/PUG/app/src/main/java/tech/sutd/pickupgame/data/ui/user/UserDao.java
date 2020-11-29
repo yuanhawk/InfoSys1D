@@ -23,8 +23,8 @@ public interface UserDao {
     Completable insertUser(User user);
 
     @Query("DELETE FROM users")
-    Completable deleteAll();
+    Completable deleteAllUsers();
 
     @Query("SELECT * FROM users")
-    LiveData<List<User>> getUsers();
+    LiveData<List<User>> getAllUsers();
 }
