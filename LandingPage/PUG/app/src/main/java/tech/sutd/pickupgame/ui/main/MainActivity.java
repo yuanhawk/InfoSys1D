@@ -34,7 +34,7 @@ import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 
-public class MainActivity extends DaggerAppCompatActivity
+public class MainActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener, BaseInterface,
         SuccessListener, SuccessListenerTwo {
 
@@ -228,9 +228,4 @@ public class MainActivity extends DaggerAppCompatActivity
             super.onBackPressed();
     }
 
-    public void logout() {
-        Intent intent = new Intent(this, AuthActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }

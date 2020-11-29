@@ -3,6 +3,8 @@ package tech.sutd.pickupgame.di;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.work.Constraints;
 
@@ -95,6 +97,12 @@ public class AppModule {
     @Provides
     SchedulerProvider provideSchedulerProvider() {
         return new AppSchedulerProvider();
+    }
+
+    @Singleton
+    @Provides
+    static Handler provideHander() {
+        return new Handler(Looper.getMainLooper());
     }
 
 }

@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
@@ -24,6 +25,9 @@ import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
+import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.data.ui.user.AuthResource;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.models.UserProfile;
@@ -37,97 +41,72 @@ public class SessionManager {
 
     private final FirebaseAuth fAuth;
     private final DatabaseReference reff;
+    private final SchedulerProvider provider;
+
+    private final MediatorLiveData<AuthResource<FirebaseAuth>> source = new MediatorLiveData<>();
 
     @Inject
-    public SessionManager(FirebaseAuth fAuth, DatabaseReference reff) {
+    public SessionManager(FirebaseAuth fAuth, DatabaseReference reff, SchedulerProvider provider) {
         this.fAuth = fAuth;
         this.reff = reff;
+        this.provider = provider;
     }
 
-    public void register(RegisterFragment fragment, Context context, NavController navController, UserProfile user) {
-        fAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPasswd()).addOnCompleteListener(
-                task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(context, "User Created", Toast.LENGTH_SHORT).show();
-                        navController.popBackStack(R.id.loginFragment, false);
-
-                        reff.child("users").child(Objects.requireNonNull(fAuth.getUid())).setValue(user);
-                        fAuth.signOut();
-                    } else {
-                        Toast.makeText(context, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                        fragment.registerFailed();
-                    }
-                }
+    public Single<AuthResource<UserProfile>> register(UserProfile user) {
+        return Single.create(emitter ->
+                fAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPasswd()).addOnCompleteListener(
+                        task -> {
+                            if (!emitter.isDisposed()) {
+                                if (task.isSuccessful()) {
+                                    reff.child("users").child(Objects.requireNonNull(fAuth.getUid())).setValue(user);
+                                    fAuth.signOut();
+                                    emitter.onSuccess(AuthResource.registered(user));
+                                } else {
+                                    emitter.onSuccess(AuthResource.error(Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage())));
+                                }
+                            }
+                        }
+                )
         );
     }
 
-    public void login(LoginFragment fragment, UserViewModel viewModel, Context context, UserProfile user) {
-        fAuth.signInWithEmailAndPassword(user.getEmail(), user.getPasswd()).addOnCompleteListener(
-                task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(context, "Login Successfully", Toast.LENGTH_SHORT).show();
-
-                        reff.child("users").child(Objects.requireNonNull(fAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                viewModel.deleteAllUsers();
-                                UserProfile profile = snapshot.getValue(UserProfile.class);
-                                assert profile != null;
-                                viewModel.insert(new User.Builder(fAuth.getUid())
-                                        .setName(profile.getName())
-                                        .setEmail(profile.getEmail())
-                                        .setPasswd(profile.getPasswd())
-                                        .setAge(profile.getAge())
-                                        .build()
-                                );
+    public void login(UserProfile user) {
+        source.setValue(AuthResource.loading(null));
+        Single<AuthResource<FirebaseAuth>> userSource = Single.create(emitter ->
+                fAuth.signInWithEmailAndPassword(user.getEmail(), user.getPasswd()).addOnCompleteListener(
+                        task -> {
+                            if (!emitter.isDisposed()) {
+                                if (task.isSuccessful()) {
+                                    emitter.onSuccess(AuthResource.authenticated(fAuth));
+                                } else {
+                                    emitter.onSuccess(AuthResource.error(Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage())));
+                                }
                             }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-
-                        fragment.getListener().customAction();
-                    } else {
-                        Toast.makeText(context, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                        fragment.loginFailed();
-                    }
-                }
+                        }
+                )
         );
-    }
+        final LiveData<AuthResource<FirebaseAuth>> userAuthSource = LiveDataReactiveStreams.fromPublisher(
+                userSource
+                        .toFlowable()
+                        .onErrorReturn(throwable -> AuthResource.error("Could not authenticate"))
+                        .subscribeOn(provider.io())
+                        .observeOn(provider.ui())
+        );
 
-    public void autoLogin(UserViewModel viewModel) {
-        viewModel.deleteAllUsers();
-        reff.child("users").child(Objects.requireNonNull(fAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserProfile profile = snapshot.getValue(UserProfile.class);
-                assert profile != null;
-                viewModel.insert(new User.Builder(fAuth.getUid())
-                        .setName(profile.getName())
-                        .setEmail(profile.getEmail())
-                        .setPasswd(profile.getPasswd())
-                        .setAge(profile.getAge())
-                        .build()
-                );
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+        source.addSource(userAuthSource, firebaseAuthAuthResource -> {
+            source.setValue(firebaseAuthAuthResource);
+            source.removeSource(userAuthSource);
         });
+
     }
 
-    public FirebaseUser getFirebaseUser() {
-        return fAuth.getCurrentUser();
+    public LiveData<AuthResource<FirebaseAuth>> observeAuthState() {
+        return source;
     }
 
-    public void logout(MainActivity activity) {
+    public void logout() {
         fAuth.signOut();
-
-        activity.logout();
+        source.setValue(AuthResource.logout());
     }
 
 }

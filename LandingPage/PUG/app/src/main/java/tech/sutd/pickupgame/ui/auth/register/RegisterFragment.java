@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -60,7 +61,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
     private void registerUser() {
         clickState = ClickState.CLICKED;
-        binding.progress.setVisibility(View.VISIBLE);
+
         String name = String.valueOf(binding.name.getText()).trim();
         String email = String.valueOf(binding.userId.getText()).trim();
         String passwd = String.valueOf(binding.passwd.getText()).trim();
@@ -68,31 +69,31 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
         if (TextUtils.isEmpty(name)) {
             binding.name.setError("Name is Required");
-            registerFailed();
+            registerFailed("Name is Required");
             return;
         }
 
         if (TextUtils.isEmpty(email)) {
             binding.userId.setError("Email is Required");
-            registerFailed();
+            registerFailed("Email is Required");
             return;
         }
 
         if (TextUtils.isEmpty(passwd)) {
             binding.passwd.setError("Password is Required");
-            registerFailed();
+            registerFailed("Password is Required");
             return;
         }
 
         if (passwd.length() < 6) {
             binding.passwd.setError("Password must be longer than 6 Characters");
-            registerFailed();
+            registerFailed("Password must be longer than 6 Characters");
             return;
         }
 
         if (!confirmPasswd.equals(passwd)) {
             binding.confirmPasswd.setError("Please reconfirm your password, your password is not the same");
-            registerFailed();
+            registerFailed("Please reconfirm your password, your password is not the same");
             return;
         }
 
@@ -104,11 +105,36 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
 
         binding.setUser(user);
 
-        viewModel.register(this, getContext(), getNavController(), user);
+        viewModel.register(user).observe(getViewLifecycleOwner(), userProfileAuthResource -> {
+            switch (userProfileAuthResource.status) {
+                case LOADING:
+                    showProgressBar(true);
+                    break;
+                case REGISTERED:
+                    if (userProfileAuthResource.data != null) {
+                        Toast.makeText(getContext(), userProfileAuthResource.data.getName() + " Created", Toast.LENGTH_SHORT).show();
+                    }
+                    getNavController().popBackStack(R.id.loginFragment, false);
+                    break;
+                case ERROR:
+                    registerFailed(userProfileAuthResource.message);
+                    break;
+
+            }
+        });
     }
 
-    public void registerFailed() {
+    private void showProgressBar(boolean isVisible) {
+        if (isVisible)
+            binding.progress.setVisibility(View.VISIBLE);
+        else
+            binding.progress.setVisibility(View.GONE);
+    }
+
+
+    public void registerFailed(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         clickState = ClickState.NONE;
-        binding.progress.setVisibility(View.GONE);
+        showProgressBar(false);
     }
 }

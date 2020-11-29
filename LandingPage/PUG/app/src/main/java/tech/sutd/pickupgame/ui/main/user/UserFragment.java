@@ -55,9 +55,7 @@ public class UserFragment extends BaseFragment implements View.OnClickListener {
         if (id == binding.editProfile.getId())
             getNavController().navigate(R.id.action_userFragment_to_editProfileFragment);
         else if (id == binding.logout.getId()) {
-            MainActivity activity = (MainActivity) getActivity();
-            if (activity != null)
-                sessionManager.logout(activity);
+            sessionManager.logout();
         }
     }
 }

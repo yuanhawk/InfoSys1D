@@ -1,68 +1,101 @@
 package tech.sutd.pickupgame.ui.auth.viewmodel;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.navigation.NavController;
 
-import java.util.ArrayList;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 import tech.sutd.pickupgame.BuildConfig;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.data.DataManager;
-import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.data.ui.user.AuthResource;
 import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.models.UserProfile;
-import tech.sutd.pickupgame.models.ui.YourActivity;
 import tech.sutd.pickupgame.ui.BaseViewModel;
-import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
 import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
 
 public class UserViewModel extends BaseViewModel {
 
     private final SessionManager sessionManager;
+    private final DatabaseReference reff;
 
-    private final MediatorLiveData<AuthResource<List<User>>> source = new MediatorLiveData<>();
+    private final MediatorLiveData<AuthResource<UserProfile>> userProfileSource = new MediatorLiveData<>();
 
     @Override
-    public void setError(Throwable e) {
-        if (BuildConfig.DEBUG) {
-            Log.e("TAG", "setError: ", e);
-            e.printStackTrace();
-        }
-        source.setValue(AuthResource.error(e.getMessage()));
-    }
+    public void setError(Throwable e) {}
 
     @Inject
-    public UserViewModel(SchedulerProvider provider, DataManager dataManager, SessionManager sessionManager) {
+    public UserViewModel(SchedulerProvider provider, DataManager dataManager, SessionManager sessionManager, DatabaseReference reff) {
         super(provider, dataManager);
         this.sessionManager = sessionManager;
+        this.reff = reff;
     }
 
-    public void register(RegisterFragment fragment, Context context, NavController navController, UserProfile user) {
-        sessionManager.register(fragment, context, navController, user);
+    public LiveData<AuthResource<UserProfile>> register(UserProfile user) {
+        userProfileSource.setValue(AuthResource.loading(null));
+        final LiveData<AuthResource<UserProfile>> userProfileSource = LiveDataReactiveStreams.fromPublisher(
+                sessionManager.register(user)
+                .toFlowable()
+                .onErrorReturn(throwable -> AuthResource.error("Could not authenticate"))
+                .subscribeOn(getProvider().io())
+                .observeOn(getProvider().ui())
+        );
+
+        this.userProfileSource.addSource(userProfileSource, userProfileAuthResource -> {
+            this.userProfileSource.setValue(userProfileAuthResource);
+            this.userProfileSource.removeSource(userProfileSource);
+        });
+
+        return this.userProfileSource;
     }
 
-    public void login(LoginFragment fragment, Context context, UserProfile user) {
-        sessionManager.login(fragment, this, context, user);
+    public void login(UserProfile user) {
+        sessionManager.login(user);
+    }
+
+    public void insertUserDb(FirebaseAuth data) {
+        deleteAllUsers();
+        reff.child("users").child(Objects.requireNonNull(data.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserProfile profile = snapshot.getValue(UserProfile.class);
+                if (profile != null) {
+                    insert(new User.Builder(data.getUid())
+                            .setName(profile.getName())
+                            .setEmail(profile.getEmail())
+                            .setPasswd(profile.getPasswd())
+                            .setAge(profile.getAge())
+                            .build()
+                    );
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void insert(User user) {
         getCompositeDisposable().add(getDataManager().insertUser(user)
-                .doOnSubscribe(disposable -> doOnLoading())
                 .subscribeOn(getProvider().io())
                 .doOnError(this::setError)
                 .subscribe());
@@ -70,7 +103,6 @@ public class UserViewModel extends BaseViewModel {
 
     public void deleteAllUsers() {
         getCompositeDisposable().add(getDataManager().deleteAll()
-                .doOnSubscribe(disposable -> doOnLoading())
                 .subscribeOn(getProvider().io())
                 .doOnError(this::setError)
                 .subscribe());
@@ -80,7 +112,4 @@ public class UserViewModel extends BaseViewModel {
         return getDataManager().getUsers();
     }
 
-    private void doOnLoading() {
-        source.postValue(AuthResource.loading(null));
-    }
 }

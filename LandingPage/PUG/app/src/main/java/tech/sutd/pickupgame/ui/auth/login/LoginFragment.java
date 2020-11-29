@@ -7,12 +7,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -20,7 +22,9 @@ import javax.inject.Inject;
 
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
+import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.constant.ClickState;
+import tech.sutd.pickupgame.data.ui.user.AuthResource;
 import tech.sutd.pickupgame.databinding.FragmentLoginBinding;
 import tech.sutd.pickupgame.models.UserProfile;
 import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
@@ -36,11 +40,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private FragmentLoginBinding binding;
     private UserViewModel viewModel;
 
-    private BaseInterface listener;
-
     @Inject FirebaseAuth firebaseAuth;
     @Inject ViewModelProviderFactory providerFactory;
     @Inject SharedPreferences preferences;
+    @Inject SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -70,6 +73,15 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         super.onStart();
         binding.signUp.setOnClickListener(this);
         binding.login.setOnClickListener(this);
+
+        initObserver();
+    }
+
+    private void initObserver() {
+        sessionManager.observeAuthState().observe(getViewLifecycleOwner(), firebaseAuthAuthResource -> {
+            if (firebaseAuthAuthResource.status == AuthResource.AuthStatus.ERROR)
+                clickState = ClickState.NONE;
+        });
     }
 
     @Override
@@ -85,20 +97,19 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
     private void login() {
         clickState = ClickState.CLICKED;
-        binding.progress.setVisibility(View.VISIBLE);
 
         String email = String.valueOf(binding.userId.getText()).trim();
         String passwd = String.valueOf(binding.passwd.getText()).trim();
 
         if (TextUtils.isEmpty(email)) {
             binding.userId.setError("Email is Required");
-            loginFailed();
+            clickState = ClickState.NONE;
             return;
         }
 
         if (TextUtils.isEmpty(passwd)) {
             binding.passwd.setError("Password is Required");
-            loginFailed();
+            clickState = ClickState.NONE;
             return;
         }
 
@@ -120,27 +131,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 .build();
 
         binding.setUser(user);
-
-        viewModel.login(this, getContext(), user);
+        viewModel.login(user);
     }
 
-    public void loginFailed() {
-        clickState = ClickState.NONE;
-        binding.progress.setVisibility(View.GONE);
-    }
-
-    public BaseInterface getListener() {
-        return listener;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            listener = (BaseInterface) context;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
-
-    }
 }

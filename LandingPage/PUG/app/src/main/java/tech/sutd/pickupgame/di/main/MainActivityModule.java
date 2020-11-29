@@ -27,12 +27,6 @@ public class MainActivityModule {
 
     @MainScope
     @Provides
-    static Handler provideHander() {
-        return new Handler(Looper.getMainLooper());
-    }
-
-    @MainScope
-    @Provides
     static UpcomingActivityAdapter<UpcomingActivity> provideUpcomingActivityAdapter(RequestManager requestManager) {
         return new UpcomingActivityAdapter<>(requestManager);
     }

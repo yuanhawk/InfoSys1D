@@ -114,13 +114,5 @@
                 android:text="@string/sign_in" />
         </androidx.cardview.widget.CardView>
 
-        <ProgressBar
-            android:id="@+id/progress"
-            style="@style/progressbar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
