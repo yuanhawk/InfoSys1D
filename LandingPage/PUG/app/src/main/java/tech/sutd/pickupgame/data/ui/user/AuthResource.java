@@ -37,10 +37,14 @@ public class AuthResource<T> {
         return new AuthResource<>(AuthStatus.REGISTERED, data, null);
     }
 
+    public static <T> AuthResource<T> reset (@Nullable T data) {
+        return new AuthResource<>(AuthStatus.RESET, data, null);
+    }
+
     public static <T> AuthResource<T> logout () {
         return new AuthResource<>(AuthStatus.NOT_AUTHENTICATED, null, null);
     }
 
-    public enum AuthStatus { AUTHENTICATED, ERROR, LOADING, REGISTERED, NOT_AUTHENTICATED }
+    public enum AuthStatus { AUTHENTICATED, ERROR, LOADING, REGISTERED, RESET, NOT_AUTHENTICATED }
 
 }

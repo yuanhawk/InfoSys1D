@@ -73,14 +73,19 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         super.onStart();
         binding.signUp.setOnClickListener(this);
         binding.login.setOnClickListener(this);
+        binding.forgotPassword.setOnClickListener(this);
 
         initObserver();
     }
 
     private void initObserver() {
         sessionManager.observeAuthState().observe(getViewLifecycleOwner(), firebaseAuthAuthResource -> {
-            if (firebaseAuthAuthResource.status == AuthResource.AuthStatus.ERROR)
-                clickState = ClickState.NONE;
+            switch (firebaseAuthAuthResource.status) {
+                case AUTHENTICATED:
+                case ERROR:
+                case NOT_AUTHENTICATED:
+                    clickState = ClickState.NONE;
+            }
         });
     }
 
@@ -89,13 +94,16 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         int id = v.getId();
         if (id == binding.signUp.getId())
             getNavController().navigate(R.id.action_loginFragment_to_registerFragment);
-        else if (id == binding.login.getId()) {
-            if (clickState == ClickState.NONE)
-                login();
-        }
+        else if (id == binding.login.getId())
+            login();
+        else if (id == binding.forgotPassword.getId())
+            getNavController().navigate(R.id.action_loginFragment_to_resetFragment);
     }
 
     private void login() {
+        if (clickState == ClickState.CLICKED)
+            return;
+
         clickState = ClickState.CLICKED;
 
         String email = String.valueOf(binding.userId.getText()).trim();

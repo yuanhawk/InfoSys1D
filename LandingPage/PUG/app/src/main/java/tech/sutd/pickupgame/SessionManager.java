@@ -11,8 +11,11 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,6 +62,13 @@ public class SessionManager {
                             if (!emitter.isDisposed()) {
                                 if (task.isSuccessful()) {
                                     reff.child("users").child(Objects.requireNonNull(fAuth.getUid())).setValue(user);
+
+                                    UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(user.getName())
+                                            .build();
+
+                                    fAuth.getCurrentUser().updateProfile(request);
+                                    fAuth.getCurrentUser().sendEmailVerification();
                                     fAuth.signOut();
                                     emitter.onSuccess(AuthResource.registered(user));
                                 } else {
@@ -96,7 +106,17 @@ public class SessionManager {
             source.setValue(firebaseAuthAuthResource);
             source.removeSource(userAuthSource);
         });
+    }
 
+    public Single<AuthResource<UserProfile>> reset(UserProfile user) {
+        return Single.create(emitter ->
+                fAuth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                        emitter.onSuccess(AuthResource.reset(user));
+                    else
+                        emitter.onSuccess(AuthResource.error(task.getException().getMessage()));
+                })
+        );
     }
 
     public LiveData<AuthResource<FirebaseAuth>> observeAuthState() {

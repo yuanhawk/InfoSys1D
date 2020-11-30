@@ -50,9 +50,13 @@ public class AuthActivity extends DaggerAppCompatActivity {
                     showProgressBar(true);
                     break;
                 case AUTHENTICATED:
+                    showProgressBar(false);
                     if (firebaseAuthAuthResource.data != null)
                         viewModel.insertUserDb(firebaseAuthAuthResource.data);
-                    login();
+                    if (!firebaseAuthAuthResource.data.getCurrentUser().isEmailVerified()) {
+                        Toast.makeText(this, "Please verify your email", Toast.LENGTH_SHORT).show();
+                    } else
+                        login();
                     break;
                 case ERROR:
                     showProgressBar(false);

@@ -105,7 +105,7 @@ public class UpcomingActViewModel extends BaseViewModel {
 
     public void pull() {
         reff.child("upcoming_activity")
-                .child(Objects.requireNonNull(fAuth.getUid()))
+                .child(Objects.requireNonNull(fAuth.getCurrentUser().getUid()))
                 .orderByChild("epoch")
                 .startAt(String.valueOf(Calendar.getInstance().getTimeInMillis()))
                 .addListenerForSingleValueEvent(new ValueEventListener() {

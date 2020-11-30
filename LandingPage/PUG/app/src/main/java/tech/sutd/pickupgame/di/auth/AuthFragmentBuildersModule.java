@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector;
 import tech.sutd.pickupgame.ui.auth.gettingstarted.GetStartedFragment;
 import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
 import tech.sutd.pickupgame.ui.auth.register.RegisterFragment;
+import tech.sutd.pickupgame.ui.auth.reset.ResetFragment;
 
 @Module
 public abstract class AuthFragmentBuildersModule {
@@ -17,4 +18,7 @@ public abstract class AuthFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract RegisterFragment contributeRegisterFragment();
+
+    @ContributesAndroidInjector
+    abstract ResetFragment contributeResetFragment();
 }

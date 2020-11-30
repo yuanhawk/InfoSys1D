@@ -52,7 +52,7 @@ public class BookingActViewModel extends BaseViewModel {
                 .addOnSuccessListener(documentReference -> {
                     if (!emitter.isDisposed()) {
                         reff.child("your_activity")
-                                .child(Objects.requireNonNull(fAuth.getUid()))
+                                .child(Objects.requireNonNull(fAuth.getCurrentUser().getUid()))
                                 .child(documentReference.getId())
                                 .setValue(activity);
 

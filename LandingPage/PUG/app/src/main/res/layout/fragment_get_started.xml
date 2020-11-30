@@ -9,144 +9,39 @@
     tools:ignore="ExtraText">
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/pug_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/ic_pug_title"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="150dp"
         android:background="@drawable/ic_pug_cut"
+        app:layout_constraintTop_toBottomOf="@+id/pug_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/app_name1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
-        android:fontFamily="@font/ralewayextrabold"
-        android:text="@string/p"
-        android:textColor="@color/colorRed"
-        android:textSize="65sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/app_name2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
-        android:fontFamily="@font/ralewayextrabold"
-        android:text="@string/u"
-        android:textColor="@color/colorRed"
-        android:textSize="65sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.28"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/app_name3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:fontFamily="@font/ralewayextrabold"
-        android:text="@string/pick_up_games"
-        android:textColor="@color/colorRed"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/app_name4"
-        android:layout_width="49dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
-        android:fontFamily="@font/ralewayextrabold"
-        android:text="@string/g"
-        android:textColor="@color/colorRed"
-        android:textSize="65sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/app_name5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:fontFamily="@font/ralewayextrabold"
-        android:text="@string/up_games"
-        android:textColor="@color/colorRed"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.387"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/app_name6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:fontFamily="@font/ralewayextrabold"
-        android:text="@string/games"
-        android:textColor="@color/colorRed"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.677"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/ralewaybold"
-        android:text="@string/desc"
-        android:textColor="@color/colorBlue"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.065"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_name1" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/cool_stuff"
-        android:layout_width="167dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/ralewaybold"
-        android:text="@string/cool_stuff"
-        android:textColor="@color/colorBlue"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.065"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/desc" />
-
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/get_started"
-        android:layout_width="198dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        style="@style/word_button_style"
+        android:layout_gravity="center"
         android:layout_marginBottom="54dp"
-        app:cardBackgroundColor="@color/colorRed"
-        app:cardCornerRadius="20dp"
+        android:background="@drawable/rounded_corners"
+        android:backgroundTint="@color/colorRed"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="@string/get_started"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/login"
-            style="@style/word_button_style"
-            android:text="@string/get_started" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -59,6 +59,24 @@ public class UserViewModel extends BaseViewModel {
         return this.userProfileSource;
     }
 
+    public LiveData<AuthResource<UserProfile>> reset(UserProfile user) {
+        userProfileSource.setValue(AuthResource.loading(null));
+        final LiveData<AuthResource<UserProfile>> userProfileSource = LiveDataReactiveStreams.fromPublisher(
+                sessionManager.reset(user)
+                        .toFlowable()
+                        .onErrorReturn(throwable -> AuthResource.error("Could not authenticate"))
+                        .subscribeOn(getProvider().io())
+                        .observeOn(getProvider().ui())
+        );
+
+        this.userProfileSource.addSource(userProfileSource, userProfileAuthResource -> {
+            this.userProfileSource.setValue(userProfileAuthResource);
+            this.userProfileSource.removeSource(userProfileSource);
+        });
+
+        return this.userProfileSource;
+    }
+
     public void login(UserProfile user) {
         sessionManager.login(user);
     }
@@ -70,7 +88,7 @@ public class UserViewModel extends BaseViewModel {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserProfile profile = snapshot.getValue(UserProfile.class);
                 if (profile != null) {
-                    insert(new User.Builder(data.getUid())
+                    insert(new User.Builder(data.getCurrentUser().getUid())
                             .setName(profile.getName())
                             .setEmail(profile.getEmail())
                             .setPasswd(profile.getPasswd())

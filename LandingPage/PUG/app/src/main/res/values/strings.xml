@@ -69,6 +69,10 @@
     <string name="min_end">End Min</string>
 
     <string name="time_error">Please set the Start and End Time correctly</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="enter_email">Enter your email and follow the instructions from there.</string>
+    <string name="reset_password">reset password</string>
+    <string name="enter_your_email">Enter Your Email&#8230;</string>
 
     <string-array name="sport_array">
         <item>Badminton</item>
