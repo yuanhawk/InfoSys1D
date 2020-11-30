@@ -6,7 +6,11 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -22,13 +26,18 @@ import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 public class BookingActViewModel extends BaseViewModel {
 
     private final FirebaseFirestore fStore;
+    private final DatabaseReference reff;
+    private final FirebaseAuth fAuth;
 
     private final MediatorLiveData<Resource<BookingActivity>> source = new MediatorLiveData<>();
 
     @Inject
-    public BookingActViewModel(SchedulerProvider provider, DataManager dataManager, FirebaseFirestore fStore) {
+    public BookingActViewModel(SchedulerProvider provider, DataManager dataManager,
+                               FirebaseFirestore fStore, DatabaseReference reff, FirebaseAuth fAuth) {
         super(provider, dataManager);
         this.fStore = fStore;
+        this.reff = reff;
+        this.fAuth = fAuth;
     }
 
     @Override
@@ -38,16 +47,19 @@ public class BookingActViewModel extends BaseViewModel {
 
     public void push(BookingActivity activity) {
         source.setValue(Resource.loading(null));
-        Single<Resource<BookingActivity>> bookingActSource = Single.create(emitter ->
-                fStore.collection("activities")
+        Single<Resource<BookingActivity>> bookingActSource = Single.create(emitter -> fStore.collection("activities")
                 .add(activity)
                 .addOnSuccessListener(documentReference -> {
                     if (!emitter.isDisposed()) {
+                        reff.child("your_activity")
+                                .child(Objects.requireNonNull(fAuth.getUid()))
+                                .child(documentReference.getId())
+                                .setValue(activity);
+
                         emitter.onSuccess(Resource.success(activity));
                     }
                 })
-                .addOnFailureListener(e -> emitter.onSuccess(Resource.error(e.getMessage())))
-        );
+                .addOnFailureListener(e -> emitter.onSuccess(Resource.error(e.getMessage()))));
 
         final LiveData<Resource<BookingActivity>> bookingSource = LiveDataReactiveStreams.fromPublisher(
                 bookingActSource

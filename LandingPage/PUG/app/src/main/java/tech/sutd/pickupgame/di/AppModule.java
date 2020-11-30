@@ -75,18 +75,6 @@ public class AppModule {
 
     @Singleton
     @Provides
-    static MessageDigest provideMessageDigest() {
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA1");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return md;
-    }
-
-    @Singleton
-    @Provides
     static Constraints provideOneTimeWorkRequest() {
         return new Constraints.Builder()
                 .setRequiresBatteryNotLow(true)

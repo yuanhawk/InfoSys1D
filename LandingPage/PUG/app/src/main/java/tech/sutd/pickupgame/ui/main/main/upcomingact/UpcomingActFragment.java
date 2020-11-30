@@ -8,10 +8,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Constraints;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +20,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
+import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.Resource;
-import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentUpcomingActBinding;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
@@ -38,7 +36,7 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.YourActViewModel;
 import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class UpcomingActFragment extends DaggerFragment {
+public class UpcomingActFragment extends BaseFragment {
 
     private FragmentUpcomingActBinding binding;
     private NavController navController;
@@ -46,6 +44,10 @@ public class UpcomingActFragment extends DaggerFragment {
     private UpcomingActViewModel upcomingActViewModel;
     private YourActViewModel yourActViewModel;
     private PastActViewModel pastActViewModel;
+
+    private Observer<Resource<PagedList<UpcomingActivity>>> upcomingActObserver;
+    private Observer<Resource<List<YourActivity>>> yourActObserver;
+    private Observer<Resource<List<PastActivity>>> pastActObserver;
 
     @Inject UpcomingActivityAdapter<UpcomingActivity> upcomingAdapter;
     @Inject YourActivityAdapter yourAdapter;
@@ -77,6 +79,24 @@ public class UpcomingActFragment extends DaggerFragment {
         initViews();
         subscribeObserver();
         binding.back.setOnClickListener(v -> navController.popBackStack(R.id.mainFragment, false));
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            pullUpcomingAct();
+
+            if (upcomingActViewModel.getAllUpcomingActivitiesByClock().hasActiveObservers())
+                upcomingActViewModel.getAllUpcomingActivitiesByClock().removeObserver(upcomingActObserver);
+            upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActObserver);
+
+            if (yourActViewModel.getAllYourActivitiesByClockLimit10().hasActiveObservers())
+                yourActViewModel.getAllYourActivitiesByClockLimit10().removeObserver(yourActObserver);
+            yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), yourActObserver);
+
+            if (pastActViewModel.getPastActivities().hasActiveObservers())
+                pastActViewModel.getPastActivities().removeObserver(pastActObserver);
+            pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActObserver);
+
+            binding.swipeRefresh.setRefreshing(false);
+        });
     }
 
     @Override
@@ -88,25 +108,29 @@ public class UpcomingActFragment extends DaggerFragment {
     }
 
     private void subscribeObserver() {
-        upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), pagedListResource -> {
+        upcomingActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
                 upcomingAdapter.submitList(pagedListResource.data);
             }
-        });
+        };
 
-        yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), listResource -> {
+        yourActObserver = listResource -> {
             if (listResource != null) {
                 if (listResource.status == Resource.Status.SUCCESS) {
                     yourAdapter.setSource(listResource.data);
                 }
             }
-        });
+        };
 
-        pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), listResource -> {
+        pastActObserver = listResource -> {
             if (listResource.status == Resource.Status.SUCCESS) {
                 pastAdapter.setSource(listResource.data);
             }
-        });
+        };
+
+        upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActObserver);
+        yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), yourActObserver);
+        pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(),pastActObserver);
     }
 
     private void initViews() {
@@ -116,18 +140,18 @@ public class UpcomingActFragment extends DaggerFragment {
         binding.upcomingRc.setHasFixedSize(true);
         upcomingAdapter.setNotifications(9999);
 
-        yourActViewModel.insert(new YourActivity(0, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        yourActViewModel.insert(new YourActivity(1, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        yourActViewModel.insert(new YourActivity(2, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        yourActViewModel.insert(new YourActivity(3, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+//        yourActViewModel.insert(new YourActivity(0, "Cycling", R.drawable.ic_clock,
+//                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
+//                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+//        yourActViewModel.insert(new YourActivity(1, "Cycling", R.drawable.ic_clock,
+//                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
+//                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+//        yourActViewModel.insert(new YourActivity(2, "Cycling", R.drawable.ic_clock,
+//                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
+//                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+//        yourActViewModel.insert(new YourActivity(3, "Cycling", R.drawable.ic_clock,
+//                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
+//                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
 
         binding.eventsRc.setAdapter(yourAdapter);
         binding.eventsRc.setLayoutManager(new LinearLayoutManager(getActivity()));

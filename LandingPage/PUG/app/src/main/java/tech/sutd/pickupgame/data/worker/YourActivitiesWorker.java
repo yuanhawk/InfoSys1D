@@ -13,15 +13,14 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import tech.sutd.pickupgame.di.worker.ChildWorkerFactory;
-import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.YourActViewModel;
 
-public class NewActivitiesWorker extends Worker {
+public class YourActivitiesWorker extends Worker {
 
-    private final NewActViewModel viewModel;
+    private final YourActViewModel viewModel;
 
     @Inject
-    public NewActivitiesWorker(@NonNull Context context, @NonNull WorkerParameters workerParams,
-                               NewActViewModel viewModel) {
+    public YourActivitiesWorker(@NonNull Context context, @NonNull WorkerParameters workerParams, YourActViewModel viewModel) {
         super(context, workerParams);
         this.viewModel = viewModel;
     }
@@ -30,25 +29,23 @@ public class NewActivitiesWorker extends Worker {
     @Override
     public Result doWork() {
         viewModel.pull();
-        viewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
         return Result.success();
     }
 
     public static class Factory implements ChildWorkerFactory {
 
-        private final Provider<NewActViewModel> viewModelProvider;
+        private final Provider<YourActViewModel> viewModelProvider;
 
         @Inject
-        public Factory(Provider<NewActViewModel> viewModelProvider) {
+        public Factory(Provider<YourActViewModel> viewModelProvider) {
             this.viewModelProvider = viewModelProvider;
         }
 
         @Override
-        public ListenableWorker create(Context context, WorkerParameters workerParameters) {
-            return new NewActivitiesWorker(context,
+        public ListenableWorker create(Context appContext, WorkerParameters workerParameters) {
+            return new YourActivitiesWorker(appContext,
                     workerParameters,
                     viewModelProvider.get());
         }
     }
-
 }

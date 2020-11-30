@@ -9,9 +9,10 @@ import com.google.gson.annotations.SerializedName;
 
 import tech.sutd.pickupgame.models.User;
 
-@Entity(primaryKeys = {"id"}, tableName = "new_activity")
+@Entity(tableName = "new_activity")
 public class NewActivity {
 
+    @PrimaryKey
     @NonNull
     @SerializedName("id")
     private String id;

@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Handler;
@@ -41,6 +43,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private BaseInterface listener;
     private SuccessListenerTwo successListenerTwo;
 
+    private Observer<Resource<PagedList<UpcomingActivity>>> upcomingActObserver;
+    private Observer<Resource<PagedList<NewActivity>>> newActObserver;
+
     @Inject UpcomingActivityAdapter<UpcomingActivity> adapter;
     @Inject NewActivityAdapter<NewActivity> newAdapter;
     @Inject ViewModelProviderFactory providerFactory;
@@ -74,28 +79,30 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void subscribeObserver() {
-        upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), pagedListResource -> {
+        upcomingActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
                 adapter.submitList(pagedListResource.data);
             }
-        });
+        };
 
-        newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), pagedListResource -> {
+        newActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
                 newAdapter.submitList(pagedListResource.data);
             }
-        });
+        };
+
+        upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), upcomingActObserver);
+
+        newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), newActObserver);
     }
 
     private void initViews() {
-        upcomingActViewModel.pull();
 
         binding.upcomingRc.setAdapter(adapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
         adapter.setNotifications(1);
 
-        newActViewModel.pull();
 
         binding.newRc.setAdapter(newAdapter);
         binding.newRc.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -104,6 +111,20 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
         binding.upcomingAct.setOnClickListener(this);
         binding.newAct.setOnClickListener(this);
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            pull();
+
+            if (upcomingActViewModel.getUpcomingActivitiesByClock2().hasActiveObservers())
+                upcomingActViewModel.getUpcomingActivitiesByClock2().removeObserver(upcomingActObserver);
+            upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), upcomingActObserver);
+
+            if (newActViewModel.getNewActivitiesByClock2().hasActiveObservers())
+                newActViewModel.getNewActivitiesByClock2().removeObserver(newActObserver);
+            newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), newActObserver);
+
+            binding.swipeRefresh.setRefreshing(false);
+        });
     }
 
     @Override

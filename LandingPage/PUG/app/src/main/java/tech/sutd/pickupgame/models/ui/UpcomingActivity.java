@@ -6,9 +6,10 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(primaryKeys = {"id"}, tableName = "upcoming_activity")
+@Entity(tableName = "upcoming_activity")
 public class UpcomingActivity {
 
+    @PrimaryKey
     @NonNull
     @SerializedName("id")
     private String id;

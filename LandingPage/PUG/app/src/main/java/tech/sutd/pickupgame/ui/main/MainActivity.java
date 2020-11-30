@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity
     public void onBookingSuccess() {
         binding.progress.setVisibility(View.GONE);
         Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
+
         checkBookingFragment();
     }
 
@@ -104,22 +105,9 @@ public class MainActivity extends BaseActivity
         bookingViewModel = new ViewModelProvider(this, providerFactory).get(BookingActViewModel.class);
     }
 
-    private void pull() {
-        OneTimeWorkRequest upcomingRequest = new OneTimeWorkRequest.Builder(UpcomingActivitiesWorker.class)
-                .build();
-
-        OneTimeWorkRequest newRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
-                .build();
-
-        WorkManager.getInstance(getApplicationContext())
-                .beginWith(upcomingRequest)
-                .then(newRequest)
-                .enqueue();
-    }
-
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         init();
         if (preferences.getBoolean(getString(R.string.activities_organised), false)) {
             addBookingFragment();
@@ -130,8 +118,6 @@ public class MainActivity extends BaseActivity
         }
         subscribeObserver();
     }
-
-
 
     @Override
     public void subscribeObserver() {
@@ -149,7 +135,6 @@ public class MainActivity extends BaseActivity
                     break;
             }
         });
-
     }
 
     @Override

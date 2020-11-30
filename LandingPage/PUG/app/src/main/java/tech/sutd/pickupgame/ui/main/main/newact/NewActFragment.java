@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -121,6 +122,20 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
         newAdapter.setNotifications(getContext(), null, this, 9999);
 
         new CustomSnapHelper().attachToRecyclerView(binding.newRc);
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+            pullNewAct();
+
+            if (newActViewModel.getAllNewActivitiesBySport().hasActiveObservers())
+                newActViewModel.getAllNewActivitiesBySport().removeObserver(observer);
+            newActViewModel.getAllNewActivitiesBySport().observe(getViewLifecycleOwner(), observer);
+
+            if (newActViewModel.getAllNewActivitiesByClock().hasActiveObservers())
+                newActViewModel.getAllNewActivitiesByClock().removeObserver(observer);
+            newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
+
+            binding.swipeRefresh.setRefreshing(false);
+        });
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "past_activity")
 public class PastActivity {
+
     @PrimaryKey
     @SerializedName("id")
     private int id;

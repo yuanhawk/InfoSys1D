@@ -3,8 +3,11 @@ package tech.sutd.pickupgame.ui.main.main.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 import androidx.paging.PagedList;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -15,12 +18,14 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.DataManager;
 import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.NewActivity;
+import tech.sutd.pickupgame.models.ui.YourActivity;
 import tech.sutd.pickupgame.ui.BaseViewModel;
 import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
@@ -34,7 +39,6 @@ public class NewActViewModel extends BaseViewModel {
     private final FirebaseAuth fAuth;
 
     private final MediatorLiveData<Resource<PagedList<NewActivity>>> source = new MediatorLiveData<>();
-    private final MediatorLiveData<Resource<BookingActivity>> pushSource = new MediatorLiveData<>();
 
     @Override
     public void setError(Throwable e) {
@@ -153,7 +157,7 @@ public class NewActViewModel extends BaseViewModel {
     public void push(MainFragment mainFragment, NewActFragment newActFragment, NewActivityAdapter adapter,
                      String id, BookingActivity bookingActivity) {
 
-        reff.child("your_activity")
+        reff.child("upcoming_activity")
                 .child(Objects.requireNonNull(fAuth.getUid()))
                 .child(id)
                 .setValue(bookingActivity)
@@ -175,6 +179,7 @@ public class NewActViewModel extends BaseViewModel {
                     }
                     adapter.getDialog().dismiss();
                 });
+
     }
 
     private void doOnLoading() {
