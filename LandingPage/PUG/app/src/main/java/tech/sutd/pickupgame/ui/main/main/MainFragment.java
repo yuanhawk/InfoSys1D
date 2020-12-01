@@ -15,8 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Calendar;
-
 import javax.inject.Inject;
 
 import tech.sutd.pickupgame.BaseFragment;
@@ -81,19 +79,75 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private void subscribeObserver() {
         upcomingActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
-                adapter.submitList(pagedListResource.data);
+                updateUpcomingView(pagedListResource);
+
+                pagedListResource.data.addWeakCallback(null, new PagedList.Callback() {
+                    @Override
+                    public void onChanged(int position, int count) {
+                        updateUpcomingView(pagedListResource);
+                    }
+
+                    @Override
+                    public void onInserted(int position, int count) {
+
+                    }
+
+                    @Override
+                    public void onRemoved(int position, int count) {
+
+                    }
+                });
             }
         };
 
         newActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
-                newAdapter.submitList(pagedListResource.data);
+                updateNewView(pagedListResource);
+
+                pagedListResource.data.addWeakCallback(null, new PagedList.Callback() {
+                    @Override
+                    public void onChanged(int position, int count) {
+                        updateNewView(pagedListResource);
+                    }
+
+                    @Override
+                    public void onInserted(int position, int count) {
+
+                    }
+
+                    @Override
+                    public void onRemoved(int position, int count) {
+
+                    }
+                });
             }
         };
 
         upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), upcomingActObserver);
 
         newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), newActObserver);
+    }
+
+    private void updateUpcomingView(Resource<PagedList<UpcomingActivity>> pagedListResource) {
+        if (pagedListResource.data.size() > 0) {
+            binding.upcomingRc.setVisibility(View.VISIBLE);
+            binding.upcomingEmpty.setVisibility(View.GONE);
+            adapter.submitList(pagedListResource.data);
+        } else {
+            binding.upcomingRc.setVisibility(View.GONE);
+            binding.upcomingEmpty.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateNewView(Resource<PagedList<NewActivity>> pagedListResource) {
+        if (pagedListResource.data.size() > 0) {
+            binding.newRc.setVisibility(View.VISIBLE);
+            binding.newEmpty.setVisibility(View.GONE);
+            newAdapter.submitList(pagedListResource.data);
+        } else {
+            binding.newRc.setVisibility(View.GONE);
+            binding.newEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initViews() {
@@ -113,7 +167,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         binding.newAct.setOnClickListener(this);
 
         binding.swipeRefresh.setOnRefreshListener(() -> {
-            pull();
+            pullMainAct();
 
             if (upcomingActViewModel.getUpcomingActivitiesByClock2().hasActiveObservers())
                 upcomingActViewModel.getUpcomingActivitiesByClock2().removeObserver(upcomingActObserver);

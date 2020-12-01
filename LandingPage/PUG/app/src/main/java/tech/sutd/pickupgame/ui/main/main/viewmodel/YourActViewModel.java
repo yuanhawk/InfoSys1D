@@ -90,8 +90,6 @@ public class YourActViewModel extends BaseViewModel {
     public void pull() {
         reff.child("your_activity")
                 .child(Objects.requireNonNull(fAuth.getCurrentUser().getUid()))
-                .orderByChild("epoch")
-                .startAt(String.valueOf(Calendar.getInstance().getTimeInMillis()))
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

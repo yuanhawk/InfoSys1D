@@ -73,6 +73,9 @@
     <string name="enter_email">Enter your email and follow the instructions from there.</string>
     <string name="reset_password">reset password</string>
     <string name="enter_your_email">Enter Your Email&#8230;</string>
+    <string name="friends">friends</string>
+    <string name="no_activities_joined">You haven\'t signed up for any events! Organise your own or join others</string>
+    <string name="load_new_activities">Please refresh to load new activities</string>
 
     <string-array name="sport_array">
         <item>Badminton</item>

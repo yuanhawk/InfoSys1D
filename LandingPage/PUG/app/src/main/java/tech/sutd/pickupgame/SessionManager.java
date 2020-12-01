@@ -61,7 +61,7 @@ public class SessionManager {
                         task -> {
                             if (!emitter.isDisposed()) {
                                 if (task.isSuccessful()) {
-                                    reff.child("users").child(Objects.requireNonNull(fAuth.getUid())).setValue(user);
+                                    reff.child("users").child(Objects.requireNonNull(fAuth.getCurrentUser().getUid())).setValue(user);
 
                                     UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
                                             .setDisplayName(user.getName())

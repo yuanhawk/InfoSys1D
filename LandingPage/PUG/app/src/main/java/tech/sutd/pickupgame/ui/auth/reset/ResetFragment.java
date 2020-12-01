@@ -72,14 +72,6 @@ public class ResetFragment extends BaseFragment {
                         break;
                 }
             });
-
-
-//            fAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
-//                if (task.isSuccessful())
-//                    Toast.makeText(getActivity(), "Check email to reset your password!", Toast.LENGTH_SHORT).show();
-//                else
-//                    Toast.makeText(getActivity(), "Fail to send reset password email!", Toast.LENGTH_SHORT).show();
-//            });
         });
     }
 

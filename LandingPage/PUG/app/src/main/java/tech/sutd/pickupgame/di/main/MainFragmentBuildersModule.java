@@ -27,17 +27,11 @@ public abstract class MainFragmentBuildersModule {
     abstract BookingFragment contributeBookingFragment();
 
     @UpcomingActFragmentScope
-    @ContributesAndroidInjector(
-            modules = {
-                    UpcomingActFragmentViewModelModule.class, UpcomingActFragmentModule.class
-            }
-    )
+    @ContributesAndroidInjector(modules = UpcomingActFragmentModule.class)
     abstract UpcomingActFragment contributeUpcomingActFragment();
 
     @NewActFragmentScope
-    @ContributesAndroidInjector(
-            modules = {NewActFragmentModule.class}
-    )
+    @ContributesAndroidInjector(modules = NewActFragmentModule.class)
     abstract NewActFragment contributeNewActFragment();
 
     @ContributesAndroidInjector

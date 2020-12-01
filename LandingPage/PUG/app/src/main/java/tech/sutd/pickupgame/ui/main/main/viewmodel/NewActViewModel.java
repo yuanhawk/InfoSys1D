@@ -156,9 +156,8 @@ public class NewActViewModel extends BaseViewModel {
 
     public void push(MainFragment mainFragment, NewActFragment newActFragment, NewActivityAdapter adapter,
                      String id, BookingActivity bookingActivity) {
-
         reff.child("upcoming_activity")
-                .child(Objects.requireNonNull(fAuth.getUid()))
+                .child(Objects.requireNonNull(fAuth.getCurrentUser().getUid()))
                 .child(id)
                 .setValue(bookingActivity)
                 .addOnCompleteListener(task -> {

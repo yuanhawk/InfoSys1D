@@ -4,12 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -29,16 +25,11 @@ import javax.inject.Inject;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.constant.ClickState;
-import tech.sutd.pickupgame.data.Resource;
-import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
-import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
 import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.BaseActivity;
-import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.BookingActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
-import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class MainActivity extends BaseActivity
@@ -112,11 +103,15 @@ public class MainActivity extends BaseActivity
         if (preferences.getBoolean(getString(R.string.activities_organised), false)) {
             addBookingFragment();
 
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(getString(R.string.activities_organised), false);
-            editor.apply();
+            setBookingFragmentStateBySharedPref(false);
         }
         subscribeObserver();
+    }
+
+    private void setBookingFragmentStateBySharedPref(boolean b) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(getString(R.string.activities_organised), b);
+        editor.apply();
     }
 
     @Override
@@ -145,9 +140,7 @@ public class MainActivity extends BaseActivity
             fragmentManager.beginTransaction().remove(fragment).commit();
             clickState = ClickState.NONE;
 
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(getString(R.string.activities_organised), true);
-            editor.apply();
+            setBookingFragmentStateBySharedPref(true);
         }
     }
 

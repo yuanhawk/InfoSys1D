@@ -31,6 +31,8 @@ import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
+import static android.telecom.DisconnectCause.ERROR;
+
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
 
     // TODO: Create a remember me btn
@@ -81,10 +83,27 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private void initObserver() {
         sessionManager.observeAuthState().observe(getViewLifecycleOwner(), firebaseAuthAuthResource -> {
             switch (firebaseAuthAuthResource.status) {
+                case LOADING:
+                    binding.progress.setVisibility(View.VISIBLE);
+                    break;
                 case AUTHENTICATED:
+                    binding.progress.setVisibility(View.GONE);
+                    if (firebaseAuthAuthResource.data != null)
+                        viewModel.insertUserDb(firebaseAuthAuthResource.data);
+                    if (!firebaseAuthAuthResource.data.getCurrentUser().isEmailVerified()) {
+                        clickState = ClickState.NONE;
+                        Toast.makeText(getContext(), "Please verify your email", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
                 case ERROR:
-                case NOT_AUTHENTICATED:
+                    binding.progress.setVisibility(View.GONE);
                     clickState = ClickState.NONE;
+                    Toast.makeText(getContext(), firebaseAuthAuthResource.message, Toast.LENGTH_SHORT).show();
+                     break;
+                case NOT_AUTHENTICATED:
+                    binding.progress.setVisibility(View.GONE);
+                    clickState = ClickState.NONE;
+                    break;
             }
         });
     }

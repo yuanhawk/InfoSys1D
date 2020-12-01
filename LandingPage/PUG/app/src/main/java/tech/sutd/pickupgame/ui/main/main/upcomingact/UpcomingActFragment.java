@@ -10,8 +10,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
+import androidx.work.WorkManager;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,8 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class UpcomingActFragment extends BaseFragment {
 
+    private static final String TAG = "UpcomingActFragment";
+    
     private FragmentUpcomingActBinding binding;
     private NavController navController;
 
@@ -55,6 +60,7 @@ public class UpcomingActFragment extends BaseFragment {
     @Inject ViewModelProviderFactory providerFactory;
 
     @Inject Constraints constraints;
+    @Inject Handler handler;
 
     @Nullable
     @Override
@@ -103,34 +109,126 @@ public class UpcomingActFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         binding.upcomingRc.setOnFlingListener(null);
-        binding.eventsRc.setOnFlingListener(null);
+        binding.yourRc.setOnFlingListener(null);
         binding.pastRc.setOnFlingListener(null);
     }
 
     private void subscribeObserver() {
+
         upcomingActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
+                updateUpcomingView(pagedListResource.data.size());
                 upcomingAdapter.submitList(pagedListResource.data);
+
+                pagedListResource.data.addWeakCallback(null, new PagedList.Callback() {
+                    @Override
+                    public void onChanged(int position, int count) {
+                        updateUpcomingView(pagedListResource.data.size());
+                    }
+
+                    @Override
+                    public void onInserted(int position, int count) {
+
+                    }
+
+                    @Override
+                    public void onRemoved(int position, int count) {
+
+                    }
+                });
             }
         };
 
         yourActObserver = listResource -> {
             if (listResource != null) {
                 if (listResource.status == Resource.Status.SUCCESS) {
-                    yourAdapter.setSource(listResource.data);
+                    updateYourView(listResource);
+
+                    yourAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                        @Override
+                        public void onChanged() {
+                            super.onChanged();
+                            updateYourView(listResource);
+                        }
+
+                        @Override
+                        public void onItemRangeInserted(int positionStart, int itemCount) {
+                            super.onItemRangeInserted(positionStart, itemCount);
+                            updateYourView(listResource);
+                        }
+
+                        @Override
+                        public void onItemRangeRemoved(int positionStart, int itemCount) {
+                            super.onItemRangeRemoved(positionStart, itemCount);
+                            updateYourView(listResource);
+                        }
+                    });
                 }
             }
         };
 
         pastActObserver = listResource -> {
             if (listResource.status == Resource.Status.SUCCESS) {
+                updatePastView(listResource);
                 pastAdapter.setSource(listResource.data);
+
+                pastAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        updatePastView(listResource);
+                    }
+
+                    @Override
+                    public void onItemRangeInserted(int positionStart, int itemCount) {
+                        super.onItemRangeInserted(positionStart, itemCount);
+                        updatePastView(listResource);
+                    }
+
+                    @Override
+                    public void onItemRangeRemoved(int positionStart, int itemCount) {
+                        super.onItemRangeRemoved(positionStart, itemCount);
+                        updatePastView(listResource);
+                    }
+                });
             }
         };
 
         upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActObserver);
         yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), yourActObserver);
         pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(),pastActObserver);
+    }
+
+    private void updateUpcomingView(int size) {
+        if (size > 0) {
+            binding.upcomingRc.setVisibility(View.VISIBLE);
+            binding.upcomingEmpty.setVisibility(View.GONE);
+        } else {
+            binding.upcomingRc.setVisibility(View.GONE);
+            binding.upcomingEmpty.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateYourView(Resource<List<YourActivity>> listResource) {
+        if (listResource.data.size() > 0) {
+            binding.yourRc.setVisibility(View.VISIBLE);
+            binding.yourEmpty.setVisibility(View.GONE);
+            yourAdapter.setSource(listResource.data);
+        } else {
+            binding.yourRc.setVisibility(View.GONE);
+            binding.yourEmpty.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updatePastView(Resource<List<PastActivity>> listResource) {
+        if (listResource.data.size() > 0) {
+            binding.pastRc.setVisibility(View.VISIBLE);
+            binding.pastEmpty.setVisibility(View.GONE);
+            pastAdapter.setSource(listResource.data);
+        } else {
+            binding.pastRc.setVisibility(View.GONE);
+            binding.pastEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initViews() {
@@ -140,42 +238,16 @@ public class UpcomingActFragment extends BaseFragment {
         binding.upcomingRc.setHasFixedSize(true);
         upcomingAdapter.setNotifications(9999);
 
-//        yourActViewModel.insert(new YourActivity(0, "Cycling", R.drawable.ic_clock,
-//                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
-//                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-//        yourActViewModel.insert(new YourActivity(1, "Cycling", R.drawable.ic_clock,
-//                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
-//                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-//        yourActViewModel.insert(new YourActivity(2, "Cycling", R.drawable.ic_clock,
-//                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
-//                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-//        yourActViewModel.insert(new YourActivity(3, "Cycling", R.drawable.ic_clock,
-//                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
-//                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-
-        binding.eventsRc.setAdapter(yourAdapter);
-        binding.eventsRc.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.eventsRc.setHasFixedSize(true);
-
-        pastActViewModel.insert(new PastActivity(0, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600340400) * 1000), String.valueOf(Long.valueOf(1600351200) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        pastActViewModel.insert(new PastActivity(1, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600254000) * 1000), String.valueOf(Long.valueOf(1600264800) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        pastActViewModel.insert(new PastActivity(2, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600167600) * 1000), String.valueOf(Long.valueOf(1600178400) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
-        pastActViewModel.insert(new PastActivity(3, "Cycling", R.drawable.ic_clock,
-                String.valueOf(Long.valueOf(1600081200) * 1000), String.valueOf(Long.valueOf(1600092000) * 1000),
-                R.drawable.ic_location, "S123456, East Coast Park", R.drawable.ic_profile, "John Doe", R.drawable.ic_cycling));
+        binding.yourRc.setAdapter(yourAdapter);
+        binding.yourRc.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.yourRc.setHasFixedSize(true);
 
         binding.pastRc.setAdapter(pastAdapter);
         binding.pastRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.pastRc.setHasFixedSize(true);
 
         new CustomSnapHelper().attachToRecyclerView(binding.upcomingRc);
-        new CustomSnapHelper().attachToRecyclerView(binding.eventsRc);
+        new CustomSnapHelper().attachToRecyclerView(binding.yourRc);
         new CustomSnapHelper().attachToRecyclerView(binding.pastRc);
     }
 }

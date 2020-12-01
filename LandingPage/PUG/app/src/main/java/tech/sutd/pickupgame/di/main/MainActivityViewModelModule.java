@@ -8,7 +8,9 @@ import dagger.multibindings.IntoMap;
 import tech.sutd.pickupgame.di.ViewModelKey;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.BookingActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.PastActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.YourActViewModel;
 
 @Module
 public abstract class MainActivityViewModelModule {
@@ -30,4 +32,16 @@ public abstract class MainActivityViewModelModule {
     @IntoMap
     @ViewModelKey(BookingActViewModel.class)
     public abstract ViewModel bindBookingActViewModel(BookingActViewModel viewModel);
+
+    @MainScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(YourActViewModel.class)
+    public abstract ViewModel bindYourActViewModel(YourActViewModel viewModel);
+
+    @MainScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(PastActViewModel.class)
+    public abstract ViewModel bindPastActViewModel(PastActViewModel viewModel);
 }

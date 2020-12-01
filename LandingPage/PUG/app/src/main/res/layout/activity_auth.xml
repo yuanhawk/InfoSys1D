@@ -20,12 +20,4 @@
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
-    <ProgressBar
-        android:id="@+id/progress"
-        style="@style/progressbar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

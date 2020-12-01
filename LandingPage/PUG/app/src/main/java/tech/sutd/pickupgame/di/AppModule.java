@@ -83,13 +83,13 @@ public class AppModule {
 
     @Singleton
     @Provides
-    SchedulerProvider provideSchedulerProvider() {
+    static SchedulerProvider provideSchedulerProvider() {
         return new AppSchedulerProvider();
     }
 
     @Singleton
     @Provides
-    static Handler provideHander() {
+    static Handler provideHandler() {
         return new Handler(Looper.getMainLooper());
     }
 

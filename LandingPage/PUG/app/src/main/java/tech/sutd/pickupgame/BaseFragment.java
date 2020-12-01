@@ -17,11 +17,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+import androidx.work.Worker;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import dagger.android.support.DaggerFragment;
 import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
+import tech.sutd.pickupgame.data.worker.PastActivitiesWorker;
 import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
 import tech.sutd.pickupgame.data.worker.YourActivitiesWorker;
 
@@ -72,42 +77,33 @@ public class BaseFragment extends DaggerFragment {
         return dialog;
     }
 
-    public void pull() {
-        OneTimeWorkRequest upcomingRequest = new OneTimeWorkRequest.Builder(UpcomingActivitiesWorker.class)
-                .build();
-
-        OneTimeWorkRequest newRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
-                .build();
-
-        OneTimeWorkRequest yourRequest = new OneTimeWorkRequest.Builder(YourActivitiesWorker.class)
-                .build();
-
+    private void enqueueTask(List<OneTimeWorkRequest> requests) {
         WorkManager.getInstance(requireContext())
-                .beginWith(newRequest)
-                .then(upcomingRequest)
-                .then(yourRequest)
-                .enqueue();
+                .enqueue(requests);
+    }
+
+    @SafeVarargs
+    private final void buildOneTimeWorkRequest(Class<? extends Worker>... classNameList) {
+
+        List<OneTimeWorkRequest> requests = new ArrayList<>();
+        for (Class<? extends Worker> className: classNameList) {
+            requests.add(new OneTimeWorkRequest.Builder(className)
+                    .build());
+        }
+        enqueueTask(requests);
+    }
+
+    public void pullMainAct() {
+        buildOneTimeWorkRequest(UpcomingActivitiesWorker.class, NewActivitiesWorker.class);
     }
 
     public void pullNewAct() {
-        OneTimeWorkRequest newRequest = new OneTimeWorkRequest.Builder(NewActivitiesWorker.class)
-                .build();
-
-        WorkManager.getInstance(requireContext())
-                .enqueue(newRequest);
+        buildOneTimeWorkRequest(NewActivitiesWorker.class);
     }
 
     public void pullUpcomingAct() {
-        OneTimeWorkRequest upcomingRequest = new OneTimeWorkRequest.Builder(UpcomingActivitiesWorker.class)
-                .build();
-
-        OneTimeWorkRequest yourRequest = new OneTimeWorkRequest.Builder(YourActivitiesWorker.class)
-                .build();
-
-        WorkManager.getInstance(requireContext())
-                .beginWith(upcomingRequest)
-                .then(yourRequest)
-                .enqueue();
+        buildOneTimeWorkRequest(UpcomingActivitiesWorker.class, YourActivitiesWorker.class,
+                PastActivitiesWorker.class);
     }
 
 

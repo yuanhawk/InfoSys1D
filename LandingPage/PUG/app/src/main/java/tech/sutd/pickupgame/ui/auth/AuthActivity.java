@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import tech.sutd.pickupgame.SessionManager;
+import tech.sutd.pickupgame.data.ui.user.AuthResource;
 import tech.sutd.pickupgame.databinding.ActivityAuthBinding;
 import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
@@ -21,10 +22,8 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 public class AuthActivity extends DaggerAppCompatActivity {
 
     private ActivityAuthBinding binding;
-    private UserViewModel viewModel;
 
     @Inject SessionManager sessionManager;
-    @Inject ViewModelProviderFactory providerFactory;
 
     public void login() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -38,39 +37,16 @@ public class AuthActivity extends DaggerAppCompatActivity {
         binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
-
         subscribeObserver();
     }
 
     private void subscribeObserver() {
         sessionManager.observeAuthState().observe(this, firebaseAuthAuthResource -> {
-            switch (firebaseAuthAuthResource.status) {
-                case LOADING:
-                    showProgressBar(true);
-                    break;
-                case AUTHENTICATED:
-                    showProgressBar(false);
-                    if (firebaseAuthAuthResource.data != null)
-                        viewModel.insertUserDb(firebaseAuthAuthResource.data);
-                    if (!firebaseAuthAuthResource.data.getCurrentUser().isEmailVerified()) {
-                        Toast.makeText(this, "Please verify your email", Toast.LENGTH_SHORT).show();
-                    } else
-                        login();
-                    break;
-                case ERROR:
-                    showProgressBar(false);
-                    Toast.makeText(this, firebaseAuthAuthResource.message, Toast.LENGTH_SHORT).show();
-                    break;
+            if (firebaseAuthAuthResource.status == AuthResource.AuthStatus.AUTHENTICATED) {
+                if (firebaseAuthAuthResource.data.getCurrentUser().isEmailVerified())
+                    login();
             }
         });
-    }
-
-    private void showProgressBar(boolean isVisible) {
-        if (isVisible)
-            binding.progress.setVisibility(View.VISIBLE);
-        else
-            binding.progress.setVisibility(View.GONE);
     }
 
 }

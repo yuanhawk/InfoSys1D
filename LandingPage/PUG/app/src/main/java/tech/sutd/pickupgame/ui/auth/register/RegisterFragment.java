@@ -108,7 +108,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         viewModel.register(user).observe(getViewLifecycleOwner(), userProfileAuthResource -> {
             switch (userProfileAuthResource.status) {
                 case LOADING:
-                    showProgressBar(true);
+                    binding.progress.setVisibility(View.VISIBLE);
                     break;
                 case REGISTERED:
                     if (userProfileAuthResource.data != null) {
@@ -124,17 +124,10 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
         });
     }
 
-    private void showProgressBar(boolean isVisible) {
-        if (isVisible)
-            binding.progress.setVisibility(View.VISIBLE);
-        else
-            binding.progress.setVisibility(View.GONE);
-    }
-
 
     public void registerFailed(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         clickState = ClickState.NONE;
-        showProgressBar(false);
+        binding.progress.setVisibility(View.GONE);
     }
 }

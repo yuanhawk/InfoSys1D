@@ -1,6 +1,5 @@
 package tech.sutd.pickupgame.ui.main.main.newact;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -9,19 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +21,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bumptech.glide.RequestManager;
-
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -39,17 +28,12 @@ import javax.inject.Inject;
 import tech.sutd.pickupgame.BaseFragment;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.Resource;
-import tech.sutd.pickupgame.data.worker.NewActivitiesWorker;
-import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
 import tech.sutd.pickupgame.databinding.FragmentNewActBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
-import tech.sutd.pickupgame.ui.main.BaseInterface;
-import tech.sutd.pickupgame.ui.main.SuccessListener;
 import tech.sutd.pickupgame.ui.main.SuccessListenerTwo;
 import tech.sutd.pickupgame.ui.main.main.adapter.FilterAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
-import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
@@ -108,11 +92,39 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     private void subscribeObserver() {
         observer = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
-                newAdapter.submitList(pagedListResource.data);
+                updateNewView(pagedListResource);
+
+                pagedListResource.data.addWeakCallback(null, new PagedList.Callback() {
+                    @Override
+                    public void onChanged(int position, int count) {
+                        updateNewView(pagedListResource);
+                    }
+
+                    @Override
+                    public void onInserted(int position, int count) {
+
+                    }
+
+                    @Override
+                    public void onRemoved(int position, int count) {
+
+                    }
+                });
             }
         };
 
         newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
+    }
+
+    private void updateNewView(Resource<PagedList<NewActivity>> pagedListResource) {
+        if (pagedListResource.data.size() > 0) {
+            binding.newRc.setVisibility(View.VISIBLE);
+            binding.newEmpty.setVisibility(View.GONE);
+            newAdapter.submitList(pagedListResource.data);
+        } else {
+            binding.newRc.setVisibility(View.GONE);
+            binding.newEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initViews() {
