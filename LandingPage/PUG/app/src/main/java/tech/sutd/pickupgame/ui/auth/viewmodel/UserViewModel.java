@@ -83,6 +83,10 @@ public class UserViewModel extends BaseViewModel {
 
     public void insertUserDb(FirebaseAuth data) {
         deleteAllUsers();
+        if (data.getCurrentUser().getUid() == null) {
+            return;
+        }
+
         reff.child("users").child(Objects.requireNonNull(data.getCurrentUser().getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
