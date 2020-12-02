@@ -18,6 +18,9 @@ public interface YourDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertYourActivity(YourActivity yourActivities);
 
+    @Query("DELETE FROM your_activity WHERE id = :id")
+    Completable deleteYourActivityById(String id);
+
     @Query("DELETE FROM your_activity")
     Completable deleteAllYourActivities();
 

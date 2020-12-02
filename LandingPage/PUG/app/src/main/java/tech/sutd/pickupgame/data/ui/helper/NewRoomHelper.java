@@ -15,6 +15,7 @@ import tech.sutd.pickupgame.models.ui.NewActivity;
 public interface NewRoomHelper {
 
     Completable insertNewActivity(NewActivity newActivity);
+    Completable deleteNewActivityById(String id);
     Completable deleteNewActivityByClock(String clock);
     Flowable<PagedList<NewActivity>> getAllNewActivitiesByClock();
     Flowable<PagedList<NewActivity>> getAllNewActivitiesBySport();

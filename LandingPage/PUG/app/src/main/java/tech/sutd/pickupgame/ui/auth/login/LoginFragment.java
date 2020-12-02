@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import tech.sutd.pickupgame.BaseFragment;
@@ -34,8 +36,6 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 import static android.telecom.DisconnectCause.ERROR;
 
 public class LoginFragment extends BaseFragment implements View.OnClickListener {
-
-    // TODO: Create a remember me btn
 
     private int clickState = ClickState.NONE;
 
@@ -88,9 +88,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     break;
                 case AUTHENTICATED:
                     binding.progress.setVisibility(View.GONE);
-                    if (firebaseAuthAuthResource.data != null)
-                        viewModel.insertUserDb(firebaseAuthAuthResource.data);
-                    if (!firebaseAuthAuthResource.data.getCurrentUser().isEmailVerified()) {
+                    assert firebaseAuthAuthResource.data != null;
+                    viewModel.insertUserDb(firebaseAuthAuthResource.data);
+                    if (!Objects.requireNonNull(firebaseAuthAuthResource.data.getCurrentUser()).isEmailVerified()) {
                         clickState = ClickState.NONE;
                         Toast.makeText(getContext(), "Please verify your email", Toast.LENGTH_SHORT).show();
                     }

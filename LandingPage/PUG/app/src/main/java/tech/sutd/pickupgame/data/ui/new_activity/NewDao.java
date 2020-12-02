@@ -22,6 +22,9 @@ public interface NewDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertNewActivity(NewActivity newActivity);
 
+    @Query("DELETE FROM new_activity WHERE id = :id")
+    Completable deleteNewActivityById(String id);
+
     @Query("DELETE FROM new_activity WHERE clock < :clock")
     Completable deleteNewActivityByClock(String clock);
 

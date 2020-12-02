@@ -19,20 +19,28 @@ public class BookingActivity {
     @SerializedName("part")
     private String part;
 
+    @SerializedName("count")
+    private String count;
+
     @SerializedName("desc")
     private String desc;
 
     @SerializedName("org")
     private String organizer;
 
-    public BookingActivity(String sport, String epoch, String epochEnd, String loc, String part, String desc, String organizer) {
+    @SerializedName("id")
+    private String organizerId;
+
+    public BookingActivity(String sport, String epoch, String epochEnd, String loc, String part, String count, String desc, String organizer, String organizerId) {
         this.sport = sport;
         this.epoch = epoch;
         this.epochEnd = epochEnd;
         this.loc = loc;
         this.part = part;
+        this.count = count;
         this.desc = desc;
         this.organizer = organizer;
+        this.organizerId = organizerId;
     }
 
     public BookingActivity(Builder builder) {
@@ -41,8 +49,10 @@ public class BookingActivity {
         epochEnd = builder.epochEnd;
         loc = builder.location;
         part = builder.participant;
+        count = builder.count;
         desc = builder.notes;
         organizer = builder.organizer;
+        organizerId = builder.id;
     }
 
     public static class Builder {
@@ -51,8 +61,10 @@ public class BookingActivity {
         private String epochEnd;
         private String location;
         private String participant;
+        private String count;
         private String notes;
         private String organizer;
+        private String id;
 
         public Builder setSport(String sport) {
             this.sport = sport;
@@ -79,6 +91,11 @@ public class BookingActivity {
             return this;
         }
 
+        public Builder setCount(String count) {
+            this.count = count;
+            return this;
+        }
+
         public Builder setNotes(String notes) {
             this.notes = notes;
             return this;
@@ -86,6 +103,11 @@ public class BookingActivity {
 
         public Builder setOrganizer(String organizer) {
             this.organizer = organizer;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.id = id;
             return this;
         }
 
@@ -137,6 +159,14 @@ public class BookingActivity {
         this.part = part;
     }
 
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -151,5 +181,13 @@ public class BookingActivity {
 
     public void setOrganizer(String organizer) {
         this.organizer = organizer;
+    }
+
+    public String getOrganizerId() {
+        return organizerId;
+    }
+
+    public void setOrganizerId(String id) {
+        this.organizerId = id;
     }
 }

@@ -44,6 +44,11 @@ public class AppDataManager implements DataManager {
         return yourRoomHelper.insertYourActivity(activity);
     }
 
+    @Override
+    public Completable deleteYourActivityById(String id) {
+        return yourRoomHelper.deleteYourActivityById(id);
+    }
+
     public Completable deleteAllYourActivities() {
         return yourRoomHelper.deleteAllYourActivities();
     }
@@ -78,6 +83,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Completable insertNewActivity(NewActivity newActivity) {
         return newRoomHelper.insertNewActivity(newActivity);
+    }
+
+    @Override
+    public Completable deleteNewActivityById(String id) {
+        return newRoomHelper.deleteNewActivityById(id);
     }
 
     @Override

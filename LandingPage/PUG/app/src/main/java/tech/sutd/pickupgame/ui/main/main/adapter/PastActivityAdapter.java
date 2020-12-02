@@ -99,12 +99,6 @@ public class PastActivityAdapter extends RecyclerView.Adapter<PastActivityAdapte
         return source.data.size();
     }
 
-//    public void setNotifications(List<PastActivity> pastActivities, int numOfViews) {
-//        this.pastActivities = pastActivities;
-//        this.numOfViews = numOfViews;
-//        notifyDataSetChanged();
-//    }
-
     public void setSource(List<PastActivity> data) {
         source = Resource.success(data);
         notifyDataSetChanged();

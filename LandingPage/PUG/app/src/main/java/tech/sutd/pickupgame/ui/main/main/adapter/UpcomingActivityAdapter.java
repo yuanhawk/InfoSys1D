@@ -29,6 +29,7 @@ import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.upcomingact.UpcomingActFragment;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.util.DateConverter;
+import tech.sutd.pickupgame.util.StringChecker;
 
 public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivity, UpcomingActivityAdapter.ViewHolder> {
 
@@ -116,7 +117,7 @@ public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivit
             organizerTv.setText(upcomingActivity.getOrganizer());
 
             MaterialTextView participantTv = dialog.findViewById(R.id.participant);
-            participantTv.setText(upcomingActivity.getParticipant());
+            participantTv.setText(StringChecker.partHolder(upcomingActivity.getCount(), upcomingActivity.getParticipant()));
 
             MaterialTextView notesTv = dialog.findViewById(R.id.notes);
             notesTv.setText(upcomingActivity.getNotes());
@@ -136,11 +137,11 @@ public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivit
 
             dialog.findViewById(R.id.delete).setOnClickListener(view -> {
 
-                if (mainFragment != null) {
-                    viewModel.deleteFromDb(mainFragment, null, this, upcomingActivity.getId());
-                } else if (upcomingFragment != null) {
-                    viewModel.deleteFromDb(null, upcomingFragment, this, upcomingActivity.getId());
-                }
+                if (mainFragment != null)
+                    viewModel.deleteFromDb(mainFragment, null, this, upcomingActivity);
+                else if (upcomingFragment != null)
+                    viewModel.deleteFromDb(null, upcomingFragment, this, upcomingActivity);
+
             });
         });
     }

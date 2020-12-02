@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,21 +27,27 @@ import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
 import tech.sutd.pickupgame.ui.BaseViewModel;
-import tech.sutd.pickupgame.util.StringComparator;
+import tech.sutd.pickupgame.ui.main.main.adapter.YourActivityAdapter;
+import tech.sutd.pickupgame.ui.main.main.upcomingact.UpcomingActFragment;
+import tech.sutd.pickupgame.util.StringChecker;
 
 public class YourActViewModel extends BaseViewModel {
 
     private final DatabaseReference reff;
     private final FirebaseAuth fAuth;
+    private final FirebaseFirestore fStore;
+    private final NewActViewModel viewModel;
 
     private final MediatorLiveData<Resource<List<YourActivity>>> source = new MediatorLiveData<>();
 
     @Inject
     public YourActViewModel(SchedulerProvider provider, DataManager dataManager, DatabaseReference reff,
-                            FirebaseAuth fAuth) {
+                            FirebaseAuth fAuth, FirebaseFirestore fStore, NewActViewModel viewModel) {
         super(provider, dataManager);
         this.reff = reff;
         this.fAuth = fAuth;
+        this.fStore = fStore;
+        this.viewModel = viewModel;
     }
 
     @Override
@@ -54,6 +61,14 @@ public class YourActViewModel extends BaseViewModel {
 
     public void insert(YourActivity activity) {
         getCompositeDisposable().add(getDataManager().insertYourActivity(activity)
+                .doOnSubscribe(disposable -> doOnLoading())
+                .subscribeOn(getProvider().io())
+                .doOnError(this::setError)
+                .subscribe());
+    }
+
+    public void deleteById(String id) {
+        getCompositeDisposable().add(getDataManager().deleteYourActivityById(id)
                 .doOnSubscribe(disposable -> doOnLoading())
                 .subscribeOn(getProvider().io())
                 .doOnError(this::setError)
@@ -103,10 +118,39 @@ public class YourActViewModel extends BaseViewModel {
     }
 
 
+    public void deleteFromDb(UpcomingActFragment upcomingFragment, YourActivityAdapter adapter, String id) {
+        reff.child("your_activity")
+                .child(Objects.requireNonNull(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()))
+                .child(id)
+                .removeValue()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        fStore.collection("activities")
+                                .document(id)
+                                .delete()
+                                .addOnCompleteListener(task1 -> {
+                                    if (!task1.isSuccessful()) {
+                                        if (upcomingFragment != null) {
+                                            upcomingFragment.getUpcomingActDeleteListener().onDeleteFailure();
+                                        }
+                                    }
+                                });
+
+                        if (upcomingFragment != null)
+                            upcomingFragment.getUpcomingActDeleteListener().onDeleteSuccess(null, upcomingFragment);
+                        viewModel.deleteById(id);
+                        deleteById(id);
+                        adapter.getDialog().dismiss();
+                    } else {
+                        if (upcomingFragment != null)
+                            upcomingFragment.getUpcomingActDeleteListener().onDeleteFailure();
+                    }
+                });
+    }
 
     public void pull() {
         reff.child("your_activity")
-                .child(Objects.requireNonNull(fAuth.getCurrentUser().getUid()))
+                .child(Objects.requireNonNull(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()))
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -115,7 +159,7 @@ public class YourActViewModel extends BaseViewModel {
                             assert activity != null;
                             insert(new YourActivity.Builder(ds.getKey())
                                     .setSport(activity.getSport())
-                                    .setSportImg(StringComparator.caseImage(activity.getSport()))
+                                    .setSportImg(StringChecker.caseImage(activity.getSport()))
                                     .setClock(activity.getEpoch())
                                     .setClockImg(R.drawable.ic_clock)
                                     .setEndClock(activity.getEpochEnd())
@@ -125,6 +169,7 @@ public class YourActViewModel extends BaseViewModel {
                                     .setOrganizer(activity.getOrganizer())
                                     .setParticipantImg(R.drawable.ic_participants)
                                     .setParticipant(activity.getPart())
+                                    .setCount(activity.getCount())
                                     .setNotesImg(R.drawable.ic_notes)
                                     .setNotes(activity.getDesc())
                                     .build()

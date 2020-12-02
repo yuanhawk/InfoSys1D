@@ -33,6 +33,7 @@ import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.util.DateConverter;
+import tech.sutd.pickupgame.util.StringChecker;
 
 public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActivityAdapter.ViewHolder> {
 
@@ -119,7 +120,7 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
             organizerTv.setText(newActivity.getOrganizer());
 
             MaterialTextView participantTv = dialog.findViewById(R.id.participant);
-            participantTv.setText(newActivity.getParticipant());
+            participantTv.setText(StringChecker.partHolder(newActivity.getCount(), newActivity.getParticipant()));
 
             MaterialTextView notesTv = dialog.findViewById(R.id.notes);
             notesTv.setText(newActivity.getNotes());
@@ -138,29 +139,17 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
                     .into((ImageView) dialog.findViewById(R.id.notes_img));
 
             dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
+                if (newActivity.getChecked() == 1) {
+                    dialog.dismiss();
+                    return;
+                }
 
                 if (mainFragment != null) {
                     viewModel.push(mainFragment, null, this, newActivity.getId(),
-                            new BookingActivity.Builder()
-                                    .setSport(newActivity.getSport())
-                                    .setEpoch(newActivity.getClock())
-                                    .setEpochEnd(newActivity.getEndClock())
-                                    .setLocation(newActivity.getLocation())
-                                    .setParticipant(newActivity.getParticipant())
-                                    .setOrganizer(newActivity.getOrganizer())
-                                    .build()
-                    );
+                            newActivity);
                 } else if (newFragment != null) {
                     viewModel.push(null, newFragment, this, newActivity.getId(),
-                            new BookingActivity.Builder()
-                                    .setSport(newActivity.getSport())
-                                    .setEpoch(newActivity.getClock())
-                                    .setEpochEnd(newActivity.getEndClock())
-                                    .setLocation(newActivity.getLocation())
-                                    .setParticipant(newActivity.getParticipant())
-                                    .setOrganizer(newActivity.getOrganizer())
-                                    .build()
-                    );
+                            newActivity);
                 }
             });
         });

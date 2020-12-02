@@ -50,13 +50,16 @@ public class YourActivity {
     @SerializedName("participant")
     private String participant;
 
+    @SerializedName("count")
+    private String count;
+
     @SerializedName("notes_img")
     private int notesImg;
 
     @SerializedName("notes")
     private String notes;
 
-    public YourActivity(@NonNull String id, int sportImg, String sport, int clockImg, String clock, String endClock, int locationImg, String location, int organizerImg, String organizer, int participantImg, String participant, int notesImg, String notes) {
+    public YourActivity(@NonNull String id, int sportImg, String sport, int clockImg, String clock, String endClock, int locationImg, String location, int organizerImg, String organizer, int participantImg, String participant, String count, int notesImg, String notes) {
         this.id = id;
         this.sportImg = sportImg;
         this.sport = sport;
@@ -69,6 +72,7 @@ public class YourActivity {
         this.organizer = organizer;
         this.participantImg = participantImg;
         this.participant = participant;
+        this.count = count;
         this.notesImg = notesImg;
         this.notes = notes;
     }
@@ -86,6 +90,7 @@ public class YourActivity {
         sportImg = builder.sportImg;
         participantImg = builder.participantImg;
         participant = builder.participant;
+        count = builder.count;
         notesImg = builder.notesImg;
         notes = builder.notes;
     }
@@ -103,6 +108,7 @@ public class YourActivity {
         private int sportImg;
         private int participantImg;
         private String participant;
+        private String count;
         private int notesImg;
         private String notes;
 
@@ -162,6 +168,11 @@ public class YourActivity {
 
         public Builder setParticipant(String participant) {
             this.participant = participant;
+            return this;
+        }
+
+        public Builder setCount(String count) {
+            this.count = count;
             return this;
         }
 
@@ -275,6 +286,14 @@ public class YourActivity {
 
     public void setParticipant(String participant) {
         this.participant = participant;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 
     public int getNotesImg() {

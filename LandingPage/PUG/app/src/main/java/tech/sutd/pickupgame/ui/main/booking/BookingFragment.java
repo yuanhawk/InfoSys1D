@@ -182,6 +182,9 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
                 binding.timeSpinnerStart.setError(getString(R.string.time_error));
                 binding.timeSpinnerEnd.setError(getString(R.string.time_error));
                 return;
+            } else if (Long.parseLong(startTime) < Calendar.getInstance().getTimeInMillis()) {
+                binding.timeSpinnerStart.setError(getString(R.string.start_time_error));
+                return;
             }
 
             bookingActViewModel.push(new BookingActivity.Builder()
@@ -196,6 +199,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
                             preferences.getString(getString(R.string.min_end), "")))
                     .setLocation(preferences.getString(getString(R.string.select_location), ""))
                     .setParticipant(preferences.getString(getString(R.string.select_num_participants), ""))
+                    .setCount(String.valueOf(0))
                     .setNotes(preferences.getString(getString(R.string.additional_notes), ""))
                     .setOrganizer(user.getName())
                     .build()

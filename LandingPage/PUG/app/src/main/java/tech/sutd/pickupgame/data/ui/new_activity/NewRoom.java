@@ -26,6 +26,11 @@ public class NewRoom implements NewRoomHelper {
     }
 
     @Override
+    public Completable deleteNewActivityById(String id) {
+        return database.newDao().deleteNewActivityById(id);
+    }
+
+    @Override
     public Completable deleteNewActivityByClock(String clock) {
         return database.newDao().deleteNewActivityByClock(clock);
     }

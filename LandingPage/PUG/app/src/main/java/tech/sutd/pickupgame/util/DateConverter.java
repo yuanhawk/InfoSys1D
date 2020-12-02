@@ -21,11 +21,15 @@ import tech.sutd.pickupgame.databinding.FragmentBookingBinding;
 public class DateConverter {
 
     public static String clockConverter(String s) {
+        if (s == null)
+            return "";
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, h:mma", Locale.getDefault());
         return sdf.format(new Date(Long.parseLong(s)));
     }
 
     public static String endClockConverter(String s) {
+        if (s == null)
+            return "";
         SimpleDateFormat sdfEnd = new SimpleDateFormat("h:mma", Locale.getDefault());
         return sdfEnd.format(new Date(Long.parseLong(s)));
     }

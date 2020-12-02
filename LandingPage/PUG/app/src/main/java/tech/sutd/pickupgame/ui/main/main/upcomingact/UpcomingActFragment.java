@@ -130,6 +130,7 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
 
         upcomingActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
+                assert pagedListResource.data != null;
                 updateUpcomingView(pagedListResource.data.size());
                 upcomingAdapter.submitList(pagedListResource.data);
             }
@@ -166,6 +167,7 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
     }
 
     private void updateYourView(Resource<List<YourActivity>> listResource) {
+        assert listResource.data != null;
         if (listResource.data.size() > 0) {
             binding.yourRc.setVisibility(View.VISIBLE);
             binding.yourEmpty.setVisibility(View.GONE);
@@ -177,6 +179,7 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
     }
 
     private void updatePastView(Resource<List<PastActivity>> listResource) {
+        assert listResource.data != null;
         if (listResource.data.size() > 0) {
             binding.pastRc.setVisibility(View.VISIBLE);
             binding.pastEmpty.setVisibility(View.GONE);
@@ -197,6 +200,7 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
         binding.yourRc.setAdapter(yourAdapter);
         binding.yourRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.yourRc.setHasFixedSize(true);
+        yourAdapter.setNotification(getContext(), this);
 
         binding.pastRc.setAdapter(pastAdapter);
         binding.pastRc.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -17,6 +17,9 @@ public class NewActivity {
     @SerializedName("id")
     private String id;
 
+    @SerializedName("checked")
+    private int checked;
+
     @SerializedName("sport_img")
     private int sportImg;
 
@@ -44,11 +47,17 @@ public class NewActivity {
     @SerializedName("organizer")
     private String organizer;
 
+    @SerializedName("identifier")
+    private String identifier;
+
     @SerializedName("participant_img")
     private int participantImg;
 
     @SerializedName("participant")
     private String participant;
+
+    @SerializedName("count")
+    private String count;
 
     @SerializedName("notes_img")
     private int notesImg;
@@ -56,8 +65,9 @@ public class NewActivity {
     @SerializedName("notes")
     private String notes;
 
-    public NewActivity(@NonNull String id, int sportImg, String sport, int clockImg, String clock, String endClock, int locationImg, String location, int organizerImg, String organizer, int participantImg, String participant, int notesImg, String notes) {
+    public NewActivity(@NonNull String id, int checked, int sportImg, String sport, int clockImg, String clock, String endClock, int locationImg, String location, int organizerImg, String organizer, String identifier, int participantImg, String participant, String count, int notesImg, String notes) {
         this.id = id;
+        this.checked = checked;
         this.sportImg = sportImg;
         this.sport = sport;
         this.clockImg = clockImg;
@@ -67,14 +77,17 @@ public class NewActivity {
         this.location = location;
         this.organizerImg = organizerImg;
         this.organizer = organizer;
+        this.identifier = identifier;
         this.participantImg = participantImg;
         this.participant = participant;
+        this.count = count;
         this.notesImg = notesImg;
         this.notes = notes;
     }
 
     public NewActivity(Builder builder) {
         id = builder.id;
+        checked = builder.checked;
         sport = builder.sport;
         clockImg = builder.clockImg;
         clock = builder.clock;
@@ -83,15 +96,18 @@ public class NewActivity {
         location = builder.location;
         organizerImg = builder.organizerImg;
         organizer = builder.organizer;
+        identifier = builder.identifier;
         sportImg = builder.sportImg;
         participantImg = builder.participantImg;
         participant = builder.participant;
+        count = builder.count;
         notesImg = builder.notesImg;
         notes = builder.notes;
     }
 
     public static class Builder {
         private String id;
+        private int checked;
         private String sport;
         private int clockImg;
         private String clock;
@@ -100,14 +116,21 @@ public class NewActivity {
         private String location;
         private int organizerImg;
         private String organizer;
+        private String identifier;
         private int sportImg;
         private int participantImg;
         private String participant;
+        private String count;
         private int notesImg;
         private String notes;
 
         public Builder(String id) {
             this.id = id;
+        }
+
+        public Builder setChecked(int checked) {
+            this.checked = checked;
+            return this;
         }
 
         public Builder setSport(String sport) {
@@ -150,6 +173,11 @@ public class NewActivity {
             return this;
         }
 
+        public Builder setIdentifier(String identifier) {
+            this.identifier = identifier;
+            return this;
+        }
+
         public Builder setSportImg(int sportImg) {
             this.sportImg = sportImg;
             return this;
@@ -162,6 +190,11 @@ public class NewActivity {
 
         public Builder setParticipant(String participant) {
             this.participant = participant;
+            return this;
+        }
+
+        public Builder setCount(String count) {
+            this.count = count;
             return this;
         }
 
@@ -187,6 +220,14 @@ public class NewActivity {
 
     public void setId(@NonNull String id) {
         this.id = id;
+    }
+
+    public int getChecked() {
+        return checked;
+    }
+
+    public void setChecked(int checked) {
+        this.checked = checked;
     }
 
     public String getSport() {
@@ -253,6 +294,14 @@ public class NewActivity {
         this.organizer = organizer;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
     public int getSportImg() {
         return sportImg;
     }
@@ -275,6 +324,14 @@ public class NewActivity {
 
     public void setParticipant(String participant) {
         this.participant = participant;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 
     public int getNotesImg() {
