@@ -15,6 +15,7 @@ import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 
 @Module
 public class MainActivityModule {
@@ -27,8 +28,8 @@ public class MainActivityModule {
 
     @MainScope
     @Provides
-    static UpcomingActivityAdapter<UpcomingActivity> provideUpcomingActivityAdapter(RequestManager requestManager) {
-        return new UpcomingActivityAdapter<>(requestManager);
+    static UpcomingActivityAdapter<UpcomingActivity> provideUpcomingActivityAdapter(RequestManager requestManager, UpcomingActViewModel viewModel) {
+        return new UpcomingActivityAdapter<>(requestManager, viewModel);
     }
 
     @MainScope

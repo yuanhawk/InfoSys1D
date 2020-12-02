@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,8 +26,10 @@ import javax.inject.Inject;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.SessionManager;
 import tech.sutd.pickupgame.constant.ClickState;
+import tech.sutd.pickupgame.data.ui.user.AuthResource;
 import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.BaseActivity;
+import tech.sutd.pickupgame.ui.auth.AuthActivity;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.BookingActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
@@ -34,7 +37,7 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class MainActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener,
-        BaseInterface, SuccessListenerTwo {
+        BaseInterface.BookingActListener, BaseInterface.CustomActListener {
 
     private int clickState = ClickState.NONE;
 
@@ -66,22 +69,20 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    public void customAction() {
+        binding.progress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onSignUpSuccess() {
         binding.progress.setVisibility(View.GONE);
         Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
-
-        pull();
     }
 
     @Override
     public void onSignUpFailure() {
         binding.progress.setVisibility(View.GONE);
         Toast.makeText(this, "Activity not saved", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void customAction() {
-        binding.progress.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -108,15 +109,25 @@ public class MainActivity extends BaseActivity
         subscribeObserver();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Fragment fragment = fragmentManager.findFragmentByTag(TAG);
+        if (fragment != null) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+            clickState = ClickState.NONE;
+
+            setBookingFragmentStateBySharedPref(true);
+        }
+    }
+
     private void setBookingFragmentStateBySharedPref(boolean b) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(getString(R.string.activities_organised), b);
         editor.apply();
     }
 
-    @Override
-    public void subscribeObserver() {
-        super.subscribeObserver();
+    private void subscribeObserver() {
         bookingViewModel.observeBooking().observe(this, bookingActivityResource -> {
             switch (bookingActivityResource.status) {
                 case LOADING:
@@ -130,18 +141,17 @@ public class MainActivity extends BaseActivity
                     break;
             }
         });
+
+        sessionManager.observeAuthState().observe(this, firebaseAuthAuthResource -> {
+            if (firebaseAuthAuthResource.status == AuthResource.AuthStatus.NOT_AUTHENTICATED)
+                navLoginScreen();
+        });
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Fragment fragment = fragmentManager.findFragmentByTag(TAG);
-        if (fragment != null) {
-            fragmentManager.beginTransaction().remove(fragment).commit();
-            clickState = ClickState.NONE;
-
-            setBookingFragmentStateBySharedPref(true);
-        }
+    private void navLoginScreen() {
+        Intent intent = new Intent(this, AuthActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void init() {

@@ -11,7 +11,6 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="80dp"
-        android:contentDescription="UserAvatar"
         android:gravity="center"
 
         app:civ_border_color="#FF000000"
@@ -31,14 +30,14 @@
         android:gravity="center"
         android:text="@string/name"
         style="@style/header"
-        android:textSize="36dp"
+        android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image"/>
 
     <LinearLayout
         android:id="@+id/LinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="20dp"
@@ -64,6 +63,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
 
@@ -75,7 +75,7 @@
                     android:paddingTop="10dp"
                     android:text="@string/number_of_activities_joined"
                     android:textColor="@color/colorBlue"
-                    android:textSize="36dp"
+                    android:textSize="36sp"
                     android:fontFamily="@font/ralewayextrabold"/>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -88,8 +88,9 @@
                     android:paddingTop="5dp"
                     android:text="@string/activities_joined"
                     android:textColor="@color/colorBlue"
-                    android:textSize="11dp"
-                    android:fontFamily="@font/ralewaybold"/>
+                    android:textSize="8sp"
+                    android:fontFamily="@font/ralewaybold"
+                    tools:ignore="SmallSp" />
             </LinearLayout>
 
 
@@ -115,6 +116,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
@@ -125,7 +127,7 @@
                     android:paddingTop="10dp"
                     android:text="@string/number_of_activities_organised"
                     android:textColor="@color/colorRed"
-                    android:textSize="36dp"
+                    android:textSize="36sp"
                     android:fontFamily="@font/ralewayextrabold"/>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -138,8 +140,9 @@
                     android:paddingTop="5dp"
                     android:text="@string/activities_organised"
                     android:textColor="@color/colorRed"
-                    android:textSize="11dp"
-                    android:fontFamily="@font/ralewaybold"/>
+                    android:textSize="8sp"
+                    android:fontFamily="@font/ralewaybold"
+                    tools:ignore="SmallSp" />
             </LinearLayout>
 
 
@@ -164,6 +167,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
@@ -174,7 +178,7 @@
                     android:paddingTop="10dp"
                     android:text="@string/number_of_different_activities_tried"
                     android:textColor="@color/colorBlue"
-                    android:textSize="36dp"
+                    android:textSize="36sp"
                     android:fontFamily="@font/ralewayextrabold"/>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -187,8 +191,9 @@
                     android:paddingTop="5dp"
                     android:text="@string/different_activities_tried"
                     android:textColor="@color/colorBlue"
-                    android:textSize="11dp"
-                    android:fontFamily="@font/ralewaybold"/>
+                    android:textSize="8sp"
+                    android:fontFamily="@font/ralewaybold"
+                    tools:ignore="SmallSp" />
             </LinearLayout>
 
 

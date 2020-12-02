@@ -109,6 +109,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Completable deleteUpcomingActivitiesById(String id) {
+        return upcomingRoomHelper.deleteUpcomingActivitiesById(id);
+    }
+
+    @Override
     public Flowable<PagedList<UpcomingActivity>> getAllUpcomingActivitiesByClock() {
         return upcomingRoomHelper.getAllUpcomingActivitiesByClock();
     }

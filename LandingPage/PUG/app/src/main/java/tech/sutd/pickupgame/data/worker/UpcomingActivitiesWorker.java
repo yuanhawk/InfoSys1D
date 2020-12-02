@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import tech.sutd.pickupgame.di.worker.ChildWorkerFactory;
-import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 
 public class UpcomingActivitiesWorker extends Worker {
@@ -33,7 +32,7 @@ public class UpcomingActivitiesWorker extends Worker {
     @Override
     public Result doWork() {
         viewModel.pull();
-        viewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        viewModel.deleteByClock(String.valueOf(Calendar.getInstance().getTimeInMillis()));
         return Result.success();
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,7 +40,7 @@ public class ResetFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentResetBinding.inflate(inflater, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_reset, container, false);
 
         viewModel = new ViewModelProvider(this, providerFactory).get(UserViewModel.class);
 
@@ -53,10 +54,13 @@ public class ResetFragment extends BaseFragment {
         binding.resetBtn.setOnClickListener(v -> {
             String email = String.valueOf(binding.email.getText()).trim();
 
-            viewModel.reset(new UserProfile.Builder()
+            UserProfile user = new UserProfile.Builder()
                     .setEmail(email)
-                    .build()
-            ).observe(getViewLifecycleOwner(), userProfileAuthResource -> {
+                    .build();
+
+            binding.setUser(user);
+
+            viewModel.reset(user).observe(getViewLifecycleOwner(), userProfileAuthResource -> {
                 switch (userProfileAuthResource.status) {
                     case LOADING:
                         binding.progress.setVisibility(View.VISIBLE);

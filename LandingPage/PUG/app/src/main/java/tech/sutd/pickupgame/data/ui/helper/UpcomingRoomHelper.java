@@ -11,6 +11,7 @@ public interface UpcomingRoomHelper {
 
     Completable insertUpcomingActivity(UpcomingActivity upcomingActivity);
     Completable deleteUpcomingActivities(String clock);
+    Completable deleteUpcomingActivitiesById(String id);
     Flowable<PagedList<UpcomingActivity>> getAllUpcomingActivitiesByClock();
     Flowable<PagedList<UpcomingActivity>> getUpcomingActivitiesByClockLimit2();
 

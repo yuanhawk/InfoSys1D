@@ -24,6 +24,9 @@ public interface UpcomingDao {
     @Query("DELETE FROM upcoming_activity WHERE clock < :clock")
     Completable deleteUpcomingActivity(String clock);
 
+    @Query("DELETE FROM upcoming_activity WHERE id = :id")
+    Completable deleteUpcomingActivityById(String id);
+
     @Query("SELECT * FROM upcoming_activity ORDER BY clock ASC")
     DataSource.Factory<Integer, UpcomingActivity> getAllUpcomingActivitiesByClock();
 

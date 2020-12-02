@@ -27,27 +27,6 @@ import tech.sutd.pickupgame.ui.auth.AuthActivity;
 
 public abstract class BaseActivity extends DaggerAppCompatActivity {
 
-    @Inject SessionManager sessionManager;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        subscribeObserver();
-    }
-
-    public void subscribeObserver() {
-        sessionManager.observeAuthState().observe(this, firebaseAuthAuthResource -> {
-            if (firebaseAuthAuthResource.status == AuthResource.AuthStatus.NOT_AUTHENTICATED)
-                navLoginScreen();
-        });
-    }
-
-    private void navLoginScreen() {
-        Intent intent = new Intent(this, AuthActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     public void pull() {
         buildOneTimeWorkRequest(UpcomingActivitiesWorker.class, NewActivitiesWorker.class,
                 YourActivitiesWorker.class, PastActivitiesWorker.class);

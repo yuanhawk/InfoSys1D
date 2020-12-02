@@ -1,7 +1,19 @@
 package tech.sutd.pickupgame.ui.main;
 
-public interface BaseInterface {
+public class BaseInterface {
 
-    void customAction();
+    public interface CustomActListener {
+        void customAction();
+    }
+
+    public interface BookingActListener {
+        void onSignUpSuccess();
+        void onSignUpFailure();
+    }
+
+    public interface UpcomingActDeleteListener {
+        void onDeleteSuccess();
+        void onDeleteFailure();
+    }
 
 }

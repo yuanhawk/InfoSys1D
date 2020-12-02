@@ -164,16 +164,16 @@ public class NewActViewModel extends BaseViewModel {
                     if (task.isSuccessful()) {
 
                         if (mainFragment != null)
-                            mainFragment.getSuccessListenerTwo().onSignUpSuccess();
+                            mainFragment.getBookingActListener().onSignUpSuccess();
                         else if (newActFragment != null)
-                            newActFragment.getSuccessListenerTwo().onSignUpSuccess();
+                            newActFragment.getBookingActListener().onSignUpSuccess();
 
                     } else {
 
                         if (mainFragment != null)
-                            mainFragment.getSuccessListenerTwo().onSignUpFailure();
+                            mainFragment.getBookingActListener().onSignUpFailure();
                         else if (newActFragment != null)
-                            newActFragment.getSuccessListenerTwo().onSignUpFailure();
+                            newActFragment.getBookingActListener().onSignUpFailure();
 
                     }
                     adapter.getDialog().dismiss();

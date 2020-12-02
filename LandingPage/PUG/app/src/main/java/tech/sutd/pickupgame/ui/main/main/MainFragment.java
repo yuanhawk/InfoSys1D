@@ -24,7 +24,6 @@ import tech.sutd.pickupgame.databinding.FragmentMainBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
-import tech.sutd.pickupgame.ui.main.SuccessListenerTwo;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
@@ -38,8 +37,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private UpcomingActViewModel upcomingActViewModel;
     private NewActViewModel newActViewModel;
 
-    private BaseInterface listener;
-    private SuccessListenerTwo successListenerTwo;
+    private BaseInterface.BookingActListener bookingActListener;
 
     private Observer<Resource<PagedList<UpcomingActivity>>> upcomingActObserver;
     private Observer<Resource<PagedList<NewActivity>>> newActObserver;
@@ -50,12 +48,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     @Inject Handler handler;
 
-    public BaseInterface getListener() {
-        return listener;
-    }
-
-    public SuccessListenerTwo getSuccessListenerTwo() {
-        return successListenerTwo;
+    public BaseInterface.BookingActListener getBookingActListener() {
+        return bookingActListener;
     }
 
     @Nullable
@@ -80,46 +74,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         upcomingActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
                 updateUpcomingView(pagedListResource);
-
-                pagedListResource.data.addWeakCallback(null, new PagedList.Callback() {
-                    @Override
-                    public void onChanged(int position, int count) {
-                        updateUpcomingView(pagedListResource);
-                    }
-
-                    @Override
-                    public void onInserted(int position, int count) {
-
-                    }
-
-                    @Override
-                    public void onRemoved(int position, int count) {
-
-                    }
-                });
             }
         };
 
         newActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
                 updateNewView(pagedListResource);
-
-                pagedListResource.data.addWeakCallback(null, new PagedList.Callback() {
-                    @Override
-                    public void onChanged(int position, int count) {
-                        updateNewView(pagedListResource);
-                    }
-
-                    @Override
-                    public void onInserted(int position, int count) {
-
-                    }
-
-                    @Override
-                    public void onRemoved(int position, int count) {
-
-                    }
-                });
             }
         };
 
@@ -155,7 +115,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         binding.upcomingRc.setAdapter(adapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
-        adapter.setNotifications(1);
+        adapter.setNotifications(getContext(), this, null, 1);
 
 
         binding.newRc.setAdapter(newAdapter);
@@ -194,8 +154,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (BaseInterface) context;
-            successListenerTwo = (SuccessListenerTwo) context;
+            bookingActListener = (BaseInterface.BookingActListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

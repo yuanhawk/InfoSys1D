@@ -119,23 +119,6 @@ public class UpcomingActFragment extends BaseFragment {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
                 updateUpcomingView(pagedListResource.data.size());
                 upcomingAdapter.submitList(pagedListResource.data);
-
-                pagedListResource.data.addWeakCallback(null, new PagedList.Callback() {
-                    @Override
-                    public void onChanged(int position, int count) {
-                        updateUpcomingView(pagedListResource.data.size());
-                    }
-
-                    @Override
-                    public void onInserted(int position, int count) {
-
-                    }
-
-                    @Override
-                    public void onRemoved(int position, int count) {
-
-                    }
-                });
             }
         };
 
@@ -143,26 +126,6 @@ public class UpcomingActFragment extends BaseFragment {
             if (listResource != null) {
                 if (listResource.status == Resource.Status.SUCCESS) {
                     updateYourView(listResource);
-
-                    yourAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                        @Override
-                        public void onChanged() {
-                            super.onChanged();
-                            updateYourView(listResource);
-                        }
-
-                        @Override
-                        public void onItemRangeInserted(int positionStart, int itemCount) {
-                            super.onItemRangeInserted(positionStart, itemCount);
-                            updateYourView(listResource);
-                        }
-
-                        @Override
-                        public void onItemRangeRemoved(int positionStart, int itemCount) {
-                            super.onItemRangeRemoved(positionStart, itemCount);
-                            updateYourView(listResource);
-                        }
-                    });
                 }
             }
         };
@@ -171,26 +134,6 @@ public class UpcomingActFragment extends BaseFragment {
             if (listResource.status == Resource.Status.SUCCESS) {
                 updatePastView(listResource);
                 pastAdapter.setSource(listResource.data);
-
-                pastAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                    @Override
-                    public void onChanged() {
-                        super.onChanged();
-                        updatePastView(listResource);
-                    }
-
-                    @Override
-                    public void onItemRangeInserted(int positionStart, int itemCount) {
-                        super.onItemRangeInserted(positionStart, itemCount);
-                        updatePastView(listResource);
-                    }
-
-                    @Override
-                    public void onItemRangeRemoved(int positionStart, int itemCount) {
-                        super.onItemRangeRemoved(positionStart, itemCount);
-                        updatePastView(listResource);
-                    }
-                });
             }
         };
 
@@ -236,7 +179,7 @@ public class UpcomingActFragment extends BaseFragment {
         binding.upcomingRc.setAdapter(upcomingAdapter);
         binding.upcomingRc.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.upcomingRc.setHasFixedSize(true);
-        upcomingAdapter.setNotifications(9999);
+        upcomingAdapter.setNotifications(getContext(), null, this, 9999);
 
         binding.yourRc.setAdapter(yourAdapter);
         binding.yourRc.setLayoutManager(new LinearLayoutManager(getActivity()));

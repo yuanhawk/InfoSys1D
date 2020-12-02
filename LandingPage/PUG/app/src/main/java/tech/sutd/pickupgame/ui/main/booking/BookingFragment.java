@@ -10,7 +10,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
@@ -41,12 +40,11 @@ import tech.sutd.pickupgame.models.User;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
 import tech.sutd.pickupgame.ui.main.BaseInterface;
-import tech.sutd.pickupgame.ui.main.SuccessListener;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.BookingActViewModel;
 import tech.sutd.pickupgame.util.DateConverter;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class BookingFragment extends BaseFragment implements BaseInterface {
+public class BookingFragment extends BaseFragment implements BaseInterface.CustomActListener {
 
     private int hour, min, hourEnd, minEnd, numberPicked, year, month, day;
     private String date;
@@ -60,7 +58,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
 
     private FragmentBookingBinding binding;
 
-    private BaseInterface listener;
+    private BaseInterface.CustomActListener listener;
 
     private Dialog dialog;
 
@@ -448,7 +446,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (BaseInterface) context;
+            listener = (BaseInterface.CustomActListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

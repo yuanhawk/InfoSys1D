@@ -140,7 +140,6 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
             dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
 
                 if (mainFragment != null) {
-                    mainFragment.getListener().customAction();
                     viewModel.push(mainFragment, null, this, newActivity.getId(),
                             new BookingActivity.Builder()
                                     .setSport(newActivity.getSport())

@@ -30,7 +30,7 @@ import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.databinding.FragmentNewActBinding;
 import tech.sutd.pickupgame.models.ui.NewActivity;
-import tech.sutd.pickupgame.ui.main.SuccessListenerTwo;
+import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.ui.main.main.adapter.FilterAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
@@ -45,7 +45,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     private Observer<Resource<PagedList<NewActivity>>> observer;
 
-    private SuccessListenerTwo successListenerTwo;
+    private BaseInterface.BookingActListener bookingActListener;
 
     @Inject NewActivityAdapter<NewActivity> newAdapter;
     @Inject ViewModelProviderFactory providerFactory;
@@ -54,8 +54,8 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     @Inject Constraints constraints;
 
-    public SuccessListenerTwo getSuccessListenerTwo() {
-        return successListenerTwo;
+    public BaseInterface.BookingActListener getBookingActListener() {
+        return bookingActListener;
     }
 
     @Nullable
@@ -188,7 +188,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            successListenerTwo = (SuccessListenerTwo) context;
+            bookingActListener = (BaseInterface.BookingActListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

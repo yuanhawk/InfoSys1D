@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.paging.PagedList;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +29,11 @@ import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.ui.BaseViewModel;
+import tech.sutd.pickupgame.ui.main.main.MainFragment;
+import tech.sutd.pickupgame.ui.main.main.adapter.NewActivityAdapter;
+import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
+import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
+import tech.sutd.pickupgame.ui.main.main.upcomingact.UpcomingActFragment;
 import tech.sutd.pickupgame.util.StringComparator;
 
 public class UpcomingActViewModel extends BaseViewModel {
@@ -60,8 +67,16 @@ public class UpcomingActViewModel extends BaseViewModel {
                 .subscribe());
     }
 
-    public void delete(String clock) {
+    public void deleteByClock(String clock) {
         getCompositeDisposable().add(getDataManager().deleteUpcomingActivities(clock)
+                .doOnSubscribe(disposable -> doOnLoading())
+                .subscribeOn(getProvider().io())
+                .doOnError(this::setError)
+                .subscribe());
+    }
+
+    public void deleteById(String id) {
+        getCompositeDisposable().add(getDataManager().deleteUpcomingActivities(id)
                 .doOnSubscribe(disposable -> doOnLoading())
                 .subscribeOn(getProvider().io())
                 .doOnError(this::setError)
@@ -101,6 +116,15 @@ public class UpcomingActViewModel extends BaseViewModel {
             source.removeSource(upcomingSource);
         });
         return source;
+    }
+
+    public void deleteFromDb(MainFragment mainFragment, UpcomingActFragment upcomingActFragment, UpcomingActivityAdapter adapter,
+                             String id) {
+        reff.child("upcoming_activity")
+                .child(Objects.requireNonNull(fAuth.getCurrentUser().getUid()))
+                .child(id)
+                .removeValue()
+                .addOnCompleteListener(task -> deleteById(id));
     }
 
     public void pull() {

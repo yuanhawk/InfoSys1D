@@ -31,6 +31,11 @@ public class UpcomingRoom implements UpcomingRoomHelper {
     }
 
     @Override
+    public Completable deleteUpcomingActivitiesById(String id) {
+        return database.upcomingDao().deleteUpcomingActivityById(id);
+    }
+
+    @Override
     public Flowable<PagedList<UpcomingActivity>> getAllUpcomingActivitiesByClock() {
         return new RxPagedListBuilder<>(
                 database.upcomingDao().getAllUpcomingActivitiesByClock(), 20
