@@ -13,21 +13,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Function;
 import tech.sutd.pickupgame.BuildConfig;
 import tech.sutd.pickupgame.R;
 import tech.sutd.pickupgame.data.Resource;
 import tech.sutd.pickupgame.data.DataManager;
 import tech.sutd.pickupgame.data.SchedulerProvider;
 import tech.sutd.pickupgame.models.ui.BookingActivity;
-import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
 import tech.sutd.pickupgame.ui.BaseViewModel;
 import tech.sutd.pickupgame.util.StringComparator;
@@ -73,7 +69,7 @@ public class YourActViewModel extends BaseViewModel {
 
         final LiveData<Resource<List<YourActivity>>> activitySource = LiveDataReactiveStreams.fromPublisher(
 
-                getDataManager().getAllYourActivities()
+                getDataManager().getAllYourActivitiesLimit10()
 
                 .onBackpressureBuffer()
                 .map(Resource::success)
@@ -86,6 +82,27 @@ public class YourActViewModel extends BaseViewModel {
         });
         return source;
     }
+
+    public LiveData<Resource<List<YourActivity>>> getAllYourActivitiesByClock() {
+        source.setValue(Resource.loading(null));
+
+        final LiveData<Resource<List<YourActivity>>> activitySource = LiveDataReactiveStreams.fromPublisher(
+
+                getDataManager().getAllYourActivities()
+
+                        .onBackpressureBuffer()
+                        .map(Resource::success)
+                        .subscribeOn(getProvider().io())
+        );
+
+        source.addSource(activitySource, listResource -> {
+            source.setValue(listResource);
+            source.removeSource(activitySource);
+        });
+        return source;
+    }
+
+
 
     public void pull() {
         reff.child("your_activity")

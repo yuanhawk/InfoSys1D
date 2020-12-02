@@ -1,5 +1,6 @@
 package tech.sutd.pickupgame.ui.main.main.upcomingact;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import tech.sutd.pickupgame.databinding.FragmentUpcomingActBinding;
 import tech.sutd.pickupgame.models.ui.PastActivity;
 import tech.sutd.pickupgame.models.ui.UpcomingActivity;
 import tech.sutd.pickupgame.models.ui.YourActivity;
+import tech.sutd.pickupgame.ui.main.BaseInterface;
 import tech.sutd.pickupgame.ui.main.main.adapter.PastActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.UpcomingActivityAdapter;
 import tech.sutd.pickupgame.ui.main.main.adapter.YourActivityAdapter;
@@ -39,7 +41,7 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.YourActViewModel;
 import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class UpcomingActFragment extends BaseFragment {
+public class UpcomingActFragment extends BaseFragment implements BaseInterface.RefreshListener {
 
     private static final String TAG = "UpcomingActFragment";
     
@@ -49,6 +51,8 @@ public class UpcomingActFragment extends BaseFragment {
     private UpcomingActViewModel upcomingActViewModel;
     private YourActViewModel yourActViewModel;
     private PastActViewModel pastActViewModel;
+
+    private BaseInterface.UpcomingActDeleteListener upcomingActDeleteListener;
 
     private Observer<Resource<PagedList<UpcomingActivity>>> upcomingActObserver;
     private Observer<Resource<List<YourActivity>>> yourActObserver;
@@ -61,6 +65,25 @@ public class UpcomingActFragment extends BaseFragment {
 
     @Inject Constraints constraints;
     @Inject Handler handler;
+
+    public BaseInterface.UpcomingActDeleteListener getUpcomingActDeleteListener() {
+        return upcomingActDeleteListener;
+    }
+
+    @Override
+    public void refreshObserver() {
+        if (upcomingActViewModel.getAllUpcomingActivitiesByClock().hasActiveObservers())
+            upcomingActViewModel.getAllUpcomingActivitiesByClock().removeObserver(upcomingActObserver);
+        upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActObserver);
+
+        if (yourActViewModel.getAllYourActivitiesByClockLimit10().hasActiveObservers())
+            yourActViewModel.getAllYourActivitiesByClockLimit10().removeObserver(yourActObserver);
+        yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), yourActObserver);
+
+        if (pastActViewModel.getPastActivities().hasActiveObservers())
+            pastActViewModel.getPastActivities().removeObserver(pastActObserver);
+        pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActObserver);
+    }
 
     @Nullable
     @Override
@@ -89,17 +112,7 @@ public class UpcomingActFragment extends BaseFragment {
         binding.swipeRefresh.setOnRefreshListener(() -> {
             pullUpcomingAct();
 
-            if (upcomingActViewModel.getAllUpcomingActivitiesByClock().hasActiveObservers())
-                upcomingActViewModel.getAllUpcomingActivitiesByClock().removeObserver(upcomingActObserver);
-            upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActObserver);
-
-            if (yourActViewModel.getAllYourActivitiesByClockLimit10().hasActiveObservers())
-                yourActViewModel.getAllYourActivitiesByClockLimit10().removeObserver(yourActObserver);
-            yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), yourActObserver);
-
-            if (pastActViewModel.getPastActivities().hasActiveObservers())
-                pastActViewModel.getPastActivities().removeObserver(pastActObserver);
-            pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActObserver);
+            refreshObserver();
 
             binding.swipeRefresh.setRefreshing(false);
         });
@@ -192,5 +205,15 @@ public class UpcomingActFragment extends BaseFragment {
         new CustomSnapHelper().attachToRecyclerView(binding.upcomingRc);
         new CustomSnapHelper().attachToRecyclerView(binding.yourRc);
         new CustomSnapHelper().attachToRecyclerView(binding.pastRc);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            upcomingActDeleteListener = (BaseInterface.UpcomingActDeleteListener) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 }

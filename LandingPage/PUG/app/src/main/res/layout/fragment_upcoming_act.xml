@@ -75,7 +75,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                card_view:cardBackgroundColor="@android:color/darker_gray"
+                android:layout_marginBottom="10dp"
+                card_view:cardBackgroundColor="@color/colorBlueAccent"
                 card_view:cardCornerRadius="20dp"
                 card_view:cardElevation="0dp">
                 <com.google.android.material.textview.MaterialTextView
@@ -87,7 +88,7 @@
                     android:layout_marginEnd="25dp"
                     android:layout_gravity="center"
                     android:fontFamily="@font/ralewaysemibold"
-                    android:textColor="@color/colorRed"
+                    android:textColor="@color/colorBlue"
                     tools:targetApi="o" />
             </androidx.cardview.widget.CardView>
 
@@ -137,7 +138,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                card_view:cardBackgroundColor="@android:color/darker_gray"
+                android:layout_marginBottom="10dp"
+                card_view:cardBackgroundColor="@color/colorRedAccent"
                 card_view:cardCornerRadius="20dp"
                 card_view:cardElevation="0dp">
                 <com.google.android.material.textview.MaterialTextView
@@ -185,7 +187,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="60dp"
-                card_view:cardBackgroundColor="@android:color/darker_gray"
+                card_view:cardBackgroundColor="@color/colorBlueAccent"
                 card_view:cardCornerRadius="20dp"
                 card_view:cardElevation="0dp">
                 <com.google.android.material.textview.MaterialTextView
@@ -197,7 +199,7 @@
                     android:layout_marginEnd="25dp"
                     android:layout_gravity="center"
                     android:fontFamily="@font/ralewaysemibold"
-                    android:textColor="@color/colorRed"
+                    android:textColor="@color/colorBlue"
                     tools:targetApi="o" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>

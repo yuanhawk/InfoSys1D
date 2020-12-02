@@ -1,9 +1,11 @@
 package tech.sutd.pickupgame.ui.auth.viewmodel;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +32,7 @@ public class UserViewModel extends BaseViewModel {
     private final DatabaseReference reff;
 
     private final MediatorLiveData<AuthResource<UserProfile>> userProfileSource = new MediatorLiveData<>();
+    private final MediatorLiveData<AuthResource<FirebaseAuth>> fAuthProfileSource = new MediatorLiveData<>();
 
     @Override
     public void setError(Throwable e) {}
@@ -77,15 +80,36 @@ public class UserViewModel extends BaseViewModel {
         return this.userProfileSource;
     }
 
+    public LiveData<AuthResource<FirebaseAuth>> updateUserDetails(UserProfile user) {
+        fAuthProfileSource.setValue(AuthResource.loading(null));
+
+        final LiveData<AuthResource<FirebaseAuth>> userProfileSource = LiveDataReactiveStreams.fromPublisher(
+                sessionManager.updateUserDetails(user)
+                        .toFlowable()
+                        .onErrorReturn(throwable -> AuthResource.error("Could not update"))
+                        .subscribeOn(getProvider().io())
+                        .observeOn(getProvider().ui())
+        );
+
+        fAuthProfileSource.addSource(userProfileSource, firebaseAuthAuthResource -> {
+            fAuthProfileSource.setValue(firebaseAuthAuthResource);
+            fAuthProfileSource.removeSource(userProfileSource);
+        });
+
+        return fAuthProfileSource;
+    }
+
     public void login(UserProfile user) {
         sessionManager.login(user);
     }
 
     public void insertUserDb(FirebaseAuth data) {
         deleteAllUsers();
-        if (data.getCurrentUser().getUid() == null) {
+        if (data == null || data.getCurrentUser() == null) {
             return;
         }
+
+        String imgSrc = String.valueOf(data.getCurrentUser().getPhotoUrl());
 
         reff.child("users").child(Objects.requireNonNull(data.getCurrentUser().getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -97,6 +121,7 @@ public class UserViewModel extends BaseViewModel {
                             .setEmail(profile.getEmail())
                             .setPasswd(profile.getPasswd())
                             .setAge(profile.getAge())
+                            .setImg(imgSrc)
                             .build()
                     );
                 }

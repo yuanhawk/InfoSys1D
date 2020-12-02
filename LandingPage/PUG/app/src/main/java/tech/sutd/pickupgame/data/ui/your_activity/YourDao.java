@@ -22,5 +22,8 @@ public interface YourDao {
     Completable deleteAllYourActivities();
 
     @Query("SELECT * FROM your_activity ORDER BY clock DESC LIMIT 10")
+    Flowable<List<YourActivity>> getAllYourActivitiesLimit10();
+
+    @Query("SELECT * FROM your_activity ORDER BY clock")
     Flowable<List<YourActivity>> getAllYourActivities();
 }

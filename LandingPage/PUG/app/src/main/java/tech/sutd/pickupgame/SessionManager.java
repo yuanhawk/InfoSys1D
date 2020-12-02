@@ -1,10 +1,12 @@
 package tech.sutd.pickupgame;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveDataReactiveStreams;
 import androidx.lifecycle.MediatorLiveData;
@@ -117,6 +119,21 @@ public class SessionManager {
                         emitter.onSuccess(AuthResource.error(task.getException().getMessage()));
                 })
         );
+    }
+
+    public Single<AuthResource<FirebaseAuth>> updateUserDetails(UserProfile user) {
+        return Single.create(emitter -> fAuth.getCurrentUser()
+                .updateProfile(new UserProfileChangeRequest.Builder()
+                .setDisplayName(user.getName())
+                .setPhotoUri(Uri.parse(user.getImg()))
+                .build())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        reff.child("users").child(Objects.requireNonNull(fAuth.getCurrentUser().getUid())).setValue(user);
+                        emitter.onSuccess(AuthResource.update(fAuth));
+                    } else
+                        emitter.onSuccess(AuthResource.error(task.getException().getMessage()));
+                }));
     }
 
     public LiveData<AuthResource<FirebaseAuth>> observeAuthState() {

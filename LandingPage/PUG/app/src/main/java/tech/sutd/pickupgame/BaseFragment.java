@@ -30,7 +30,7 @@ import tech.sutd.pickupgame.data.worker.PastActivitiesWorker;
 import tech.sutd.pickupgame.data.worker.UpcomingActivitiesWorker;
 import tech.sutd.pickupgame.data.worker.YourActivitiesWorker;
 
-public class BaseFragment extends DaggerFragment {
+public abstract class BaseFragment extends DaggerFragment {
 
     private NavController navController;
 

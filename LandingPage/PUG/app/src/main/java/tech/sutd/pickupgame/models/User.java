@@ -8,9 +8,10 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 
-@Entity(primaryKeys = {"id"}, tableName = "users")
+@Entity(tableName = "users")
 public class User {
 
+    @PrimaryKey
     @NonNull
     @SerializedName("id")
     private String id;
@@ -27,12 +28,16 @@ public class User {
     @SerializedName("passwd")
     private String passwd;
 
-    public User(@NonNull String id, String name, String age, String email, String passwd) {
+    @SerializedName("img")
+    private String img;
+
+    public User(@NonNull String id, String name, String age, String email, String passwd, String img) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
         this.passwd = passwd;
+        this.img = img;
     }
 
     public User(final Builder builder) {
@@ -41,10 +46,11 @@ public class User {
         age = builder.age;
         email = builder.email;
         passwd = builder.passwd;
+        img = builder.img;
     }
 
     public static User defaultUser() {
-        return new User("0", "-1", "-1", "-1", "-1");
+        return new User("0", "-1", "-1", "-1", "-1", "-1");
     }
 
     public static class Builder {
@@ -53,6 +59,7 @@ public class User {
         private String age;
         private String email;
         private String passwd;
+        private String img;
 
         public Builder(String id) {
             this.id = id;
@@ -75,6 +82,11 @@ public class User {
 
         public Builder setPasswd(final String passwd) {
             this.passwd = passwd;
+            return this;
+        }
+
+        public Builder setImg(String img) {
+            this.img = img;
             return this;
         }
 
@@ -123,5 +135,13 @@ public class User {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

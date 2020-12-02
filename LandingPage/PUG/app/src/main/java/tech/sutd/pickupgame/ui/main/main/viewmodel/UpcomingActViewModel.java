@@ -124,7 +124,21 @@ public class UpcomingActViewModel extends BaseViewModel {
                 .child(Objects.requireNonNull(fAuth.getCurrentUser().getUid()))
                 .child(id)
                 .removeValue()
-                .addOnCompleteListener(task -> deleteById(id));
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (mainFragment != null)
+                            mainFragment.getUpcomingActDeleteListener().onDeleteSuccess(mainFragment, null);
+                        else if (upcomingActFragment != null)
+                            upcomingActFragment.getUpcomingActDeleteListener().onDeleteSuccess(null, upcomingActFragment);
+                        deleteById(id);
+                        adapter.getDialog().dismiss();
+                    } else {
+                        if (mainFragment != null)
+                            mainFragment.getUpcomingActDeleteListener().onDeleteFailure();
+                        else if (upcomingActFragment != null)
+                            upcomingActFragment.getUpcomingActDeleteListener().onDeleteFailure();
+                    }
+                });
     }
 
     public void pull() {

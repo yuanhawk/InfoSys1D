@@ -1,15 +1,20 @@
 package tech.sutd.pickupgame.ui.main;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -18,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -30,14 +36,21 @@ import tech.sutd.pickupgame.data.ui.user.AuthResource;
 import tech.sutd.pickupgame.databinding.ActivityMainBinding;
 import tech.sutd.pickupgame.BaseActivity;
 import tech.sutd.pickupgame.ui.auth.AuthActivity;
+import tech.sutd.pickupgame.ui.auth.viewmodel.UserViewModel;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
+import tech.sutd.pickupgame.ui.main.main.MainFragment;
+import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
+import tech.sutd.pickupgame.ui.main.main.upcomingact.UpcomingActFragment;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.BookingActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class MainActivity extends BaseActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener,
-        BaseInterface.BookingActListener, BaseInterface.CustomActListener {
+        BaseInterface.BookingActListener, BaseInterface.CustomActListener,
+        BaseInterface.UpcomingActDeleteListener, BaseInterface.RefreshListener {
+
+    private static final int READ_PERMISSION = 1;
 
     private int clickState = ClickState.NONE;
 
@@ -47,12 +60,15 @@ public class MainActivity extends BaseActivity
     private NavController navController;
     private Menu menu;
 
+    private Observer<AuthResource<FirebaseAuth>> fireAuthObserver;
+
     @Inject BookingActViewModel bookingViewModel;
 
     @Inject FragmentManager fragmentManager;
     @Inject SessionManager sessionManager;
     @Inject Handler handler;
     @Inject SharedPreferences preferences;
+    @Inject UserViewModel userViewModel;
     @Inject NewActViewModel newViewModel;
     @Inject ViewModelProviderFactory providerFactory;
 
@@ -74,21 +90,55 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onSignUpSuccess() {
-        binding.progress.setVisibility(View.GONE);
+    public void onSignUpSuccess(MainFragment mainFragment, NewActFragment newFragment) {
         Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
+
+        pull();
+
+        if (mainFragment != null)
+            mainFragment.refreshObserver();
+        else if (newFragment != null)
+            newFragment.refreshObserver();
     }
 
     @Override
     public void onSignUpFailure() {
-        binding.progress.setVisibility(View.GONE);
         Toast.makeText(this, "Activity not saved", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeleteSuccess(MainFragment mainFragment, UpcomingActFragment upcomingFragment) {
+        Toast.makeText(this, "Activity deleted successfully", Toast.LENGTH_SHORT).show();
+
+        pull();
+
+        if (mainFragment != null)
+            mainFragment.refreshObserver();
+        else if (upcomingFragment != null)
+            upcomingFragment.refreshObserver();
+    }
+
+    @Override
+    public void onDeleteFailure() {
+        Toast.makeText(this, "Activity not deleted", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void refreshObserver() {
+        if (sessionManager.observeAuthState().hasActiveObservers())
+            sessionManager.observeAuthState().removeObserver(fireAuthObserver);
+        sessionManager.observeAuthState().observe(this, fireAuthObserver);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION);
 
         pull();
 
@@ -142,10 +192,17 @@ public class MainActivity extends BaseActivity
             }
         });
 
-        sessionManager.observeAuthState().observe(this, firebaseAuthAuthResource -> {
-            if (firebaseAuthAuthResource.status == AuthResource.AuthStatus.NOT_AUTHENTICATED)
-                navLoginScreen();
-        });
+        fireAuthObserver = firebaseAuthAuthResource -> {
+            switch (firebaseAuthAuthResource.status) {
+                case UPDATED:
+                    userViewModel.insertUserDb(firebaseAuthAuthResource.data);
+                    break;
+                case NOT_AUTHENTICATED:
+                    navLoginScreen();
+                    break;
+            }
+        };
+        sessionManager.observeAuthState().observe(this, fireAuthObserver);
     }
 
     private void navLoginScreen() {

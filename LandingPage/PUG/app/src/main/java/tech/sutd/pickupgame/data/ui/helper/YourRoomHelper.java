@@ -13,6 +13,7 @@ public interface YourRoomHelper {
 
     Completable deleteAllYourActivities();
 
-    Flowable<List<YourActivity>> getAllYourActivities();
+    Flowable<List<YourActivity>> getAllYourActivitiesLimit10();
 
+    Flowable<List<YourActivity>> getAllYourActivities();
 }

@@ -164,9 +164,9 @@ public class NewActViewModel extends BaseViewModel {
                     if (task.isSuccessful()) {
 
                         if (mainFragment != null)
-                            mainFragment.getBookingActListener().onSignUpSuccess();
+                            mainFragment.getBookingActListener().onSignUpSuccess(mainFragment, null);
                         else if (newActFragment != null)
-                            newActFragment.getBookingActListener().onSignUpSuccess();
+                            newActFragment.getBookingActListener().onSignUpSuccess(null, newActFragment);
 
                     } else {
 

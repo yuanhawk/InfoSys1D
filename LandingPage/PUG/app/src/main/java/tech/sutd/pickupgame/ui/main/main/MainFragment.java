@@ -30,7 +30,7 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class MainFragment extends BaseFragment implements View.OnClickListener {
+public class MainFragment extends BaseFragment implements View.OnClickListener, BaseInterface.RefreshListener {
 
     private FragmentMainBinding binding;
 
@@ -38,6 +38,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private NewActViewModel newActViewModel;
 
     private BaseInterface.BookingActListener bookingActListener;
+    private BaseInterface.UpcomingActDeleteListener upcomingActDeleteListener;
 
     private Observer<Resource<PagedList<UpcomingActivity>>> upcomingActObserver;
     private Observer<Resource<PagedList<NewActivity>>> newActObserver;
@@ -50,6 +51,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     public BaseInterface.BookingActListener getBookingActListener() {
         return bookingActListener;
+    }
+
+    public BaseInterface.UpcomingActDeleteListener getUpcomingActDeleteListener() {
+        return upcomingActDeleteListener;
+    }
+
+    @Override
+    public void refreshObserver() {
+        if (upcomingActViewModel.getUpcomingActivitiesByClock2().hasActiveObservers())
+            upcomingActViewModel.getUpcomingActivitiesByClock2().removeObserver(upcomingActObserver);
+        upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), upcomingActObserver);
+
+        if (newActViewModel.getNewActivitiesByClock2().hasActiveObservers())
+            newActViewModel.getNewActivitiesByClock2().removeObserver(newActObserver);
+        newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), newActObserver);
     }
 
     @Nullable
@@ -129,13 +145,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         binding.swipeRefresh.setOnRefreshListener(() -> {
             pullMainAct();
 
-            if (upcomingActViewModel.getUpcomingActivitiesByClock2().hasActiveObservers())
-                upcomingActViewModel.getUpcomingActivitiesByClock2().removeObserver(upcomingActObserver);
-            upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), upcomingActObserver);
-
-            if (newActViewModel.getNewActivitiesByClock2().hasActiveObservers())
-                newActViewModel.getNewActivitiesByClock2().removeObserver(newActObserver);
-            newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), newActObserver);
+            refreshObserver();
 
             binding.swipeRefresh.setRefreshing(false);
         });
@@ -155,6 +165,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         super.onAttach(context);
         try {
             bookingActListener = (BaseInterface.BookingActListener) context;
+            upcomingActDeleteListener = (BaseInterface.UpcomingActDeleteListener) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

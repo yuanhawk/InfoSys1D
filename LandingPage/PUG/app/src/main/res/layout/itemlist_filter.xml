@@ -11,8 +11,9 @@
         android:layout_width="30dp"
         android:layout_height="39dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/filter_text"
@@ -20,6 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="23dp"
-        android:fontFamily="@font/ralewaymedium" />
+        android:fontFamily="@font/ralewaymedium"
+        android:textColor="@color/colorBlue"
+        android:textSize="18sp"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

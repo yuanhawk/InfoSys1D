@@ -18,11 +18,15 @@ public class UserProfile {
     @SerializedName("passwd")
     private String passwd;
 
-    public UserProfile(String name, String age, String email, String passwd) {
+    @SerializedName("img")
+    private String img;
+
+    public UserProfile(String name, String age, String email, String passwd, String img) {
         this.name = name;
         this.age = age;
         this.email = email;
         this.passwd = passwd;
+        this.img = img;
     }
 
     public UserProfile(final Builder builder) {
@@ -30,6 +34,7 @@ public class UserProfile {
         age = builder.age;
         email = builder.email;
         passwd = builder.passwd;
+        img = builder.img;
     }
 
     public static class Builder {
@@ -37,6 +42,7 @@ public class UserProfile {
         private String age;
         private String email;
         private String passwd;
+        private String img;
 
         public Builder setName(final String name) {
             this.name = name;
@@ -55,6 +61,11 @@ public class UserProfile {
 
         public Builder setPasswd(final String passwd) {
             this.passwd = passwd;
+            return this;
+        }
+
+        public Builder setImg(String img) {
+            this.img = img;
             return this;
         }
 
@@ -96,5 +107,13 @@ public class UserProfile {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

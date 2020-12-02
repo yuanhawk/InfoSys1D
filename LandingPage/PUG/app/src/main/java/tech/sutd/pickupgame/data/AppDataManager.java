@@ -49,10 +49,14 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Flowable<List<YourActivity>> getAllYourActivitiesLimit10() {
+        return yourRoomHelper.getAllYourActivitiesLimit10();
+    }
+
+    @Override
     public Flowable<List<YourActivity>> getAllYourActivities() {
         return yourRoomHelper.getAllYourActivities();
     }
-
 
     @Override
     public Completable insertUser(User user) {

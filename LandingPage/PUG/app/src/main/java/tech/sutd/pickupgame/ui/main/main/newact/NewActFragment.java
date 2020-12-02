@@ -37,7 +37,7 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
 import tech.sutd.pickupgame.util.CustomSnapHelper;
 import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
-public class NewActFragment extends BaseFragment implements View.OnClickListener {
+public class NewActFragment extends BaseFragment implements View.OnClickListener, BaseInterface.RefreshListener {
 
     private FragmentNewActBinding binding;
 
@@ -56,6 +56,17 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     public BaseInterface.BookingActListener getBookingActListener() {
         return bookingActListener;
+    }
+
+    @Override
+    public void refreshObserver() {
+        if (newActViewModel.getAllNewActivitiesBySport().hasActiveObservers())
+            newActViewModel.getAllNewActivitiesBySport().removeObserver(observer);
+        newActViewModel.getAllNewActivitiesBySport().observe(getViewLifecycleOwner(), observer);
+
+        if (newActViewModel.getAllNewActivitiesByClock().hasActiveObservers())
+            newActViewModel.getAllNewActivitiesByClock().removeObserver(observer);
+        newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
     }
 
     @Nullable
@@ -138,13 +149,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
         binding.swipeRefresh.setOnRefreshListener(() -> {
             pullNewAct();
 
-            if (newActViewModel.getAllNewActivitiesBySport().hasActiveObservers())
-                newActViewModel.getAllNewActivitiesBySport().removeObserver(observer);
-            newActViewModel.getAllNewActivitiesBySport().observe(getViewLifecycleOwner(), observer);
-
-            if (newActViewModel.getAllNewActivitiesByClock().hasActiveObservers())
-                newActViewModel.getAllNewActivitiesByClock().removeObserver(observer);
-            newActViewModel.getAllNewActivitiesByClock().observe(getViewLifecycleOwner(), observer);
+            refreshObserver();
 
             binding.swipeRefresh.setRefreshing(false);
         });

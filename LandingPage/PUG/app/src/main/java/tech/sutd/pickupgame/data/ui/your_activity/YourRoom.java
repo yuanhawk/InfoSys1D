@@ -29,8 +29,12 @@ public class YourRoom implements YourRoomHelper {
     }
 
     @Override
+    public Flowable<List<YourActivity>> getAllYourActivitiesLimit10() {
+        return database.yourDao().getAllYourActivitiesLimit10();
+    }
+
+    @Override
     public Flowable<List<YourActivity>> getAllYourActivities() {
         return database.yourDao().getAllYourActivities();
     }
-
 }

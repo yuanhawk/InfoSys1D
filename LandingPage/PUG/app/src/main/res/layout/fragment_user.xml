@@ -1,297 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.user.UserFragment">
+    android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/userName"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:gravity="center"
-        android:text="@string/name"
-        style="@style/header"
-        android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image"/>
+        android:paddingBottom="80dp"
+        tools:context=".ui.main.user.UserFragment">
 
-    <LinearLayout
-        android:id="@+id/LinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/profile_line1"
-        app:layout_constraintTop_toBottomOf="@+id/userName">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="80dp"
+            android:gravity="center"
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/square1"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:padding="10dp"
-            android:backgroundTint="@color/colorBlueAccent"
-            app:cardElevation="0dp"
-            app:shapeAppearance="@style/profile_page_stats"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/square2"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/NumberOfActivitiesJoined"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingTop="10dp"
-                    android:text="@string/number_of_activities_joined"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="36sp"
-                    android:fontFamily="@font/ralewayextrabold"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/ActivitiesJoined"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="5dp"
-                    android:text="@string/activities_joined"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="8sp"
-                    android:fontFamily="@font/ralewaybold"
-                    tools:ignore="SmallSp" />
-            </LinearLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/square2"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:padding="10dp"
-            android:backgroundTint="@color/colorRedAccent"
-            app:cardElevation="0dp"
-            app:shapeAppearance="@style/profile_page_stats"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/square1"
-            app:layout_constraintRight_toLeftOf="@+id/square3"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/numberOfActivitiesOrganised"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingTop="10dp"
-                    android:text="@string/number_of_activities_organised"
-                    android:textColor="@color/colorRed"
-                    android:textSize="36sp"
-                    android:fontFamily="@font/ralewayextrabold"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/activitiesOrganised"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="5dp"
-                    android:text="@string/activities_organised"
-                    android:textColor="@color/colorRed"
-                    android:textSize="8sp"
-                    android:fontFamily="@font/ralewaybold"
-                    tools:ignore="SmallSp" />
-            </LinearLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/square3"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:padding="10dp"
-            android:backgroundTint="@color/colorBlueAccent"
-            app:cardElevation="0dp"
-            app:shapeAppearance="@style/profile_page_stats"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintWidth_percent="0.5"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
 
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/userName"
+            style="@style/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:text="@string/name"
+            android:textSize="36sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/numberOfDifferentActivitiesTried"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingTop="10dp"
-                    android:text="@string/number_of_different_activities_tried"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="36sp"
-                    android:fontFamily="@font/ralewayextrabold"/>
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/profile_line1"
+            app:layout_constraintTop_toBottomOf="@+id/userName">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/differentActivitiesTried"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="5dp"
-                    android:text="@string/different_activities_tried"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="8sp"
-                    android:fontFamily="@font/ralewaybold"
-                    tools:ignore="SmallSp" />
-            </LinearLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/square1"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/colorBlueAccent"
+                android:padding="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/square2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/profile_page_stats">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
 
 
-        </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/num_act_joined"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/ralewayextrabold"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="@string/number_of_activities_joined"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="36sp" />
 
-    </LinearLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/ActivitiesJoined"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/ralewaybold"
+                        android:gravity="center"
+                        android:paddingHorizontal="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/activities_joined"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="8sp"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
 
 
-    <View
-        android:id="@+id/profile_line1"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorRed"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        app:layout_constraintTop_toBottomOf="@id/LinearLayout"
-        app:layout_constraintLeft_toLeftOf="@id/LinearLayout"/>
+            </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/editProfile"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="@string/edit_profile"
-        android:textColor="@color/colorBlue"
-        app:layout_constraintTop_toBottomOf="@id/profile_line1"
-        app:layout_constraintLeft_toLeftOf="@id/profile_line1"
-        app:layout_constraintRight_toRightOf="@id/profile_line1"
-        app:layout_constrainedWidth="true"
-        android:textAllCaps="false"
-        android:fontFamily="@font/ralewaybold"
-        app:icon="@drawable/ic_arrow"
-        app:iconGravity="end"
-        app:iconTint="@color/colorBlue" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/square2"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/colorRedAccent"
+                android:padding="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintLeft_toLeftOf="@+id/square1"
+                app:layout_constraintRight_toLeftOf="@+id/square3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="@style/profile_page_stats">
 
-    <View
-        android:id="@+id/profile_line2"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorRed"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        app:layout_constraintTop_toBottomOf="@id/editProfile"/>
 
-    <Button
-        android:id="@+id/notificationPreferences"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="@string/notification_preferences"
-        android:textColor="@color/colorBlue"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        app:layout_constraintTop_toBottomOf="@id/profile_line2"
-        app:layout_constraintLeft_toLeftOf="@id/profile_line2"
-        app:layout_constraintRight_toRightOf="@id/profile_line2"
-        app:layout_constrainedWidth="true"
-        android:textAllCaps="false"
-        android:fontFamily="@font/ralewaybold"
-        app:icon="@drawable/ic_arrow"
-        app:iconGravity="end"
-        app:iconTint="@color/colorBlue" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
 
-    <View
-        android:id="@+id/profile_line3"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorRed"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        app:layout_constraintTop_toBottomOf="@id/notificationPreferences"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/num_act_organized"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/ralewayextrabold"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="@string/number_of_activities_organised"
+                        android:textColor="@color/colorRed"
+                        android:textSize="36sp" />
 
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="@string/logout"
-        android:textColor="@color/colorBlue"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        app:layout_constraintTop_toBottomOf="@id/profile_line3"
-        app:layout_constraintLeft_toLeftOf="@id/profile_line3"
-        app:layout_constraintRight_toRightOf="@id/profile_line3"
-        app:layout_constrainedWidth="true"
-        android:textAllCaps="false"
-        android:fontFamily="@font/ralewaybold"
-        app:icon="@drawable/ic_arrow"
-        app:iconGravity="end"
-        app:iconTint="@color/colorBlue" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/activitiesOrganised"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/ralewaybold"
+                        android:gravity="center"
+                        android:paddingHorizontal="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/activities_organised"
+                        android:textColor="@color/colorRed"
+                        android:textSize="8sp"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
 
-    <View
-        android:id="@+id/profile_line4"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorRed"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        app:layout_constraintTop_toBottomOf="@id/logout"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/square3"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/colorBlueAccent"
+                android:padding="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.5"
+                app:shapeAppearance="@style/profile_page_stats">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/num_act_tried"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/ralewayextrabold"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="@string/number_of_different_activities_tried"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="36sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/differentActivitiesTried"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/ralewaybold"
+                        android:gravity="center"
+                        android:paddingHorizontal="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/different_activities_tried"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="8sp"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/profile_line1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/colorRed"
+            app:layout_constraintLeft_toLeftOf="@id/LinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/LinearLayout" />
+
+        <Button
+            android:id="@+id/editProfile"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ralewaybold"
+            android:gravity="center_vertical"
+            android:text="@string/edit"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlue"
+            app:icon="@drawable/ic_arrow"
+            app:iconGravity="end"
+            app:iconTint="@color/colorBlue"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintLeft_toLeftOf="@id/profile_line1"
+            app:layout_constraintRight_toRightOf="@id/profile_line1"
+            app:layout_constraintTop_toBottomOf="@id/profile_line1" />
+
+        <View
+            android:id="@+id/profile_line2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/colorRed"
+            app:layout_constraintTop_toBottomOf="@id/editProfile" />
+
+        <Button
+            android:id="@+id/notificationPreferences"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ralewaybold"
+            android:gravity="center_vertical"
+            android:text="@string/notification_preferences"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlue"
+            app:icon="@drawable/ic_arrow"
+            app:iconGravity="end"
+            app:iconTint="@color/colorBlue"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintLeft_toLeftOf="@id/profile_line2"
+            app:layout_constraintRight_toRightOf="@id/profile_line2"
+            app:layout_constraintTop_toBottomOf="@id/profile_line2" />
+
+        <View
+            android:id="@+id/profile_line3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/colorRed"
+            app:layout_constraintTop_toBottomOf="@id/notificationPreferences" />
+
+        <Button
+            android:id="@+id/logout"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ralewaybold"
+            android:gravity="center_vertical"
+            android:text="@string/logout"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlue"
+            app:icon="@drawable/ic_arrow"
+            app:iconGravity="end"
+            app:iconTint="@color/colorBlue"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintLeft_toLeftOf="@id/profile_line3"
+            app:layout_constraintRight_toRightOf="@id/profile_line3"
+            app:layout_constraintTop_toBottomOf="@id/profile_line3" />
+
+        <View
+            android:id="@+id/profile_line4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/colorRed"
+            app:layout_constraintTop_toBottomOf="@id/logout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
