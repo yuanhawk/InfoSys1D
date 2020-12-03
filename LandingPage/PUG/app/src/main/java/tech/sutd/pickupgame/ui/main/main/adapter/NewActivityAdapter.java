@@ -156,10 +156,10 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
                 }
 
                 if (mainFragment != null) {
-                    viewModel.push(mainFragment, null, this, newActivity.getId(),
+                    viewModel.push(context, mainFragment, null, this, newActivity.getId(),
                             newActivity);
                 } else if (newFragment != null) {
-                    viewModel.push(null, newFragment, this, newActivity.getId(),
+                    viewModel.push(context, null, newFragment, this, newActivity.getId(),
                             newActivity);
                 }
             });

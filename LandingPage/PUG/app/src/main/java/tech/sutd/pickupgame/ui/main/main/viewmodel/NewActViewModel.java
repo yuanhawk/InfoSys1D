@@ -1,6 +1,8 @@
 package tech.sutd.pickupgame.ui.main.main.viewmodel;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -184,27 +186,7 @@ public class NewActViewModel extends BaseViewModel {
                                         if (value != null) {
                                             if (Objects.equals(value.get(fAuth.getCurrentUser().getUid()), "registered")) {
 
-                                                if (activity.getSport() != null) {
-                                                    NewActivity newActivity1 = new NewActivity.Builder(ds.getId())
-                                                            .setSport(activity.getSport())
-                                                            .setSportImg(StringChecker.caseImage(activity.getSport()))
-                                                            .setClock(activity.getEpoch())
-                                                            .setClockImg(R.drawable.ic_clock)
-                                                            .setEndClock(activity.getEpochEnd())
-                                                            .setLocationImg(R.drawable.ic_location)
-                                                            .setLocation(activity.getLoc())
-                                                            .setOrganizerImg(R.drawable.ic_profile)
-                                                            .setOrganizer(activity.getOrganizer())
-                                                            .setIdentifier(activity.getOrganizerId())
-                                                            .setParticipantImg(R.drawable.ic_participants)
-                                                            .setParticipant(activity.getPart())
-                                                            .setCount(activity.getCount())
-                                                            .setNotesImg(R.drawable.ic_notes)
-                                                            .setNotes(activity.getDesc())
-                                                            .setChecked(1)
-                                                            .build();
-                                                    insert(newActivity1);
-                                                }
+                                                deleteById(ds.getId());
                                             }
                                         }
                                     });
@@ -213,7 +195,7 @@ public class NewActViewModel extends BaseViewModel {
                 });
     }
 
-    public void push(MainFragment mainFragment, NewActFragment newActFragment, NewActivityAdapter adapter,
+    public void push(Context context, MainFragment mainFragment, NewActFragment newActFragment, NewActivityAdapter adapter,
                      String id, NewActivity newActivity) {
 
         BookingActivity bookingActivity = new BookingActivity.Builder()
@@ -229,46 +211,55 @@ public class NewActViewModel extends BaseViewModel {
 
         newActivity.setChecked(1);
 
-        reff.child("upcoming_activity")
-                .child(Objects.requireNonNull(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()))
-                .child(id)
-                .setValue(bookingActivity)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-
-                        fStore.collection("activities")
-                                .document(id)
-                                .update("count", bookingActivity.getCount());
-
-                        Map<String, String> map = new HashMap<>();
-                        map.put(fAuth.getCurrentUser().getUid(), "registered");
-                        fStore.collection("activities")
-                                .document(id)
-                                .collection("participants")
-                                .document(fAuth.getCurrentUser().getUid())
-                                .set(map);
-
-                        reff.child("your_activity")
-                                .child(bookingActivity.getOrganizerId())
-                                .child(id)
-                                .child("count")
-                                .setValue(bookingActivity.getCount());
-
-
-                        if (mainFragment != null)
-                            mainFragment.getBookingActListener().onSignUpSuccess(mainFragment, null);
-                        else if (newActFragment != null)
-                            newActFragment.getBookingActListener().onSignUpSuccess(null, newActFragment);
-
+        fStore.collection("activities")
+                .document(id)
+                .addSnapshotListener((value, error) -> {
+                    if (value.get("count").equals(value.get("part"))) {
+                        Toast.makeText(context, "Max Participant Reached", Toast.LENGTH_SHORT).show();
                     } else {
 
-                        if (mainFragment != null)
-                            mainFragment.getBookingActListener().onSignUpFailure();
-                        else if (newActFragment != null)
-                            newActFragment.getBookingActListener().onSignUpFailure();
+                        reff.child("upcoming_activity")
+                                .child(Objects.requireNonNull(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()))
+                                .child(id)
+                                .setValue(bookingActivity)
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
 
+                                        fStore.collection("activities")
+                                                .document(id)
+                                                .update("count", bookingActivity.getCount());
+
+                                        Map<String, String> map = new HashMap<>();
+                                        map.put(fAuth.getCurrentUser().getUid(), "registered");
+                                        fStore.collection("activities")
+                                                .document(id)
+                                                .collection("participants")
+                                                .document(fAuth.getCurrentUser().getUid())
+                                                .set(map);
+
+                                        reff.child("your_activity")
+                                                .child(bookingActivity.getOrganizerId())
+                                                .child(id)
+                                                .child("count")
+                                                .setValue(bookingActivity.getCount());
+
+
+                                        if (mainFragment != null)
+                                            mainFragment.getBookingActListener().onSignUpSuccess(mainFragment, null);
+                                        else if (newActFragment != null)
+                                            newActFragment.getBookingActListener().onSignUpSuccess(null, newActFragment);
+
+                                    } else {
+
+                                        if (mainFragment != null)
+                                            mainFragment.getBookingActListener().onSignUpFailure();
+                                        else if (newActFragment != null)
+                                            newActFragment.getBookingActListener().onSignUpFailure();
+
+                                    }
+                                    adapter.getDialog().dismiss();
+                                });
                     }
-                    adapter.getDialog().dismiss();
                 });
 
     }

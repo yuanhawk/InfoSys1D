@@ -123,7 +123,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             }
 
             if (TextUtils.isEmpty(age)) {
-                binding.ageInput.setError("Email is Required");
+                binding.ageInput.setError("Age is Required");
                 return;
             }
 
