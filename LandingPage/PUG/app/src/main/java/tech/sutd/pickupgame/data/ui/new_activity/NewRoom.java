@@ -31,6 +31,11 @@ public class NewRoom implements NewRoomHelper {
     }
 
     @Override
+    public Completable deleteNewActivityByChecked(int checked) {
+        return database.newDao().deleteNewActivityByChecked(checked);
+    }
+
+    @Override
     public Completable deleteNewActivityByClock(String clock) {
         return database.newDao().deleteNewActivityByClock(clock);
     }

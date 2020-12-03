@@ -28,7 +28,7 @@
         <ListView
             android:id="@+id/filter_list"
             android:layout_width="match_parent"
-            android:layout_height="180dp" />
+            android:layout_height="120dp" />
 
 
         <com.google.android.material.button.MaterialButton

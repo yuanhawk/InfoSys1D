@@ -15,7 +15,7 @@ public class StringChecker {
                     return R.drawable.ic_ping_pong;
                 case "Volleyball":
                     return R.drawable.ic_voll;
-                case "running":
+                case "Running":
                     return R.drawable.ic_running;
             }
             return 0;

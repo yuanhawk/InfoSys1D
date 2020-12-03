@@ -127,6 +127,11 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
                 saveData(getString(R.string.select_location), "");
                 saveData(getString(R.string.select_num_participants), "");
                 saveData(getString(R.string.additional_notes), "");
+
+                saveData(getString(R.string.hour), "00");
+                saveData(getString(R.string.min), "00");
+                saveData(getString(R.string.hour_end), "00");
+                saveData(getString(R.string.min_end), "00");
             }
         });
     }
@@ -161,11 +166,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
 
             if (TextUtils.isEmpty(binding.participantSpinner.getText())) {
                 binding.participantSpinner.setError(getString(R.string.required_fields));
-                return;
-            }
-
-            if (TextUtils.isEmpty(binding.addNotesSpinner.getText())) {
-                binding.addNotesSpinner.setError(getString(R.string.required_fields));
                 return;
             }
 
@@ -233,12 +233,12 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
 
             NumberPicker numberPicker = dialog.findViewById(R.id.number_picker);
 
-            numberPicker.setMinValue(1);
+            numberPicker.setMinValue(2);
             numberPicker.setMaxValue(20);
 
             numberPicker.setWrapSelectorWheel(true);
 
-            numberPicked = 1;
+            numberPicked = 2;
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> numberPicked = newVal);
 
             dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
@@ -301,35 +301,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
     }
 
     private void initTimePicker() {
-        binding.timeSpinnerEnd.setOnClickListener(v -> {
-            dialog = setDialog(R.layout.time_picker);
-
-            TimePicker timePicker = dialog.findViewById(R.id.time_picker);
-
-            calendar = Calendar.getInstance();
-
-            hourEnd = calendar.get(Calendar.HOUR_OF_DAY);
-            minEnd = calendar.get(Calendar.MINUTE);
-
-            timePicker.setOnTimeChangedListener((timeView, hourOfDay, minute) -> {
-                hourEnd = hourOfDay;
-                minEnd = minute;
-            });
-
-            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
-                String timeFormat = DateConverter.timeConverter(hourEnd, minEnd);
-                binding.timeSpinnerEnd.setText(timeFormat);
-
-                saveData(getString(R.string.end_time), timeFormat);
-                saveData(getString(R.string.hour_end), String.valueOf(hourEnd));
-                saveData(getString(R.string.min_end), String.valueOf(minEnd));
-
-                binding.timeSpinnerEnd.setError(null);
-
-                dialog.dismiss();
-            });
-        });
-
         binding.timeSpinnerStart.setOnClickListener(v -> {
             dialog = setDialog(R.layout.time_picker);
 
@@ -354,6 +325,41 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
                 saveData(getString(R.string.min), String.valueOf(min));
 
                 binding.timeSpinnerStart.setError(null);
+
+                dialog.dismiss();
+            });
+        });
+
+        binding.timeSpinnerEnd.setOnClickListener(v -> {
+            dialog = setDialog(R.layout.time_picker);
+
+            TimePicker timePicker = dialog.findViewById(R.id.time_picker);
+
+            calendar = Calendar.getInstance();
+
+            if (hour != 0) {
+                hourEnd = Integer.parseInt(preferences.getString(getString(R.string.hour), "")) + 2;
+            } else {
+                hourEnd = calendar.get(Calendar.HOUR_OF_DAY);
+            }
+            timePicker.setHour(hourEnd);
+            minEnd = calendar.get(Calendar.MINUTE);
+            timePicker.setMinute(minEnd);
+
+            timePicker.setOnTimeChangedListener((timeView, hourOfDay, minute) -> {
+                hourEnd = hourOfDay;
+                minEnd = minute;
+            });
+
+            dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
+                String timeFormat = DateConverter.timeConverter(hourEnd, minEnd);
+                binding.timeSpinnerEnd.setText(timeFormat);
+
+                saveData(getString(R.string.end_time), timeFormat);
+                saveData(getString(R.string.hour_end), String.valueOf(hourEnd));
+                saveData(getString(R.string.min_end), String.valueOf(minEnd));
+
+                binding.timeSpinnerEnd.setError(null);
 
                 dialog.dismiss();
             });

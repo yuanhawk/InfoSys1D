@@ -16,8 +16,8 @@ import tech.sutd.pickupgame.databinding.ItemlistFilterBinding;
 
 public class FilterAdapter extends BaseAdapter {
 
-    private final int[] images = {R.drawable.ic_calendar, R.drawable.ic_star, R.drawable.ic_location};
-    private final String[] desc = {"Date", "Sport", "Near Me"};
+    private final int[] images = {R.drawable.ic_calendar, R.drawable.ic_star};
+    private final String[] desc = {"Date", "Sport"};
 
     private final RequestManager requestManager;
 

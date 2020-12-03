@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -139,7 +140,17 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
                     .into((ImageView) dialog.findViewById(R.id.notes_img));
 
             dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
+                int count = Integer.parseInt(newActivity.getCount());
+                int participant = Integer.parseInt(newActivity.getParticipant());
+
                 if (newActivity.getChecked() == 1) {
+                    Toast.makeText(context, "You Have Already Registered For This Activity", Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                    return;
+                }
+
+                if (count > participant) {
+                    Toast.makeText(context, "Max Participant Reached", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     return;
                 }

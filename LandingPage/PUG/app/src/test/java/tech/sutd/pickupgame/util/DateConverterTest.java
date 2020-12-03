@@ -23,10 +23,16 @@ public class DateConverterTest {
     @Test
     public void timeConverter() {
         assertEquals(DateConverter.timeConverter(5, 10), "05 : 10 AM");
+        assertEquals(DateConverter.timeConverter(13, 15), "01 : 15 PM");
     }
 
     @Test
     public void formatDate() {
+        assertEquals(DateConverter.formatDate(26, 2, 2020), "26/02/2020");
+    }
+
+    @Test
+    public void epochConverter() {
         assertEquals(DateConverter.epochConverter("01/03/2021", "5", "10"), "1614546600000");
     }
 

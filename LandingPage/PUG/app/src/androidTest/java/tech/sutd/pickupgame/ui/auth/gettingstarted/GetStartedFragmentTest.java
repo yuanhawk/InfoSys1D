@@ -1,7 +1,5 @@
 package tech.sutd.pickupgame.ui.auth.gettingstarted;
 
-import androidx.fragment.app.testing.FragmentScenario;
-import androidx.navigation.Navigation;
 import androidx.navigation.testing.TestNavHostController;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -19,7 +17,6 @@ import tech.sutd.pickupgame.ui.auth.login.LoginFragment;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -45,17 +42,6 @@ public class GetStartedFragmentTest {
     @Test
     public void testClick() {
         onView(withId(R.id.get_started)).check(matches(isClickable()));
-
-
-//        TestNavHostController navController = new TestNavHostController(
-//                ApplicationProvider.getApplicationContext());
-//        navController.setGraph(R.navigation.auth);
-//
-//        FragmentScenario<LoginFragment> loginScenario = FragmentScenario.launchInContainer(LoginFragment.class);
-//
-//        loginScenario.onFragment(fragment -> Navigation.setViewNavController(fragment.requireView(), navController));
-//
-//        onView(withId(R.id.loginFragment)).perform(click());
     }
 
 }

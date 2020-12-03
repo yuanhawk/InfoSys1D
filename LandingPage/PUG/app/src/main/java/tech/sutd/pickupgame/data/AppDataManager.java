@@ -91,6 +91,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Completable deleteNewActivityByChecked(int checked) {
+        return newRoomHelper.deleteNewActivityByChecked(checked);
+    }
+
+    @Override
     public Completable deleteNewActivityByClock(String clock) {
         return newRoomHelper.deleteNewActivityByClock(clock);
     }

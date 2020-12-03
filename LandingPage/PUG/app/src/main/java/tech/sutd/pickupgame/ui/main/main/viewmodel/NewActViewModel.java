@@ -78,7 +78,15 @@ public class NewActViewModel extends BaseViewModel {
                 .subscribe());
     }
 
-    public void delete(String clock) {
+    public void deleteByChecked(int checked) {
+        getCompositeDisposable().add(getDataManager().deleteNewActivityByChecked(checked)
+                .doOnSubscribe(disposable -> doOnLoading())
+                .subscribeOn(getProvider().io())
+                .doOnError(this::setError)
+                .subscribe());
+    }
+
+    public void deleteByClock(String clock) {
         getCompositeDisposable().add(getDataManager().deleteNewActivityByClock(clock)
                 .doOnSubscribe(disposable -> doOnLoading())
                 .subscribeOn(getProvider().io())

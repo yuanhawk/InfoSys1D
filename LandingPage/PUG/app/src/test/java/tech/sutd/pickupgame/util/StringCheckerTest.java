@@ -14,7 +14,7 @@ public class StringCheckerTest {
         assertEquals(StringChecker.caseImage("Cycling"), R.drawable.ic_cycling);
         assertEquals(StringChecker.caseImage("Table Tennis"), R.drawable.ic_ping_pong);
         assertEquals(StringChecker.caseImage("Volleyball"), R.drawable.ic_voll);
-        assertEquals(StringChecker.caseImage("running"), R.drawable.ic_running);
+        assertEquals(StringChecker.caseImage("Running"), R.drawable.ic_running);
     }
 
     @Test

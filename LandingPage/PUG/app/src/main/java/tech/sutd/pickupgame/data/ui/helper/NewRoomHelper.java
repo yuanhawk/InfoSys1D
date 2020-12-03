@@ -16,6 +16,7 @@ public interface NewRoomHelper {
 
     Completable insertNewActivity(NewActivity newActivity);
     Completable deleteNewActivityById(String id);
+    Completable deleteNewActivityByChecked(int checked);
     Completable deleteNewActivityByClock(String clock);
     Flowable<PagedList<NewActivity>> getAllNewActivitiesByClock();
     Flowable<PagedList<NewActivity>> getAllNewActivitiesBySport();

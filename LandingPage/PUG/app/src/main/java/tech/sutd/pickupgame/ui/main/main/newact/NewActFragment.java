@@ -91,7 +91,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        newActViewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        newActViewModel.deleteByClock(String.valueOf(Calendar.getInstance().getTimeInMillis()));
     }
 
     @Override
@@ -105,6 +105,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
             if (pagedListResource.status == Resource.Status.SUCCESS) {
                 updateNewView(pagedListResource);
 
+                assert pagedListResource.data != null;
                 pagedListResource.data.addWeakCallback(null, new PagedList.Callback() {
                     @Override
                     public void onChanged(int position, int count) {
@@ -128,6 +129,7 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void updateNewView(Resource<PagedList<NewActivity>> pagedListResource) {
+        assert pagedListResource.data != null;
         if (pagedListResource.data.size() > 0) {
             binding.newRc.setVisibility(View.VISIBLE);
             binding.newEmpty.setVisibility(View.GONE);
@@ -180,8 +182,6 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
                     if (newActViewModel.getAllNewActivitiesByClock().hasActiveObservers())
                         newActViewModel.getAllNewActivitiesByClock().removeObserver(observer);
                     newActViewModel.getAllNewActivitiesBySport().observe(getViewLifecycleOwner(), observer);
-                } else if (posImg == R.drawable.ic_location) {
-                    Toast.makeText(getContext(), "Near Me Pressed", Toast.LENGTH_SHORT).show();
                 }
             });
 

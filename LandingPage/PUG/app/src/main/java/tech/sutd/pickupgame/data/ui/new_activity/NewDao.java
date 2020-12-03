@@ -25,6 +25,9 @@ public interface NewDao {
     @Query("DELETE FROM new_activity WHERE id = :id")
     Completable deleteNewActivityById(String id);
 
+    @Query("DELETE FROM new_activity WHERE checked = :checked")
+    Completable deleteNewActivityByChecked(int checked);
+
     @Query("DELETE FROM new_activity WHERE clock < :clock")
     Completable deleteNewActivityByClock(String clock);
 

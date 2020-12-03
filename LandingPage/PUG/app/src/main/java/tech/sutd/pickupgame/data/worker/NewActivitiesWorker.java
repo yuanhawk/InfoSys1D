@@ -30,7 +30,8 @@ public class NewActivitiesWorker extends Worker {
     @Override
     public Result doWork() {
         viewModel.pull();
-        viewModel.delete(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        viewModel.deleteByChecked(1);
+        viewModel.deleteByClock(String.valueOf(Calendar.getInstance().getTimeInMillis()));
         return Result.success();
     }
 

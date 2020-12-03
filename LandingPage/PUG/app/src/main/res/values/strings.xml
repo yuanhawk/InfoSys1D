@@ -42,9 +42,6 @@
     <string name="edit">Edit Profile</string>
     <string name="edit_profile">Edit\nProfile</string>
     <string name="notification_preferences">Notification Preferences</string>
-    <string name="number_of_activities_joined">X</string>
-    <string name="number_of_activities_organised">X</string>
-    <string name="number_of_different_activities_tried">X</string>
     <string name="activities_joined">Activities\nJoined</string>
     <string name="activities_organised">Activities\nOrganised</string>
     <string name="different_activities_tried">Different\nActivities Tried</string>
@@ -88,7 +85,7 @@
         <item>East Coast Park</item>
         <item>Ang Mo Kio - Bishan Park</item>
         <item>The Cage @ Kallang</item>
-        <item>OCBC Arena, Singapore Sports Hub</item>
+        <item>OCBC Arena</item>
         <item>Kallang Tennis Centre</item>
         <item>Kallang Squash Centre</item>
         <item>Kallang Netball Centre</item>
