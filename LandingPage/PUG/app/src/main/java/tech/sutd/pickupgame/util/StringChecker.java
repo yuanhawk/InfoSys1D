@@ -6,10 +6,18 @@ public class StringChecker {
 
     public static int caseImage(String s) {
         if (s != null) {
-            if (s.equals("Badminton"))
-                return R.drawable.ic_badminton;
-            else if (s.equals("Cycling"))
-                return R.drawable.ic_cycling;
+            switch (s) {
+                case "Badminton":
+                    return R.drawable.ic_badminton;
+                case "Cycling":
+                    return R.drawable.ic_cycling;
+                case "Table Tennis":
+                    return R.drawable.ic_ping_pong;
+                case "Volleyball":
+                    return R.drawable.ic_voll;
+                case "running":
+                    return R.drawable.ic_running;
+            }
             return 0;
         }
         return 0;

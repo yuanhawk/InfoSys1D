@@ -1,10 +1,10 @@
 package tech.sutd.pickupgame.ui.auth.login;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import tech.sutd.pickupgame.Utils;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class LoginFragmentTest {
@@ -13,7 +13,7 @@ public class LoginFragmentTest {
 
     @Test
     public void userIdValidator() {
-        Assert.assertThat(String.format("Email Validity Test failed for %s ", FAKE_EMAIL),
+        assertThat(String.format("Email Validity Test failed for %s ", FAKE_EMAIL),
                 Utils.checkEmailForValidity(FAKE_EMAIL), is(true));
     }
 

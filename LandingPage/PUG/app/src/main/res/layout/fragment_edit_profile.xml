@@ -135,7 +135,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="0dp"
             android:hint="@string/age"
-            android:inputType="text"
+            android:inputType="number"
             android:textColorHint="@color/colorRedAccent"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@id/change_profile_photo"
