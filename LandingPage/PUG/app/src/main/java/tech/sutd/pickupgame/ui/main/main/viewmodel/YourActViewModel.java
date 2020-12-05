@@ -157,23 +157,25 @@ public class YourActViewModel extends BaseViewModel {
                         for (DataSnapshot ds: snapshot.getChildren()) {
                             BookingActivity activity = ds.getValue(BookingActivity.class);
                             assert activity != null;
-                            insert(new YourActivity.Builder(ds.getKey())
-                                    .setSport(activity.getSport())
-                                    .setSportImg(StringChecker.caseImage(activity.getSport()))
-                                    .setClock(activity.getEpoch())
-                                    .setClockImg(R.drawable.ic_clock)
-                                    .setEndClock(activity.getEpochEnd())
-                                    .setLocationImg(R.drawable.ic_location)
-                                    .setLocation(activity.getLoc())
-                                    .setOrganizerImg(R.drawable.ic_profile)
-                                    .setOrganizer(activity.getOrganizer())
-                                    .setParticipantImg(R.drawable.ic_participants)
-                                    .setParticipant(activity.getPart())
-                                    .setCount(activity.getCount())
-                                    .setNotesImg(R.drawable.ic_notes)
-                                    .setNotes(activity.getDesc())
-                                    .build()
-                            );
+                            if (activity.getSport() != null) {
+                                insert(new YourActivity.Builder(ds.getKey())
+                                        .setSport(activity.getSport())
+                                        .setSportImg(StringChecker.caseImage(activity.getSport()))
+                                        .setClock(activity.getEpoch())
+                                        .setClockImg(R.drawable.ic_clock)
+                                        .setEndClock(activity.getEpochEnd())
+                                        .setLocationImg(R.drawable.ic_location)
+                                        .setLocation(activity.getLoc())
+                                        .setOrganizerImg(R.drawable.ic_profile)
+                                        .setOrganizer(activity.getOrganizer())
+                                        .setParticipantImg(R.drawable.ic_participants)
+                                        .setParticipant(activity.getPart())
+                                        .setCount(activity.getCount())
+                                        .setNotesImg(R.drawable.ic_notes)
+                                        .setNotes(activity.getDesc())
+                                        .build()
+                                );
+                            }
                         }
                     }
 

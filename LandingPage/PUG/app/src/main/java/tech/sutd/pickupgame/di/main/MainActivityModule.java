@@ -34,7 +34,7 @@ public class MainActivityModule {
 
     @MainScope
     @Provides
-    static NewActivityAdapter<NewActivity> provideNewActivityAdapter(RequestManager requestManager, NewActViewModel viewModel) {
-        return new NewActivityAdapter<>(requestManager, viewModel);
+    static NewActivityAdapter<NewActivity> provideNewActivityAdapter(RequestManager requestManager, NewActViewModel newActViewModel, UpcomingActViewModel upcomingActViewModel) {
+        return new NewActivityAdapter<>(requestManager, newActViewModel, upcomingActViewModel);
     }
 }

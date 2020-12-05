@@ -29,6 +29,8 @@ public class NewActivitiesWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        if (viewModel == null)
+            return Result.failure();
         viewModel.pull();
         viewModel.deleteByChecked(1);
         viewModel.deleteByClock(String.valueOf(Calendar.getInstance().getTimeInMillis()));

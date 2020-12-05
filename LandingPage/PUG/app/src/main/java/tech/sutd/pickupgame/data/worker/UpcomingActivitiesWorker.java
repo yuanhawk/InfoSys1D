@@ -17,8 +17,6 @@ import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 
 public class UpcomingActivitiesWorker extends Worker {
 
-    public static final String KEY_TASK_OUTPUT = "key_task_output";
-
     private final UpcomingActViewModel viewModel;
 
     @Inject

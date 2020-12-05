@@ -33,6 +33,7 @@ import tech.sutd.pickupgame.ui.main.MainActivity;
 import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
 import tech.sutd.pickupgame.ui.main.main.viewmodel.NewActViewModel;
+import tech.sutd.pickupgame.ui.main.main.viewmodel.UpcomingActViewModel;
 import tech.sutd.pickupgame.util.DateConverter;
 import tech.sutd.pickupgame.util.StringChecker;
 
@@ -41,7 +42,8 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
     private int numOfViews = 0;
 
     private final RequestManager requestManager;
-    private final NewActViewModel viewModel;
+    private final NewActViewModel newActViewModel;
+    private final UpcomingActViewModel upcomingActViewModel;
     private MainFragment mainFragment;
     private NewActFragment newFragment;
     private Context context;
@@ -49,10 +51,11 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
     private Dialog dialog;
 
     @Inject
-    public NewActivityAdapter(RequestManager requestManager, NewActViewModel viewModel) {
+    public NewActivityAdapter(RequestManager requestManager, NewActViewModel newActViewModel, UpcomingActViewModel upcomingActViewModel) {
         super(DIFF_CALLBACK);
         this.requestManager = requestManager;
-        this.viewModel = viewModel;
+        this.newActViewModel = newActViewModel;
+        this.upcomingActViewModel = upcomingActViewModel;
     }
 
     @NonNull
@@ -156,10 +159,10 @@ public class NewActivityAdapter<N> extends PagedListAdapter<NewActivity, NewActi
                 }
 
                 if (mainFragment != null) {
-                    viewModel.push(context, mainFragment, null, this, newActivity.getId(),
+                    newActViewModel.push(context, mainFragment, null, this, newActivity.getId(),
                             newActivity);
                 } else if (newFragment != null) {
-                    viewModel.push(context, null, newFragment, this, newActivity.getId(),
+                    newActViewModel.push(context, null, newFragment, this, newActivity.getId(),
                             newActivity);
                 }
             });

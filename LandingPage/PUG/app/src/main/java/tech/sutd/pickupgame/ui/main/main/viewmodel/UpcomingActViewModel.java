@@ -128,6 +128,8 @@ public class UpcomingActViewModel extends BaseViewModel {
 
     public void deleteFromDb(MainFragment mainFragment, UpcomingActFragment upcomingActFragment, UpcomingActivityAdapter adapter,
                              UpcomingActivity upcomingActivity) {
+        deleteById(upcomingActivity.getId());
+
         fStore.collection("activities")
                 .document(upcomingActivity.getId())
                 .collection("participants")
@@ -146,21 +148,21 @@ public class UpcomingActViewModel extends BaseViewModel {
                 .child("count")
                 .setValue(StringChecker.sub(upcomingActivity.getCount()));
 
-
         reff.child("upcoming_activity")
                 .child(Objects.requireNonNull(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()))
                 .child(upcomingActivity.getId())
                 .removeValue()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        if (mainFragment != null)
+                        if (mainFragment != null) {
                             mainFragment.getUpcomingActDeleteListener().onDeleteSuccess(mainFragment, null);
-                        else if (upcomingActFragment != null)
+                        } else if (upcomingActFragment != null) {
                             upcomingActFragment.getUpcomingActDeleteListener().onDeleteSuccess(null, upcomingActFragment);
-                        deleteById(upcomingActivity.getId());
+                        }
                         adapter.getDialog().dismiss();
                     }
                 });
+
     }
 
     public void pull() {

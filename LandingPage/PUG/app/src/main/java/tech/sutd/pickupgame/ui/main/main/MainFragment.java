@@ -47,8 +47,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     @Inject NewActivityAdapter<NewActivity> newAdapter;
     @Inject ViewModelProviderFactory providerFactory;
 
-    @Inject Handler handler;
-
     public BaseInterface.BookingActListener getBookingActListener() {
         return bookingActListener;
     }
@@ -59,6 +57,11 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void refreshObserver() {
+        if (getView() == null)
+            return;
+
+        pullMainAct();
+
         if (upcomingActViewModel.getUpcomingActivitiesByClock2().hasActiveObservers())
             upcomingActViewModel.getUpcomingActivitiesByClock2().removeObserver(upcomingActObserver);
         upcomingActViewModel.getUpcomingActivitiesByClock2().observe(getViewLifecycleOwner(), upcomingActObserver);
@@ -66,6 +69,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         if (newActViewModel.getNewActivitiesByClock2().hasActiveObservers())
             newActViewModel.getNewActivitiesByClock2().removeObserver(newActObserver);
         newActViewModel.getNewActivitiesByClock2().observe(getViewLifecycleOwner(), newActObserver);
+
     }
 
     @Nullable
@@ -89,12 +93,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private void subscribeObserver() {
         upcomingActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
+                assert pagedListResource.data != null;
                 updateUpcomingView(pagedListResource);
             }
         };
 
         newActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
+                assert pagedListResource.data != null;
                 updateNewView(pagedListResource);
             }
         };
@@ -105,6 +111,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void updateUpcomingView(Resource<PagedList<UpcomingActivity>> pagedListResource) {
+        assert pagedListResource.data != null;
         if (pagedListResource.data.size() > 0) {
             binding.upcomingRc.setVisibility(View.VISIBLE);
             binding.upcomingEmpty.setVisibility(View.GONE);
@@ -116,6 +123,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     }
 
     private void updateNewView(Resource<PagedList<NewActivity>> pagedListResource) {
+        assert pagedListResource.data != null;
         if (pagedListResource.data.size() > 0) {
             binding.newRc.setVisibility(View.VISIBLE);
             binding.newEmpty.setVisibility(View.GONE);

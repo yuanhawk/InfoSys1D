@@ -43,8 +43,6 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class UpcomingActFragment extends BaseFragment implements BaseInterface.RefreshListener {
 
-    private static final String TAG = "UpcomingActFragment";
-    
     private FragmentUpcomingActBinding binding;
     private NavController navController;
 
@@ -62,9 +60,7 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
     @Inject YourActivityAdapter yourAdapter;
     @Inject PastActivityAdapter pastAdapter;
     @Inject ViewModelProviderFactory providerFactory;
-
     @Inject Constraints constraints;
-    @Inject Handler handler;
 
     public BaseInterface.UpcomingActDeleteListener getUpcomingActDeleteListener() {
         return upcomingActDeleteListener;
@@ -72,17 +68,23 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
 
     @Override
     public void refreshObserver() {
-        if (upcomingActViewModel.getAllUpcomingActivitiesByClock().hasActiveObservers())
+        if (getView() == null)
+            return;
+
+        if (upcomingActViewModel.getAllUpcomingActivitiesByClock().hasActiveObservers()) {
             upcomingActViewModel.getAllUpcomingActivitiesByClock().removeObserver(upcomingActObserver);
-        upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActObserver);
+            upcomingActViewModel.getAllUpcomingActivitiesByClock().observe(getViewLifecycleOwner(), upcomingActObserver);
+        }
 
-        if (yourActViewModel.getAllYourActivitiesByClockLimit10().hasActiveObservers())
+        if (yourActViewModel.getAllYourActivitiesByClockLimit10().hasActiveObservers()) {
             yourActViewModel.getAllYourActivitiesByClockLimit10().removeObserver(yourActObserver);
-        yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), yourActObserver);
+            yourActViewModel.getAllYourActivitiesByClockLimit10().observe(getViewLifecycleOwner(), yourActObserver);
+        }
 
-        if (pastActViewModel.getPastActivities().hasActiveObservers())
+        if (pastActViewModel.getPastActivities().hasActiveObservers()) {
             pastActViewModel.getPastActivities().removeObserver(pastActObserver);
-        pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActObserver);
+            pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(), pastActObserver);
+        }
     }
 
     @Nullable
@@ -131,8 +133,7 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
         upcomingActObserver = pagedListResource -> {
             if (pagedListResource.status == Resource.Status.SUCCESS) {
                 assert pagedListResource.data != null;
-                updateUpcomingView(pagedListResource.data.size());
-                upcomingAdapter.submitList(pagedListResource.data);
+                updateUpcomingView(pagedListResource);
             }
         };
 
@@ -147,7 +148,6 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
         pastActObserver = listResource -> {
             if (listResource.status == Resource.Status.SUCCESS) {
                 updatePastView(listResource);
-                pastAdapter.setSource(listResource.data);
             }
         };
 
@@ -156,10 +156,12 @@ public class UpcomingActFragment extends BaseFragment implements BaseInterface.R
         pastActViewModel.getPastActivities().observe(getViewLifecycleOwner(),pastActObserver);
     }
 
-    private void updateUpcomingView(int size) {
-        if (size > 0) {
+    private void updateUpcomingView(Resource<PagedList<UpcomingActivity>> pagedListResource) {
+        assert pagedListResource.data != null;
+        if (pagedListResource.data.size() > 0) {
             binding.upcomingRc.setVisibility(View.VISIBLE);
             binding.upcomingEmpty.setVisibility(View.GONE);
+            upcomingAdapter.submitList(pagedListResource.data);
         } else {
             binding.upcomingRc.setVisibility(View.GONE);
             binding.upcomingEmpty.setVisibility(View.VISIBLE);

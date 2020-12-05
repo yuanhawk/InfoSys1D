@@ -137,11 +137,11 @@ public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivit
 
             dialog.findViewById(R.id.delete).setOnClickListener(view -> {
 
-                if (mainFragment != null)
+                if (mainFragment != null) {
                     viewModel.deleteFromDb(mainFragment, null, this, upcomingActivity);
-                else if (upcomingFragment != null)
+                } else if (upcomingFragment != null) {
                     viewModel.deleteFromDb(null, upcomingFragment, this, upcomingActivity);
-
+                }
             });
         });
     }

@@ -156,40 +156,51 @@ public class NewActViewModel extends BaseViewModel {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot ds : Objects.requireNonNull(task.getResult())) {
                             BookingActivity activity = ds.toObject(BookingActivity.class);
-                            if (activity.getSport() != null) {
-                                NewActivity newActivity = new NewActivity.Builder(ds.getId())
-                                        .setSport(activity.getSport())
-                                        .setSportImg(StringChecker.caseImage(activity.getSport()))
-                                        .setClock(activity.getEpoch())
-                                        .setClockImg(R.drawable.ic_clock)
-                                        .setEndClock(activity.getEpochEnd())
-                                        .setLocationImg(R.drawable.ic_location)
-                                        .setLocation(activity.getLoc())
-                                        .setOrganizerImg(R.drawable.ic_profile)
-                                        .setOrganizer(activity.getOrganizer())
-                                        .setIdentifier(activity.getOrganizerId())
-                                        .setParticipantImg(R.drawable.ic_participants)
-                                        .setParticipant(activity.getPart())
-                                        .setCount(activity.getCount())
-                                        .setNotesImg(R.drawable.ic_notes)
-                                        .setNotes(activity.getDesc())
-                                        .setChecked(0)
-                                        .build();
-                                insert(newActivity);
+
+                            if (activity.getCount() != null && activity.getPart() != null) {
+                                int count = 0, part = 0;
+
+                                try {
+                                    count = Integer.parseInt(activity.getCount());
+                                    part = Integer.parseInt(activity.getPart());
+                                } catch (NumberFormatException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (count < part && activity.getSport() != null) {
+                                    insert(new NewActivity.Builder(ds.getId())
+                                            .setSport(activity.getSport())
+                                            .setSportImg(StringChecker.caseImage(activity.getSport()))
+                                            .setClock(activity.getEpoch())
+                                            .setClockImg(R.drawable.ic_clock)
+                                            .setEndClock(activity.getEpochEnd())
+                                            .setLocationImg(R.drawable.ic_location)
+                                            .setLocation(activity.getLoc())
+                                            .setOrganizerImg(R.drawable.ic_profile)
+                                            .setOrganizer(activity.getOrganizer())
+                                            .setIdentifier(activity.getOrganizerId())
+                                            .setParticipantImg(R.drawable.ic_participants)
+                                            .setParticipant(activity.getPart())
+                                            .setCount(activity.getCount())
+                                            .setNotesImg(R.drawable.ic_notes)
+                                            .setNotes(activity.getDesc())
+                                            .setChecked(0)
+                                            .build());
+
+                                    fStore.collection("activities")
+                                            .document(ds.getId())
+                                            .collection("participants")
+                                            .document(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
+                                            .addSnapshotListener((value, error) -> {
+                                                if (value != null) {
+                                                    if (Objects.equals(value.get(fAuth.getCurrentUser().getUid()), "registered")) {
+
+                                                        deleteById(ds.getId());
+                                                    }
+                                                }
+                                            });
+                                }
                             }
-
-                            fStore.collection("activities")
-                                    .document(ds.getId())
-                                    .collection("participants")
-                                    .document(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
-                                    .addSnapshotListener((value, error) -> {
-                                        if (value != null) {
-                                            if (Objects.equals(value.get(fAuth.getCurrentUser().getUid()), "registered")) {
-
-                                                deleteById(ds.getId());
-                                            }
-                                        }
-                                    });
                         }
                     }
                 });
@@ -214,7 +225,14 @@ public class NewActViewModel extends BaseViewModel {
         fStore.collection("activities")
                 .document(id)
                 .addSnapshotListener((value, error) -> {
-                    if (value.get("count").equals(value.get("part"))) {
+                    DocumentSnapshot val = null;
+                    try {
+                        val = value;
+                    } catch (AssertionError e) {
+                        e.printStackTrace();
+                    }
+                    assert val != null;
+                    if (Objects.equals(val.get("count"), val.get("part"))) {
                         Toast.makeText(context, "Max Participant Reached", Toast.LENGTH_SHORT).show();
                     } else {
 

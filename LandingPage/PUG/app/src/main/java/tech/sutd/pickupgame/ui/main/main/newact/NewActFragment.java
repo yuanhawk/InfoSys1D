@@ -51,7 +51,6 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
     @Inject ViewModelProviderFactory providerFactory;
     @Inject FilterAdapter filterAdapter;
     @Inject Handler handler;
-
     @Inject Constraints constraints;
 
     public BaseInterface.BookingActListener getBookingActListener() {
@@ -60,6 +59,11 @@ public class NewActFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void refreshObserver() {
+        if (getView() == null)
+            return;
+
+        pullNewAct();
+
         if (newActViewModel.getAllNewActivitiesBySport().hasActiveObservers())
             newActViewModel.getAllNewActivitiesBySport().removeObserver(observer);
         newActViewModel.getAllNewActivitiesBySport().observe(getViewLifecycleOwner(), observer);
