@@ -6,7 +6,6 @@ import tech.sutd.pickupgame.di.main.new_fragment.NewActFragmentModule;
 import tech.sutd.pickupgame.di.main.new_fragment.NewActFragmentScope;
 import tech.sutd.pickupgame.di.main.upcoming_fragment.UpcomingActFragmentModule;
 import tech.sutd.pickupgame.di.main.upcoming_fragment.UpcomingActFragmentScope;
-import tech.sutd.pickupgame.di.main.upcoming_fragment.UpcomingActFragmentViewModelModule;
 import tech.sutd.pickupgame.ui.main.booking.BookingFragment;
 import tech.sutd.pickupgame.ui.main.main.MainFragment;
 import tech.sutd.pickupgame.ui.main.main.newact.NewActFragment;
