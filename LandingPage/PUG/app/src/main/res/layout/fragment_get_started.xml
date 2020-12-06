@@ -19,6 +19,7 @@
         android:background="@drawable/ic_pug_title"/>
 
     <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="150dp"

@@ -116,7 +116,10 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
     }
 
     private void subscribeObserver() {
-        userViewModel.getUsers().observe(getViewLifecycleOwner(), users -> user = users.get(0));
+        userViewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
+            if (users.size() > 0)
+                user = users.get(0);
+        });
 
         bookingActViewModel.observeBooking().observe(getViewLifecycleOwner(), bookingActivityResource -> {
             if (bookingActivityResource.status == Resource.Status.SUCCESS) {
@@ -128,6 +131,9 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
                 saveData(getString(R.string.select_num_participants), "");
                 saveData(getString(R.string.additional_notes), "");
 
+                saveData(getString(R.string.day), "");
+                saveData(getString(R.string.month), "");
+                saveData(getString(R.string.year), "");
                 saveData(getString(R.string.hour), "00");
                 saveData(getString(R.string.min), "00");
                 saveData(getString(R.string.hour_end), "00");
@@ -213,6 +219,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
             dialog = setDialog(R.layout.addon_notes);
 
             EditText add_notes_et = dialog.findViewById(R.id.add_notes);
+            add_notes_et.setText(preferences.getString(getString(R.string.additional_notes), ""));
 
             dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
                 String addNotes = String.valueOf(add_notes_et.getText()).trim();
@@ -238,7 +245,16 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
 
             numberPicker.setWrapSelectorWheel(true);
 
-            numberPicked = 2;
+            if (!preferences.getString(getString(R.string.select_num_participants), "").equals(""))
+                try {
+                    numberPicked = Integer.parseInt(preferences.getString(getString(R.string.select_num_participants), ""));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            else
+                numberPicked = 2;
+            numberPicker.setValue(numberPicked);
+
             numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> numberPicked = newVal);
 
             dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
@@ -308,8 +324,20 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
 
             calendar = Calendar.getInstance();
 
-            hour = calendar.get(Calendar.HOUR_OF_DAY);
-            min = calendar.get(Calendar.MINUTE);
+            if (!preferences.getString(getString(R.string.start_time), "").equals("")) {
+                try {
+                    hour = Integer.parseInt(preferences.getString(getString(R.string.hour), String.valueOf(calendar.get(Calendar.HOUR_OF_DAY))));
+                    min = Integer.parseInt(preferences.getString(getString(R.string.min), String.valueOf(calendar.get(Calendar.MINUTE))));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                min = calendar.get(Calendar.MINUTE);
+            }
+
+            timePicker.setHour(hour);
+            timePicker.setMinute(min);
 
             timePicker.setOnTimeChangedListener((timeView, hourOfDay, minute) -> {
                 hour = hourOfDay;
@@ -337,13 +365,23 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
 
             calendar = Calendar.getInstance();
 
-            if (hour != 0) {
-                hourEnd = Integer.parseInt(preferences.getString(getString(R.string.hour), "")) + 2;
+            if (hour != 0 || preferences.getString(getString(R.string.end_time), "").equals("")) {
+                try {
+                    hourEnd = Integer.parseInt(preferences.getString(getString(R.string.hour), String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)))) + 2;
+                    minEnd = Integer.parseInt(preferences.getString(getString(R.string.min), String.valueOf(calendar.get(Calendar.MINUTE))));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             } else {
-                hourEnd = calendar.get(Calendar.HOUR_OF_DAY);
+                try {
+                    hourEnd = Integer.parseInt(preferences.getString(getString(R.string.hour_end), String.valueOf(calendar.get(Calendar.HOUR_OF_DAY))));
+                    minEnd = Integer.parseInt(preferences.getString(getString(R.string.min_end), String.valueOf(calendar.get(Calendar.MINUTE))));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
             }
+
             timePicker.setHour(hourEnd);
-            minEnd = calendar.get(Calendar.MINUTE);
             timePicker.setMinute(minEnd);
 
             timePicker.setOnTimeChangedListener((timeView, hourOfDay, minute) -> {
@@ -376,21 +414,36 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
 
             calendar = Calendar.getInstance();
 
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH) + 1;
-            day = calendar.get(Calendar.DAY_OF_MONTH);
+            if (!preferences.getString(getString(R.string.date), "").equals("")) {
+                try {
+                    day = Integer.parseInt(preferences.getString(getString(R.string.day), ""));
+                    month = Integer.parseInt(preferences.getString(getString(R.string.hour), ""));
+                    year = Integer.parseInt(preferences.getString(getString(R.string.min), ""));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+            }
+
+            datePicker.updateDate(year, month, day);
 
             datePicker.init(year, month, day, (dateView, year, monthOfYear, dayOfMonth) -> {
                 this.year = year;
-                month = monthOfYear + 1;
+                month = monthOfYear;
                 day = dayOfMonth;
             });
 
             dialog.findViewById(R.id.confirm_button).setOnClickListener(view -> {
-                date = DateConverter.formatDate(day, month, year);
+                date = DateConverter.formatDate(day, month + 1, year);
                 binding.dateSpinner.setText(date);
 
                 saveData(getString(R.string.date), date);
+                saveData(getString(R.string.day), String.valueOf(day));
+                saveData(getString(R.string.month), String.valueOf(month + 1));
+                saveData(getString(R.string.year), String.valueOf(year));
 
                 binding.dateSpinner.setError(null);
 

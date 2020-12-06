@@ -43,6 +43,8 @@ import tech.sutd.pickupgame.util.StringChecker;
 
 public class NewActViewModel extends BaseViewModel {
 
+    private static final String TAG = "NewActViewModel";
+
     private final FirebaseFirestore fStore;
     private final DatabaseReference reff;
     private final FirebaseAuth fAuth;
@@ -191,9 +193,11 @@ public class NewActViewModel extends BaseViewModel {
                                             .document(ds.getId())
                                             .collection("participants")
                                             .document(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())
-                                            .addSnapshotListener((value, error) -> {
-                                                if (value != null) {
-                                                    if (Objects.equals(value.get(fAuth.getCurrentUser().getUid()), "registered")) {
+                                            .get()
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    Log.d(TAG, "pull: " + task1.getResult().get(fAuth.getCurrentUser().getUid()));
+                                                    if (Objects.equals(task1.getResult().get(fAuth.getCurrentUser().getUid()), "registered")) {
 
                                                         deleteById(ds.getId());
                                                     }
@@ -224,59 +228,62 @@ public class NewActViewModel extends BaseViewModel {
 
         fStore.collection("activities")
                 .document(id)
-                .addSnapshotListener((value, error) -> {
-                    DocumentSnapshot val = null;
-                    try {
-                        val = value;
-                    } catch (AssertionError e) {
-                        e.printStackTrace();
-                    }
-                    assert val != null;
-                    if (Objects.equals(val.get("count"), val.get("part"))) {
-                        Toast.makeText(context, "Max Participant Reached", Toast.LENGTH_SHORT).show();
-                    } else {
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot val = null;
+                        try {
+                            val = task.getResult();
+                        } catch (AssertionError e) {
+                            e.printStackTrace();
+                        }
+                        assert val != null;
+                        if (Objects.equals(val.get("count"), val.get("part"))) {
+                            Toast.makeText(context, "Max Participant Reached", Toast.LENGTH_SHORT).show();
+                        } else {
 
-                        reff.child("upcoming_activity")
-                                .child(Objects.requireNonNull(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()))
-                                .child(id)
-                                .setValue(bookingActivity)
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
+                            reff.child("upcoming_activity")
+                                    .child(Objects.requireNonNull(Objects.requireNonNull(fAuth.getCurrentUser()).getUid()))
+                                    .child(id)
+                                    .setValue(bookingActivity)
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
 
-                                        fStore.collection("activities")
-                                                .document(id)
-                                                .update("count", bookingActivity.getCount());
+                                            fStore.collection("activities")
+                                                    .document(id)
+                                                    .update("count", bookingActivity.getCount());
 
-                                        Map<String, String> map = new HashMap<>();
-                                        map.put(fAuth.getCurrentUser().getUid(), "registered");
-                                        fStore.collection("activities")
-                                                .document(id)
-                                                .collection("participants")
-                                                .document(fAuth.getCurrentUser().getUid())
-                                                .set(map);
+                                            Map<String, String> map = new HashMap<>();
+                                            map.put(fAuth.getCurrentUser().getUid(), "registered");
+                                            fStore.collection("activities")
+                                                    .document(id)
+                                                    .collection("participants")
+                                                    .document(fAuth.getCurrentUser().getUid())
+                                                    .set(map);
 
-                                        reff.child("your_activity")
-                                                .child(bookingActivity.getOrganizerId())
-                                                .child(id)
-                                                .child("count")
-                                                .setValue(bookingActivity.getCount());
+                                            reff.child("your_activity")
+                                                    .child(bookingActivity.getOrganizerId())
+                                                    .child(id)
+                                                    .child("count")
+                                                    .setValue(bookingActivity.getCount());
 
 
-                                        if (mainFragment != null)
-                                            mainFragment.getBookingActListener().onSignUpSuccess(mainFragment, null);
-                                        else if (newActFragment != null)
-                                            newActFragment.getBookingActListener().onSignUpSuccess(null, newActFragment);
+                                            if (mainFragment != null)
+                                                mainFragment.getBookingActListener().onSignUpSuccess(mainFragment, null);
+                                            else if (newActFragment != null)
+                                                newActFragment.getBookingActListener().onSignUpSuccess(null, newActFragment);
 
-                                    } else {
+                                        } else {
 
-                                        if (mainFragment != null)
-                                            mainFragment.getBookingActListener().onSignUpFailure();
-                                        else if (newActFragment != null)
-                                            newActFragment.getBookingActListener().onSignUpFailure();
+                                            if (mainFragment != null)
+                                                mainFragment.getBookingActListener().onSignUpFailure();
+                                            else if (newActFragment != null)
+                                                newActFragment.getBookingActListener().onSignUpFailure();
 
-                                    }
-                                    adapter.getDialog().dismiss();
-                                });
+                                        }
+                                        adapter.getDialog().dismiss();
+                                    });
+                        }
                     }
                 });
 

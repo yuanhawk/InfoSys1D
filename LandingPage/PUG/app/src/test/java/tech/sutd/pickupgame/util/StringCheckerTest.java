@@ -18,20 +18,25 @@ public class StringCheckerTest {
     }
 
     @Test
-    public void partHolder() {
+    public void partHolder_partCount_partTotal_partHolderReturned() {
         String testPartCount = "1";
         String testPartTotal = "6";
         String testParticipant = testPartCount + " | " + testPartTotal;
         assertEquals(StringChecker.partHolder(testPartCount, testPartTotal), testParticipant);
+
+        String testPartCount2 = null;
+        String testPartTotal2 = null;
+        String testParticipant2 = testPartCount2 + " | " + testPartTotal2;
+        assertEquals(StringChecker.partHolder(testPartCount2, testPartTotal2), testParticipant2);
     }
 
     @Test
-    public void addPartCount() {
+    public void add_initPartCount_endPartCountReturned() {
         assertEquals(StringChecker.add("1"), "2");
     }
 
     @Test
-    public void minusPartCount() {
+    public void sub_initPartCount_endPartCountReturned() {
         assertEquals(StringChecker.sub("1"), "0");
     }
 

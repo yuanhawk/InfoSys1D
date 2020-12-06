@@ -72,6 +72,9 @@
     <string name="load_new_activities">Please refresh to load new activities</string>
     <string name="pin_to_calendar">Pin to\nCalendar</string>
     <string name="delete">Delete</string>
+    <string name="day">day</string>
+    <string name="month">month</string>
+    <string name="year">year</string>
 
     <string-array name="sport_array">
         <item>Badminton</item>

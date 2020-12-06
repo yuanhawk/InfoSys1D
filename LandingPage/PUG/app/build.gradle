@@ -64,7 +64,6 @@ dependencies {
     // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.ext:truth:1.0.0'
-    androidTestImplementation 'com.google.truth:truth:0.42'
 
     // Espresso dependencies
     def espresso_version = "3.3.0"
@@ -78,6 +77,10 @@ dependencies {
 
     def fragment_version = "1.2.5"
     implementation "androidx.fragment:fragment:$fragment_version"
+    // debugImplementation required vs testImplementation: https://issuetracker.google.com/issues/128612536
+    debugImplementation("androidx.fragment:fragment-testing:1.2.5") {
+        exclude group:'androidx.test', module:'monitor'
+    }
 
     def material_version = "1.2.1"
     implementation "com.google.android.material:material:$material_version"

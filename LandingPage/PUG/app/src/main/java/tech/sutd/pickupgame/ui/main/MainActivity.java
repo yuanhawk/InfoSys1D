@@ -91,14 +91,17 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onSignUpSuccess(MainFragment mainFragment, NewActFragment newFragment) {
-        Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
-
+        binding.progress.setVisibility(View.VISIBLE);
         pull();
 
-        if (mainFragment != null)
-            mainFragment.refreshObserver();
-        else if (newFragment != null)
-            newFragment.refreshObserver();
+        handler.postDelayed(() -> {
+            if (mainFragment != null)
+                mainFragment.refreshObserver();
+            else if (newFragment != null)
+                newFragment.refreshObserver();
+            binding.progress.setVisibility(View.GONE);
+            Toast.makeText(this, "Activity saved successfully", Toast.LENGTH_SHORT).show();
+        }, 3000);
     }
 
     @Override
@@ -108,14 +111,17 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onDeleteSuccess(MainFragment mainFragment, UpcomingActFragment upcomingFragment) {
-        Toast.makeText(this, "Activity deleted successfully", Toast.LENGTH_SHORT).show();
-
+        binding.progress.setVisibility(View.VISIBLE);
         pull();
 
-        if (mainFragment != null)
-            mainFragment.refreshObserver();
-        else if (upcomingFragment != null)
-            upcomingFragment.refreshObserver();
+        handler.postDelayed(() -> {
+            if (mainFragment != null)
+                mainFragment.refreshObserver();
+            else if (upcomingFragment != null)
+                upcomingFragment.refreshObserver();
+            binding.progress.setVisibility(View.GONE);
+            Toast.makeText(this, "Activity deleted successfully", Toast.LENGTH_SHORT).show();
+        }, 2000);
     }
 
     @Override
