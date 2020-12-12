@@ -189,6 +189,7 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
                 binding.timeSpinnerEnd.setError(getString(R.string.time_error));
                 return;
             } else if (Long.parseLong(startTime) < Calendar.getInstance().getTimeInMillis()) {
+                binding.dateSpinner.setError(getString(R.string.date_error));
                 binding.timeSpinnerStart.setError(getString(R.string.start_time_error));
                 return;
             }
@@ -417,8 +418,8 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
             if (!preferences.getString(getString(R.string.date), "").equals("")) {
                 try {
                     day = Integer.parseInt(preferences.getString(getString(R.string.day), ""));
-                    month = Integer.parseInt(preferences.getString(getString(R.string.hour), ""));
-                    year = Integer.parseInt(preferences.getString(getString(R.string.min), ""));
+                    month = Integer.parseInt(preferences.getString(getString(R.string.month), "")) - 1;
+                    year = Integer.parseInt(preferences.getString(getString(R.string.year), ""));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
