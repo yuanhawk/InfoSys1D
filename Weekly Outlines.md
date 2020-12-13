@@ -1,13 +1,5 @@
 # Topics of Discussion
 
-<a href="https://drive.google.com/drive/folders/11AvPN6FO2Q9EOUyGcgd9SjoZMvlyFdA0?usp=sharing" title="Google Drive Folder">
-Google Drive Folder </a>
-<br>
-<a href="https://docs.google.com/spreadsheets/d/1YDQ4P7yg9ofHbYfBEAOOOk6UE3_zdHUDkQdantI8KA0/edit" title="Members Email">
-Members Email</a>
-<br>
-<a href="https://drive.google.com/drive/folders/11AvPN6FO2Q9EOUyGcgd9SjoZMvlyFdA0">1D Outline + Rubric</a>
-
 # InfoSys1D
 
 ## When updating new content:
