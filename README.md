@@ -1,5 +1,8 @@
 # App Package Outline
 
+[![Generic badge](https://img.shields.io/badge/PUG-1.0-<COLOR>.svg)](https://shields.io/)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+
 <a href="https://miro.com/app/board/o9J_lddUdVk=/" title="Design Patterns (Miro)">
 Design Patterns (Miro) </a>
 <br>
