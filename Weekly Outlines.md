@@ -8,7 +8,15 @@ Members Email</a>
 <br>
 <a href="https://drive.google.com/drive/folders/11AvPN6FO2Q9EOUyGcgd9SjoZMvlyFdA0">1D Outline + Rubric</a>
 
-Critical Deadlines:
+# InfoSys1D
+
+## When updating new content:
+1. Describe what your code does in the main md of each branch
+2. Update to the corresponding branch, avoid updating the main branch unless everyone agrees on it
+3. Creating new branches to add specific new content, avoid causing instability to the main branch
+
+
+## Critical Deadlines:
 <ol>
 
 <li>
@@ -57,15 +65,3 @@ C3: 3.30pm to 4pm
 
 
 Prepare your team project claim for submission to ISTD office.
-
-
-
-### Week 1
-##### Discussion Plans
-<a href="https://docs.google.com/presentation/d/14KbEW97bPCTB8Q0IHs9RHlSJYzz_l1vS7Ixw67hOeao/edit#slide=id.g9774bc0097_0_0" title="Project idea discussion">
-Project Idea Discussion </a>
-
-### Week 2
-##### Discussion plans
-<a href="https://docs.google.com/presentation/d/110Djs_CUF4PCQEgyUK7dHzXeHp07SLuoLkjDXUM06OE/edit" title="Problem Framing">
-Problem Framing </a>
