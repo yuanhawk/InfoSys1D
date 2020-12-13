@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2020 Tan Li Yuan Marcus (yuanhawk)<br>
+Copyright (c) 2020 Tan Li Yuan (yuanhawk)<br>
 on behalf of PUG team:<br>
 Yee Yi Xian<br>
 Rebecca Ling<br>
