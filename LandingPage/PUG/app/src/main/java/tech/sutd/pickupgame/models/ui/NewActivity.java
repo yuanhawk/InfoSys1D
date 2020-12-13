@@ -106,7 +106,7 @@ public class NewActivity {
     }
 
     public static class Builder {
-        private String id;
+        private final String id;
         private int checked;
         private String sport;
         private int clockImg;

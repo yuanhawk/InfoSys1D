@@ -58,8 +58,6 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
 
     private FragmentBookingBinding binding;
 
-    private BaseInterface.CustomActListener listener;
-
     private Dialog dialog;
 
     @Inject SharedPreferences preferences;
@@ -504,15 +502,5 @@ public class BookingFragment extends BaseFragment implements BaseInterface.Custo
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(key, val);
         editor.apply();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            listener = (BaseInterface.CustomActListener) context;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
     }
 }

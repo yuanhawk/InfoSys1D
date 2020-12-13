@@ -196,7 +196,7 @@ public class NewActViewModel extends BaseViewModel {
                                             .get()
                                             .addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful()) {
-                                                    Log.d(TAG, "pull: " + task1.getResult().get(fAuth.getCurrentUser().getUid()));
+                                                    Log.d(TAG, "pull: " + Objects.requireNonNull(task1.getResult()).get(fAuth.getCurrentUser().getUid()));
                                                     if (Objects.equals(task1.getResult().get(fAuth.getCurrentUser().getUid()), "registered")) {
 
                                                         deleteById(ds.getId());

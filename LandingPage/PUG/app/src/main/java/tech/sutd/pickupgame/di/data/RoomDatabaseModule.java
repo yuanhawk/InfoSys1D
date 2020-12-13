@@ -47,12 +47,11 @@ public class RoomDatabaseModule {
     @NonNull
     @Provides
     static UserDatabase provideUserDatabase(Application application) {
-        userDatabase = Room.databaseBuilder(application,
+        return Room.databaseBuilder(application,
                 UserDatabase.class, "user_database")
                 .fallbackToDestructiveMigration()
                 .addCallback(roomCallback)
                 .build();
-        return userDatabase;
     }
 
     @Singleton

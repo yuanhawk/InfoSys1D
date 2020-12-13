@@ -193,7 +193,7 @@ public class UpcomingActivityAdapter<U> extends PagedListAdapter<UpcomingActivit
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemlistActivitiesBinding binding;
+        private final ItemlistActivitiesBinding binding;
 
         public ViewHolder(@NonNull ItemlistActivitiesBinding binding) {
             super(binding.getRoot());

@@ -63,7 +63,7 @@ public class SessionManager {
                         task -> {
                             if (!emitter.isDisposed()) {
                                 if (task.isSuccessful()) {
-                                    reff.child("users").child(Objects.requireNonNull(fAuth.getCurrentUser().getUid())).setValue(user);
+                                    reff.child("users").child(Objects.requireNonNull(Objects.requireNonNull(fAuth.getCurrentUser()).getUid())).setValue(user);
 
                                     UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
                                             .setDisplayName(user.getName())
@@ -116,13 +116,13 @@ public class SessionManager {
                     if (task.isSuccessful())
                         emitter.onSuccess(AuthResource.reset(user));
                     else
-                        emitter.onSuccess(AuthResource.error(task.getException().getMessage()));
+                        emitter.onSuccess(AuthResource.error(Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage())));
                 })
         );
     }
 
     public Single<AuthResource<FirebaseAuth>> updateUserDetails(UserProfile user) {
-        return Single.create(emitter -> fAuth.getCurrentUser()
+        return Single.create(emitter -> Objects.requireNonNull(fAuth.getCurrentUser())
                 .updateProfile(new UserProfileChangeRequest.Builder()
                 .setDisplayName(user.getName())
                 .setPhotoUri(Uri.parse(user.getImg()))
@@ -132,7 +132,7 @@ public class SessionManager {
                         reff.child("users").child(Objects.requireNonNull(fAuth.getCurrentUser().getUid())).setValue(user);
                         emitter.onSuccess(AuthResource.update(fAuth));
                     } else
-                        emitter.onSuccess(AuthResource.error(task.getException().getMessage()));
+                        emitter.onSuccess(AuthResource.error(Objects.requireNonNull(Objects.requireNonNull(task.getException()).getMessage())));
                 }));
     }
 

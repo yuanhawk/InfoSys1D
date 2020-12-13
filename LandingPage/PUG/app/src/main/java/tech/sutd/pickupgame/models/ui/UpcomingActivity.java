@@ -93,7 +93,7 @@ public class UpcomingActivity {
     }
 
     public static class Builder {
-        private String id;
+        private final String id;
         private String sport;
         private int clockImg;
         private String clock;

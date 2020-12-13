@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
@@ -21,8 +23,6 @@ import tech.sutd.pickupgame.viewmodels.ViewModelProviderFactory;
 
 public class AuthActivity extends DaggerAppCompatActivity {
 
-    private ActivityAuthBinding binding;
-
     @Inject SessionManager sessionManager;
 
     public void login() {
@@ -34,7 +34,7 @@ public class AuthActivity extends DaggerAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAuthBinding.inflate(getLayoutInflater());
+        tech.sutd.pickupgame.databinding.ActivityAuthBinding binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         subscribeObserver();
@@ -43,7 +43,8 @@ public class AuthActivity extends DaggerAppCompatActivity {
     private void subscribeObserver() {
         sessionManager.observeAuthState().observe(this, firebaseAuthAuthResource -> {
             if (firebaseAuthAuthResource.status == AuthResource.AuthStatus.AUTHENTICATED) {
-                if (firebaseAuthAuthResource.data.getCurrentUser().isEmailVerified())
+                assert firebaseAuthAuthResource.data != null;
+                if (Objects.requireNonNull(firebaseAuthAuthResource.data.getCurrentUser()).isEmailVerified())
                     login();
             }
         });
