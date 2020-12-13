@@ -1,6 +1,6 @@
 # App Package Outline
 
-[![Generic badge](https://img.shields.io/badge/PUG-1.0-<COLOR>.svg)]
+![Generic badge](https://img.shields.io/badge/PUG-1.0-<COLOR>.svg)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/yuanhawk/InfoSys1D/blob/master/LICENSE.md)
 [![Generic badge](https://img.shields.io/badge/SupportUsOn:-PlayStore-9cf.svg)](https://play.google.com/apps/testing/tech.sutd.pickupgame)
 
