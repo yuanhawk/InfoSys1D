@@ -7,8 +7,8 @@ Design Patterns (Miro) </a>
 App Designs (Figma)</a>
 
 ## Commit<br>
-2 activities: AuthActivity + MainActivity
-fragments: GetStartedFragment, LoginFragment, RegisterFragment, ResetFragment<br>
+2 activities: AuthActivity + MainActivity<br>
+10 fragments: GetStartedFragment, LoginFragment, RegisterFragment, ResetFragment<br>
 BookingFragment, NewActFragment, UpcomingActFragment, MainFragment<br>
 EditProfileFragment, UserFragment
 
