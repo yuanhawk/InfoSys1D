@@ -6,6 +6,7 @@
 
 *Do refer to the newest releases for bug fixes to the application
 
+### Description <br>
 PUG draws inspiration from the kampung spirit in Singapore, fostering a community that plays together. Organising and joining events is streamlined and can be done in the snap of a finger. You can view and sort the activities that you have signed up for, organised or previously participated by accessing them in one click from the home page. Other key features include filters to sort events by date, sport and location for when joining events as well as a customisable profile.
 
 <img src="images/GetStarted.jpg" alt="Get Started" style="float: left; margin-right: 20px;" width="250" /> <img src="images/Register.jpg" alt="Register" style="float: left; margin-right: 20px;" width="250" />
