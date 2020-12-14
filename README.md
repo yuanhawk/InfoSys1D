@@ -1,6 +1,6 @@
 # App Package Outline
 
-#Decription<br>
+## Decription<br>
 PUG draws inspiration from the kampung spirit in Singapore, fostering a community that plays together. Organising and joining events is streamlined and can be done in the snap of a finger. You can view and sort the activities that you have signed up for, organised or previously participated by accessing them in one click from the home page. Other key features include filters to sort events by date, sport and location for when joining events as well as a customisable profile.
 
 [![Generic badge](https://img.shields.io/badge/PUG-1.0-<COLOR>.svg)](https://play.google.com/apps/testing/tech.sutd.pickupgame)
