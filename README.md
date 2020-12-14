@@ -7,6 +7,7 @@
 
 <img src="images/GetStarted.jpg" alt="Get Started" style="float: left; margin-right: 20px;" width="300" /> <img src="images/Register.jpg" alt="Register" style="float: left; margin-right: 20px;" width="300" />
 <img src="images/MainLayout.jpg" alt="Main Layout" style="float: left; margin-right: 20px;" width="300" />
+<img src="images/BadmintonDialog.jpg" alt="Badminton Dialog" style="float: left; margin-right: 20px;" width="300" />
 <img src="images/OrganizeActivity.jpg" alt="Organize Activity" style="float: left; margin-right: 20px;" width="300" />
 <img src="images/UserLayout.jpg" alt="User Layout" style="float: left; margin-right: 20px;" width="300" /><br><br><br>
 
