@@ -5,11 +5,11 @@
 
 *Do refer to the newest releases for bug fixes to the application
 
-<img src="images/GetStarted.jpg" alt="Get Started" style="float: left; margin-right: 20px;" width="300" /> <img src="images/Register.jpg" alt="Register" style="float: left; margin-right: 20px;" width="300" />
-<img src="images/MainLayout.jpg" alt="Main Layout" style="float: left; margin-right: 20px;" width="300" />
-<img src="images/BadmintonDialog.jpg" alt="Badminton Dialog" style="float: left; margin-right: 20px;" width="300" />
-<img src="images/OrganizeActivity.jpg" alt="Organize Activity" style="float: left; margin-right: 20px;" width="300" />
-<img src="images/UserLayout.jpg" alt="User Layout" style="float: left; margin-right: 20px;" width="300" /><br><br><br>
+<img src="images/GetStarted.jpg" alt="Get Started" style="float: left; margin-right: 20px;" width="200" /> <img src="images/Register.jpg" alt="Register" style="float: left; margin-right: 20px;" width="200" />
+<img src="images/MainLayout.jpg" alt="Main Layout" style="float: left; margin-right: 20px;" width="200" />
+<img src="images/BadmintonDialog.jpg" alt="Badminton Dialog" style="float: left; margin-right: 20px;" width="200" />
+<img src="images/OrganizeActivity.jpg" alt="Organize Activity" style="float: left; margin-right: 20px;" width="200" />
+<img src="images/UserLayout.jpg" alt="User Layout" style="float: left; margin-right: 20px;" width="200" /><br><br><br>
 
 <a href="https://miro.com/app/board/o9J_lddUdVk=/" title="Design Patterns (Miro)">
 Design Patterns (Miro) </a>
