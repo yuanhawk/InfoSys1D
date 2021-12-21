@@ -20,6 +20,9 @@ Design Patterns (Miro) </a>
 <br>
 <a href="https://www.figma.com/proto/Lf8xJDSLl2WVLb3frxfqZE/50.001-1D-Wireframe?node-id=1:2&viewport=286,312,0.5&scaling=scale-down">
 App Designs (Figma)</a>
+<br>
+<a href="https://docs.google.com/document/d/1TM35asb2q9RGHnLB4syg3fPTudsUUw-ikcibZBnTSW8/edit?usp=sharing" title="Final Report">
+Final Report</a>
 
 ## Commit<br>
 2 activities: AuthActivity + MainActivity<br>
